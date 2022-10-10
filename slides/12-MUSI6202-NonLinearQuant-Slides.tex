@@ -1,0 +1,166 @@
+% move all configuration stuff into one file so we can focus on the content
+\input{../shared/common}
+\input{../shared/definitions}
+
+
+\subtitle{Part 12: Non-linear Quantization}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+    % generate title page
+	\input{titlepage}
+
+\section[intro]{introduction}
+
+\begin{frame}{non-linear quantization}{introduction: linear quantization---SNR \& PDF}
+		\begin{equation*}
+			SNR = 6.02\cdot w + c_{\mathrm{S}}\quad [dB]
+		\end{equation*}
+		\pause
+        \bigskip
+		$\Rightarrow c_{\mathrm{S}}$ depends on signal's PDF (and scaling)
+		\begin{table}
+			\centering
+			\begin{footnotesize}
+				\begin{tabular}{clc}
+				\hline
+				\textbf{PDF} & \textbf{SNR}\\
+				\hline
+				square wave & $c_S =  4.8$\\
+				sine wave & $c_S =  1.8$\\
+				rect & $c_S =  0$\\
+				tri & $c_S \approx  -3$\\
+				Gauss & $c_S \approx  -7$\\
+				Laplace & $c_S \approx  -9$\\
+				speech & $c_S \approx  -10\ldots -15$\\
+				\hline
+				\end{tabular}
+			\end{footnotesize}
+		\end{table}
+	\end{frame}	
+    
+	\begin{frame}{non-linear quantization}{introduction}
+		\textbf{idea}: quantize frequent signal values at higher resolution
+		
+		\begin{itemize}
+			\item<2-> \textbf{approach 1 }	
+				\begin{enumerate}
+					\item	flatten PDF (companding)
+					\item	linear quantization
+					\item	extract signal (expanding)
+				\end{enumerate}
+			\only<2>{
+            \begin{figure}
+                \begin{center}
+                    \includegraphics[scale=0.5]{Graph/quant_compexp}
+                \end{center}
+            \end{figure}
+            }
+			\only<3->{
+            \begin{figure}
+                \begin{center}
+                    \includegraphics[scale=0.2]{Graph/quant_compexp}
+                \end{center}
+            \end{figure}
+            }
+            \item<3-> \textbf{approach 2 }	
+				\begin{enumerate}
+					\item	adapt quantization step size to PDF
+				\end{enumerate}
+            \bigskip
+            \item<4->[$\Rightarrow$] both approaches are equivalent in their result
+		\end{itemize}
+	\end{frame}	
+
+\section[A-law]{A-Law quantization}
+	\begin{frame}{non-linear quantization}{A-Law quantization  (ITU-T G.711) 1/3}
+		\begin{equation*}
+			F(x)	= sign(x)\left\lbrace
+					\begin{array}{ll} 
+			          \frac{A|x|}{1+\log(A)}, & |x| \leq \frac{1}{A}\\ 
+			          \frac{1+\log(A|x|)}{1+\log(A)}, & \frac{1}{A} \leq |x| \leq 1\\ 
+          			\end{array} 
+          			\right.
+		\end{equation*}
+        \bigskip
+		\begin{equation*}
+			F^{-1}(y)	= sign(y)\left\lbrace
+					\begin{array}{ll} 
+			          \frac{|y|(1+\log(A))}{A}, & |y| \leq \frac{1}{1+\log(A)}\\ 
+			          \frac{\exp\big(|y|(1+\log(A))-1\big)}{A}, & \frac{1}{1+\log(A)} \leq |y| \leq 1\\ 
+          			\end{array} 
+          			\right.
+		\end{equation*}
+		\bigskip
+		\bigskip
+        with $A = 87.7$
+        
+        \pause
+        \begin{itemize}
+            \item   linear and high resolution for small amplitudes
+            \item   log and increasingly low resolution for high amplitudes
+        \end{itemize}
+	\end{frame}	
+
+	\begin{frame}{non-linear quantization}{A-Law quantization 2/3}
+        \vspace{-4mm}
+	    \begin{figure}
+			\centering
+				\includegraphics[scale=0.5]{Graph/a-law}
+		\end{figure}
+	\end{frame}
+
+	\begin{frame}{non-linear quantization}{A-Law quantization 3/3}
+	    \vspace{-5mm}
+        \begin{figure}
+			\centering
+				\includegraphics[scale=0.5]{Graph/snr_a-law}
+		\end{figure}
+        \begin{itemize}
+            \item   range I: SNR is linear regardless of input level
+            \item   range II: SNR increases with input level
+        \end{itemize}
+	\end{frame}
+
+\section[$\mu$-law]{$\mu$-Law quantization}
+	\begin{frame}{non-linear quantization}{$\mu$-Law quantization  (ITU-T G.711)}
+		\begin{equation*}
+			F(x)	= sign(x)\frac{\log(1+\mu|x|)}{\log(1+\mu)}
+		\end{equation*}
+        \bigskip
+		\begin{equation*}
+			F^{-1}(y)	= sign(y)\frac{1}{\mu}\left((1+\mu)^{|y|}-1\right)
+		\end{equation*}
+		\bigskip
+		\bigskip
+        with $\mu = 255$
+        
+        \pause
+        compared to A-Law:
+        \begin{itemize}
+            \item   higher dynamic range
+            \item   higher error at small amplitudes
+        \end{itemize}
+	\end{frame}	
+
+	\section{summary}	
+		\begin{frame}{non-linear quantization}{summary}
+            \begin{itemize}
+                \item \textbf{advantages} of non-linear quantization
+                    \begin{itemize}
+                        \item   takes advantage of non-uniform distribution of input
+                        \item   in line with non-linear loudness perception of the ear
+                        \item[$\Rightarrow$]    similar perceptual quality as higher resolution linear quantization
+                    \end{itemize}
+                \bigskip
+                \item    \textbf{disadvantages}
+                    \begin{itemize}
+                        \item   processing not easily implemented in non-linear amplitude space
+                        \item[$\Rightarrow$] only used for transmission   
+                    \end{itemize}
+            \end{itemize}
+		\end{frame}
+ 
+
+\end{document}
+

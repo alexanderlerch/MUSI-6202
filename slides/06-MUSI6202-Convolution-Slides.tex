@@ -1,0 +1,271 @@
+% move all configuration stuff into one file so we can focus on the content
+\input{../shared/common}
+\input{../shared/definitions}
+
+
+\subtitle{Part 6: LTI Systems \& Convolution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+    % generate title page
+	\input{titlepage}
+
+    \section[intro]{introduction}
+        \begin{frame}{systems}{introduction}
+            a system:
+            \begin{itemize}
+                \item   any process producing an output signal in response to an input signal
+            \end{itemize}
+		    \begin{figure}
+				\centering
+		        \begin{picture}(80,35)
+		            %boxes
+		            %\put(0,30){\ovalbox{\footnotesize{\parbox{20mm}{\vspace{2mm}\centering{Composer}\vspace{2mm}}}}}
+		            \put(30,30){\ovalbox{\footnotesize{\parbox{20mm}{\vspace{2.3mm}\centering{System}\vspace{2.3mm}}}}}
+		            %\put(60,30){\ovalbox{\footnotesize{\parbox{20mm}{\vspace{2mm}\centering{Recipient}\vspace{2mm}}}}}
+		
+		            % horizontal
+		            \put(22.4,30.6){\vector(1,0){7.8}}
+		            \put(52.4,30.6){\vector(1,0){7.8}}
+		            \put(15,30){\text{$x(t)$}}
+		            \put(60,30){\text{$y(t)$}}
+		        \end{picture}
+		    \end{figure}
+            \vspace{-25mm}
+            \question{name examples for systems in signal processing}
+            
+            \begin{itemize}
+                \item   filters, effects
+                \item   vocal tract
+                \item   room
+                \item   (audio) cable
+                \item   \ldots
+            \end{itemize}
+        \end{frame}
+    \section[LTI]{Linear Time-Invariant systems}
+        \begin{frame}{systems}{linearity and non-linearity}
+            \begin{columns}
+            \column{.7\linewidth}
+            \begin{itemize}
+                \item   examples for mostly linear systems:
+                    \begin{itemize}
+                        \item   room
+                        \item   eq
+                    \end{itemize}
+                \bigskip
+                \item   examples for non-linear systems:
+                    \begin{itemize}
+                        \item   diode
+                        \item   vacuum tube
+                    \end{itemize}
+            \end{itemize}
+            \column{.3\linewidth}
+            \begin{figure}%
+                \includegraphics[scale=.75]{linearnonlinear}%
+            \end{figure}
+            \end{columns}
+
+            \addreference{\url{http://www.sfu.ca/sonic-studio/handbook/Linear.html}}
+        \end{frame}
+        \begin{frame}{systems}{linearity}
+            \toremember{linearity is defined by two properties}
+            
+            \begin{enumerate}
+                \item   \textbf{homogeneity}:
+                    \[f(ax) = a f(x)\]
+                \bigskip
+                \item   \textbf{superposition} (additivity):
+                \[f(x+y) = f(x) + f(y)\]
+            \end{enumerate}
+        \end{frame}
+        \begin{frame}{systems}{time invariance}
+            \toremember{time invariance}
+            
+            \begin{itemize}
+                \item   does not change with time:
+                    \[f\left(x(t-\tau)\right) = f(x)(t-\tau)\]
+            \end{itemize}
+            \pause
+            \begin{block}{LTI: Linear Time-invariant Systems}
+                are a great simplification for many real-world systems we would like to model --- circuits, spring-mass-damper systems, etc.
+            \end{block}
+        \end{frame}
+        \begin{frame}{systems}{LTI system example}
+            velocity of mass an a table
+            \begin{enumerate}
+                \item   hammer gives \textit{impulse}
+                \item   system \textit{responds} with velocity
+                \bigskip
+                \item<2->[]   \textbf{linearity}:\\ double force, double velocity, multiple strikes add up
+                \smallskip
+                \item<2->[]   \textbf{time invariance}:\\ system reacts the same whether I do it now or tomorrow
+            \end{enumerate}
+        \end{frame}
+        \begin{frame}{systems}{other system characteristics}
+            \begin{itemize}
+                \item   \textbf{causality}:\\ output depends only on past and present input
+                \bigskip
+                \item   \textbf{BIBO stability}:\\ output is bounded for bounded input
+            \end{itemize}
+        \end{frame}
+    \section{convolution}
+        \begin{frame}{convolution}{introduction}
+            \question{we know how a system reacts to an impulse, but what of a more complex input signal}
+
+            \begin{itemize}
+                \item<2-> assume that the signal is constructed from many densely packed impulses
+                \item<2->[$\Rightarrow$] output is superposition of all individual responses
+            \end{itemize}
+            \pause
+            \bigskip
+            \textbf{convolution}
+            \begin{equation*}
+                y(t) = (x \ast h)(t) := \int\limits_{-\infty}^{\infty}x(\tau)h(t-\tau)d\tau
+            \end{equation*}
+        \end{frame}
+\begin{frame}{convolution}{animation}
+            \vspace{-5mm}
+            \begin{center}
+                 \animategraphics[autoplay,loop]{10}{animateConvolution/Convolution-}{000}{600}        
+            \end{center}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Slides/blob/master/matlab/animateConvolution.m}{matlab/animateConvolution.m}}
+            \inserticon{video}
+\end{frame}
+    
+\begin{frame}\frametitle{convolution}\framesubtitle{exercise --- convolution by hand}
+    compute the convolution of the following two signals
+    \begin{figure}%
+    \includegraphics[width=.75\columnwidth]{convolution_exercise}%
+    \end{figure}
+    \bigskip
+    steps:
+    \begin{enumerate}
+        \item   flip one signal
+        \item   multiply the two signals
+        \item   integrate the result
+        \item   shift
+        \item   go to 2.
+    \end{enumerate}
+\end{frame}
+    
+\begin{frame}\frametitle{convolution}\framesubtitle{identity and impulse response}
+    \begin{eqnarray*}
+        x(t) &=& \delta(t)\ast x(t) \\
+        h(t) &=& \delta(t)\ast h(t) 
+    \end{eqnarray*}
+
+    \bigskip
+    \begin{itemize}
+        \item<2->   describes the response of a system to an impulse as a function of time
+        \smallskip
+        \item<3->   as an impulse includes all frequencies, the resulting IR defines the response for all frequencies
+        \smallskip
+        \item<4->   the convolution of $\delta(t)$ with a signal/impulse response results in that impulse response
+    \end{itemize}
+\end{frame}
+    
+	\begin{frame}\frametitle{convolution}\framesubtitle{properties}
+		\begin{equation*}
+			y(t) = x(t) \ast h(t) = \int\limits_{-\infty}^{\infty}{h(\tau)\cdot x(t-\tau)} d\tau
+		\end{equation*}
+		\begin{itemize}
+			\item	\textbf{commutativity}
+				\begin{equation*}
+					h(t) \ast x(t)	= x(t) \ast h(t)
+				\end{equation*}
+			\pause
+			\item	\textbf{associativity}
+				\begin{equation*}
+					\big(g(t) \ast h(t)\big) \ast x(t) = g(t) \ast \big(h(t) \ast x(t)\big)
+				\end{equation*}
+			\pause
+			\item	\textbf{distributivity}
+				\begin{equation*}
+					g(t) \ast \big(h(t) + x(t)\big) = \big(g(t) \ast h(t)\big) + \big(g(t) \ast x(t)\big)
+				\end{equation*}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{convolution}\framesubtitle{derivation: commutativity}
+\begin{footnotesize}
+		\begin{equation*}
+			h(t) \ast x(t)	= x(t) \ast h(t) 
+		\end{equation*}
+		
+        \bigskip
+        substituting $\tau'=t-\tau$:
+		\begin{eqnarray*}
+			x(t) \ast h(t)
+					&=& \int\limits_{-\infty}^{\infty}{h(\tau)\cdot x(t-\tau)} d\tau\nonumber\\
+                    \pause&=& \int\limits_{-\infty}^{\infty}{h(t-\tau')\cdot x(\tau')}d(t-\tau') \nonumber\\
+					\pause&=& \int\limits_{-\infty}^{\infty}{x(\tau')\cdot h(t-\tau')}d\tau' 
+		\end{eqnarray*}
+\end{footnotesize}
+\end{frame}	
+
+\begin{frame}\frametitle{convolution}\framesubtitle{derivation: associativity}
+\vspace{-6mm}
+\begin{footnotesize}
+		\begin{equation*}
+			\big(g(t) \ast h(t)\big) \ast x(t) = g(t) \ast \big(h(t) \ast x(t)\big)
+		\end{equation*}
+		changing the order of sums and shifting the operands as shown below:
+		\begin{eqnarray*}
+			\big(g(t) \ast h(t)\big) \ast x(t)	&=& \int\limits_{\tau=-\infty}^{\infty}{\big(g(\tau) \ast h(\tau)\big)\cdot x(t-\tau)}d\tau\nonumber\\
+%												&=& \int\limits_{\tau=-\infty}^{\infty}{\left(\sum\limits_{\xi=-\infty}^{\infty}{g(\xi)\cdot h(\tau-\xi)}\cdot x(t-\tau)\right)}\nonumber\\
+												\pause&=& \int\limits_{-\infty}^{\infty}{\int\limits_{-\infty}^{\infty}{g(\xi)\cdot h(\tau-\xi)}\cdot x(t-\tau)}d\tau d\xi\nonumber\\
+												\pause&=& \int\limits_{-\infty}^{\infty}{g(\xi)\cdot \int\limits_{-\infty}^{\infty}{h(\tau-\xi)}\cdot x(t-\tau)}d\tau d\xi\nonumber\\
+												\pause&=& \int\limits_{-\infty}^{\infty}{g(\xi)\cdot \int\limits_{-\infty}^{\infty}{h(\tau')}\cdot x(t-\xi-\tau')d\tau' d\xi}\nonumber\\
+												\pause&=& \int\limits_{-\infty}^{\infty}{g(\xi)\cdot  \big(h(t-\xi) \ast x(t-\xi)\big)} d\xi\nonumber\\
+												\pause&=& g(t) \ast \big(h(t) \ast x(t)\big) 
+		\end{eqnarray*}
+\end{footnotesize}
+\end{frame}	
+
+\begin{frame}\frametitle{convolution}\framesubtitle{derivation: distributivity}
+\begin{footnotesize}
+		\begin{equation*}
+			g(t) \ast \big(h(t) + x(t)\big) = g(t) \ast h(t) + g(t) \ast x(t) 
+		\end{equation*}
+		\begin{eqnarray*}
+			g(t) \ast \big(h(t) + x(t)\big) &=& \int\limits_{-\infty}^{\infty}{g(\tau) \cdot\big(h(t-\tau) + x(t-\tau)\big)}d\tau\nonumber\\
+									\pause&=& \int\limits_{-\infty}^{\infty}{g(\tau) \cdot h(t-\tau) + g(\tau) \cdot x(t-\tau)}d\tau\nonumber\\
+									\pause&=& \int\limits_{-\infty}^{\infty}{g(\tau) \cdot h(t-\tau)}d\tau + \int\limits_{-\infty}^{\infty}{g(\tau) \cdot x(t-\tau)}d\tau\nonumber\\
+									\pause&=& g(t) \ast h(t) + g(t) \ast x(t) 
+		\end{eqnarray*}
+\end{footnotesize}
+\end{frame}	
+
+    \section[summary]{summary}
+        \begin{frame}{systems}{summary}
+            \begin{itemize}
+                \item   many real-world systems can be approximated by an \textbf{LTI system}
+                \smallskip
+                \item<2-> properties of an LTI system:
+                    \begin{itemize}
+                        \item   linearity 1: homogeneity (scaling)
+                        \item   linearity 2: superposition (additivity)
+                        \item   time invariance (system doesn't change)
+                    \end{itemize}
+                \smallskip
+                \item<3-> additional properties:
+                    \begin{itemize}
+                        \item   causality (no future input)
+                        \item   BIBO --- bounded input bounded output
+                    \end{itemize}
+                \smallskip
+                \item<4-> impulse response is a complete description of an LTI system
+                \smallskip
+                \item<5-> convolution:
+                    \begin{itemize}
+                        \item   describes the process of generating the output of an LTI system from the input
+                        \item   is commutative
+                        \item   is associative
+                        \item   is distributive
+                    \end{itemize}
+            \end{itemize}
+        \end{frame}
+
+    
+\end{document}
+

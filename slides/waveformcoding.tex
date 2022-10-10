@@ -1,0 +1,128 @@
+\subsection{waveform coding}
+	\begin{frame}{source coding}{waveform coding: introduction}
+        \begin{itemize}
+            \item   \textbf{goal}: 
+                \begin{itemize}
+                    \item   encode waveform in a way that the decoded waveform is as close to the original waveform as possible
+                \end{itemize}
+            \pause
+            \bigskip
+            \item   \textbf{approaches}:
+                \begin{itemize}
+                    \item   PCM (analogue to digital)
+                    \pause
+                    \item   non-linear quantization 
+                    \pause
+                        \begin{itemize}
+                            \item   Question: how is the principle of non-linear quantization related to Entropy coding?
+                        \end{itemize}
+                    \pause
+                    \item   \color<5->{gtgold}{\textbf{DPCM \& ADPCM}}
+                \end{itemize}
+        \end{itemize}
+	\end{frame}
+	\begin{frame}{source coding}{waveform coding: DPCM}
+        \vspace{-5mm}
+        \begin{figure}
+			\begin{center}
+	            \begin{picture}(80,40)
+	
+	                %boxes
+	                \put(19.5,27){\framebox (6,6){\scriptsize{Q}}}
+	                \put(12.5,15.5){\framebox (13,6){\scriptsize{Prediction}}}
+	
+	                %lines horizontal
+	                \put(0,30){\vector(1,0){10}}
+	                \put(12.5,30){\vector(1,0){7}}
+	                \put(25.5,30){\vector(1,0){8}}
+	                \put(11,18.5){\line(1,0){1.5}}
+	                \put(28,18.5){\vector(-1,0){2.5}}
+	                \put(11,10.5){\line(1,0){18}}
+	
+	                %lines vertical
+	                \put(29,30){\vector(0,-1){10}}
+	                \put(11,10.5){\vector(0,1){18.5}}
+	                \put(29,10.5){\vector(0,1){7}}
+	                
+	                \put(9.5,29){\large$\oplus$}
+	                \put(27.5,17.5){\large$\oplus$}
+
+	                %circles
+	                \put(29,30){\circle*{1}}
+	                \put(11,18.5){\circle*{1}}
+	
+	                %text
+	                \put(9,27){\footnotesize{\shortstack[c]{-}}}
+	                \put(30,32){\footnotesize{\shortstack[c]{$e_\mathrm{Q}(i)$}}}
+	                \put(0,32){\footnotesize{\shortstack[c]{$x(i)$}}}
+	                \put(26,20){\tiny{\shortstack[c]{$y(i)$}}}
+	                \put(11.5,25){\tiny{\shortstack[c]{$\hat{x}(i)$}}}
+	                \put(13.5,31){\tiny{\shortstack[c]{$e_\mathrm{P}(i)$}}}
+	                \put(10,35){{\shortstack[c]{\textbf{Encoder}}}}
+
+
+	                %lines horizontal
+	                \put(40,30){\vector(1,0){10}}
+	                \put(52.5,30){\vector(1,0){20}}
+	                \put(69,18.5){\vector(-1,0){3.5}}
+	                \put(51,18.5){\line(1,0){1.5}}
+
+	                %lines vertical
+	                \put(69,30){\line(0,-1){11.5}}
+	                \put(51,18.5){\vector(0,1){10.5}}
+
+	                %boxes
+	                \put(52.5,15.5){\framebox (13,6){\scriptsize{Prediction}}}
+
+	                \put(49.5,29){\large$\oplus$}
+	                
+                    %circles
+	                \put(69,30){\circle*{1}}
+
+	                %text
+	                \put(40,32){\footnotesize{\shortstack[c]{$e_\mathrm{Q}(i)$}}}
+	                \put(70,32){\footnotesize{\shortstack[c]{$y(i)$}}}
+	                \put(51.5,25){\tiny{\shortstack[c]{$\hat{x}(i)$}}}
+	                \put(50,35){{\shortstack[c]{\textbf{Decoder}}}}
+	            \end{picture}
+			\end{center}
+	    \end{figure}
+        \vspace{-12mm}
+        \begin{itemize}
+            \item   \textbf{reconstruction error} 
+                \begin{footnotesize}\begin{eqnarray*}
+                    r(i) &=& x(i) - y(i)\\
+                    &=& x(i) - (\hat{x}(i) + e_\mathrm{Q}(i))\\
+                    &=& e_\mathrm{P}(i) - e_\mathrm{Q}(i)\\
+                    &=& q(i)
+                \end{eqnarray*}\end{footnotesize}
+                $\Rightarrow$ reconstruction error \textbf{identical} to quantization error
+            \pause    
+            \item   if predictor based on input instead of quantized input (\textbf{D$^\ast$PCM}):
+                \begin{itemize}
+                    \item   less gain
+                    \item   reconstruction error shaped as spectrum!
+                \end{itemize}
+        \end{itemize}
+	\end{frame}
+	\begin{frame}{source coding}{waveform coding: ADPCM}
+        \begin{itemize}
+            \item   same principle as DPCM, but coefficient \textbf{adaptation for every block of samples}
+            \item   quantization step size (scale) adjusts to signal power
+            \pause
+            \bigskip
+            \item   \textbf{forward adaptive} implementation
+                \begin{itemize}
+                    \item   coefficients are \textit{calculated from the input} signal and \textit{transmitted}
+                    \item   \textit{robust} against transmission errors 
+                    \item   requires \textit{additional side information} (coefficients)
+                \end{itemize}
+            \pause
+            \item   \textbf{backward adaptive} implementation
+                \begin{itemize}
+                    \item   coefficients are \textit{calculated from the reconstructed signal} 
+                    \item   \textit{no additional side information}
+                    \item   \textit{error propagation}
+                \end{itemize}
+        \end{itemize}
+	\end{frame}

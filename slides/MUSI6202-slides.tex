@@ -1,0 +1,69 @@
+\documentclass[compress,hyperref={pdfpagelabels=false}]{beamer}
+
+\input{config}
+
+%\includeonly{modulfx,reverb}
+%\includeonly{dynamics}
+%\includeonly{ola}
+%\includeonly{pv,pitch}
+%\includeonly{sourcecoding,redundancycoding}
+%\includeonly{waveformcoding,perceptualcoding}
+%\includeonly{denoising}
+
+\begin{document}
+
+	\input{titlepage}
+
+	\section[org]{organizational}
+		\include{organization}		
+
+	\section[intro]{introduction}
+        \include{overview}
+        \include{introduction}
+        \include{signals}
+        
+    \section[basics]{fundamentals}
+        \include{fourierseries}
+        \include{pdf}
+        
+        \include{correlation}
+        \include{convolution}
+        
+    \section[FT]{Fourier transform}
+        \include{fourier}
+        \include{fastconv}
+        
+    \section[discretization]{digitization}
+        \include{digi_intro}
+        \include{sampling}
+        \include{quantization}
+        \include{nonlinear}
+        \include{numberformat}
+        \include{oversampling}
+        \include{dither}
+        \include{noiseshaping}
+            \section{filters}
+        \include{zplane}
+        %\include{filter}
+
+    \section[fx]{audio fx}
+        \include{rt}
+        \include{src}
+        \include{modulfx}
+        \include{reverb}
+        \include{dynamics}
+        \include{ola}
+        \include{pv}
+        \include{pitch}
+        %\subsection{other fx}
+        %
+    \section[coding]{audio coding}
+        \include{sourcecoding}
+        \include{redundancycoding}
+        \include{waveformcoding}
+        \include{perceptualcoding}
+        
+    \section{denoising}
+        \include{denoising}
+\end{document}
+

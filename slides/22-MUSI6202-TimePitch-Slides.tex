@@ -1,0 +1,791 @@
+% move all configuration stuff into one file so we can focus on the content
+\input{../shared/common}
+\input{../shared/definitions}
+
+
+\subtitle{Part 22: Time-stretching and Pitch-shifting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+    % generate title page
+	\input{titlepage}
+
+\section[intro]{introduction}
+\begin{frame}\frametitle{time stretching \& pitch shifting}\framesubtitle{introduction}
+	\begin{itemize}
+		\item	\textbf{time stretching}\\
+			change playback speed/tempo without changing pitch
+		\pause
+        \bigskip
+		\item	\textbf{pitch shifting}\\
+			change pitch without changing tempo/playback speed
+		\pause
+        \bigskip
+		\item	\textbf{terms}
+            \begin{itemize}
+                \item   time/pitch scaling
+                \item   time expansion/compression
+            \end{itemize}
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{time stretching \& pitch shifting}\framesubtitle{applications}
+	\begin{itemize}
+		\item	\textbf{beat matching}: align tempo of two or more audio files (mashup)
+		\pause
+        \smallskip
+		\item	\textbf{key lock}: ``align'' pitch of two or more audio files (mashup)
+		\pause
+        \smallskip
+		\item	\textbf{pitch/time correction}: edit intonation, frequency deviation, vibrato, glissando
+		\pause
+        \smallskip
+		\item	video \textbf{frame rate conversion}
+		\pause
+        \smallskip
+		\item	\textbf{sample player/libraries}
+		\pause
+        \smallskip
+		\item	\textbf{sound design}
+		\pause
+        \smallskip
+		\item	\textbf{educational software}: pitch and timing visualization
+	\end{itemize}
+\end{frame}
+
+\section[basics]{fundamentals}
+\begin{frame}\frametitle{time stretching \& pitch shifting}\framesubtitle{stretch and pitch factors}
+	\begin{eqnarray*}
+		s	&=& \frac{t_{output}}{t_{input}}\\
+		p	&=& \frac{f_{output}}{f_{input}}
+	\end{eqnarray*}
+	\pause
+	\textbf{examples}:
+	\begin{itemize}
+		\item	\textit{half speed}: 
+			\pause
+			$s = 2$
+		\pause
+		\item	\textit{half pitch}: 
+			\pause
+			$p = \frac{1}{2}$
+		\pause
+		\item	\textit{semitone up/down}: 
+			\pause
+			\begin{equation}
+				p_u = 2^{\nicefrac{1}{12}} = 1.059\quad p_d = 2^{-\nicefrac{1}{12}} = 0.9439\nonumber
+			\end{equation}
+		\pause
+		\item	\textit{\unit[100]{BPM} $\rightarrow$ \unit[75]{BPM}}: 
+			\pause
+			$s = \frac{4}{3}$
+	\end{itemize}
+\end{frame}
+    \begin{frame}{time stretching \& pitch shifting}{resampling}
+        \begin{itemize}
+            \item   \textbf{traditional}: resampling
+                \begin{itemize}
+                    \item   change inter-sample 'distance' by interpolation
+                    \item   keep playback sample rate constant
+                    \pause
+                    \bigskip
+                    \item   audio example
+                    \uncover<2->{
+                        \begin{itemize}
+                            \item   original \includeaudio{cathy}
+                            \item   resample \includeaudio{cathyResample}
+                        \end{itemize}
+                        }
+                    \pause
+                    \bigskip 
+                    \item[$\Rightarrow$] tempo change results in pitch change (and vice versa)
+                    \begin{equation*}
+                        s = \frac{1}{p}
+                    \end{equation*}
+                \end{itemize}
+        \end{itemize}
+    \end{frame}
+ 
+\begin{frame}\frametitle{time stretching \& pitch shifting}\framesubtitle{stretching: frequency domain}
+		\begin{figure}
+			\centerline{\includegraphics[scale=.7]{fx4_timestretchintro}}
+		\end{figure}
+\end{frame}
+   
+    \section[ola]{time-segment processing (ola)}
+    \begin{frame}{OLA}{introduction}
+        overlap and add approaches for, e.g.,
+        
+        \begin{itemize}
+            \item   granular synthesis
+            \item   time/frequency synthesis and processing
+            \item   {\color<2->{gtgold}time-stretching and pitch-shifting}
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{OLA}{time stretching}
+            \textbf{overlap and add}
+            \begin{enumerate}
+                \item	\textbf{split input} signal into overlapping blocks
+                \pause
+                \item	\textbf{duplicate or discard blocks} depending on stretch factor
+                %\item[] \includemovie[poster=graph/SpeakerIcon.png,mouse=true]{5mm}{5mm}{cathyOLAout} $s = \nicefrac{4}{3}$
+            \end{enumerate}
+            \uncover<2->{
+            \vspace{-5mm}
+            \begin{columns}
+                \column{.6\linewidth}
+                    \begin{figure}
+                        \centering
+                        \includegraphics[scale=.3]{OLA}
+                    \end{figure}\vspace{-5mm}
+
+                \column{.4\linewidth}
+                    \vspace{10mm}
+                    \begin{itemize}
+                        \item   \includeaudio{cathy}\; orig
+                        \item  \includeaudio{cathyOLAout}\; $s =\nicefrac{4}{3}$ 
+                    \end{itemize}
+            \end{columns}
+            }
+    \end{frame}
+
+    \begin{frame}{PSOLA}{time stretching}
+            \textbf{pitch synchronous overlap and add}
+            \begin{itemize}
+                \item   use the OLA principle, but
+                \item	\textbf{adapt block length} to fundamental period length
+            \end{itemize}
+            \only<1>{
+            \begin{figure}
+                \centerline{\includegraphics[scale=.6]{fx4_olapsola}}
+                \label{fig:fx4_olapsola}
+            \end{figure}
+            }          
+            \pause
+            \begin{columns}
+                \column{.6\linewidth}
+                    \begin{figure}
+                        \centering
+                        \includegraphics[scale=.3]{PSOLA.pdf}
+                    \end{figure}\vspace{-5mm}
+                \column{.4\linewidth}
+                    \vspace{10mm}
+                    \begin{itemize}
+                        \item   \includeaudio{cathy}\; orig
+                        \item \includeaudio{cathySOLout}\; $s = \nicefrac{4}{3}$ 
+                    \end{itemize}
+            \end{columns}
+            \vspace{50mm}
+    \end{frame}
+\begin{frame}{PSOLA}{transient copying}
+				\begin{figure}
+					\centerline{\includegraphics[scale=.3]{transcpy}}
+				\end{figure}
+\end{frame}
+
+    \begin{frame}{PSOLA}{time stretching summary}
+        \vspace{-3mm}
+        \begin{itemize}
+            \item   \textbf{processing steps}
+                \begin{enumerate}
+                    \item   detect \textit{fundamental frequency}/period length
+                    \item   set \textit{pitch marks}
+                    \item   intelligently \textit{select blocks} to be repeated/discarded
+                \end{enumerate}
+            \pause
+            \item   \textbf{advantages}
+                \begin{itemize}
+                    \item   \textit{high granularity} --- modify audio on period length resolution
+                    \item   \textit{high quality}
+                \end{itemize}
+            \pause
+            \item   \textbf{problems}
+                \begin{itemize}
+                    \item   quality depends on \textit{pitch tracking} reliability
+                    \item   quality and timbre depends on \textit{pitch mark positioning}
+                    \item   works only for \textit{monophonic} input signals
+                        \begin{itemize}
+                            \item   polyphonic and noisy segments
+                            \item reverberation and overlapping tones
+                        \end{itemize}
+                   \item    \textit{noise, plosives} require special consideration
+                   \item    \textit{copying} artifacts (double transients, timing deviations)
+                \end{itemize}
+            \pause
+            \item   \textbf{typical applications}
+                \begin{itemize}
+                    \item   \textbf{standard approach for vocal editing tools}
+                \end{itemize}
+        \end{itemize}
+    \end{frame}
+
+\section{phase vocoder}
+
+    \begin{frame}{time stretching}{phase vocoder}
+        \begin{enumerate}
+            \item	\textbf{split input} signal into overlapping blocks
+            \item<2->	compute \textbf{magnitude and phase spectrum} of each block
+            \item<3->	\textbf{change overlap ratio} between blocks depending on stretch factor
+            \item<4->	keep the magnitude, \textbf{adapt the phase per bin} to the block's new time stamp
+        \end{enumerate}
+        
+        \begin{columns}
+            \column{6cm}\vspace{-8mm}
+                \begin{figure}
+                    \begin{picture}(80,30)
+                        \setcounter{iYOffset}{30}
+                        \put(0, \value{iYOffset}){\tiny{\textcolor{gtgold}{input signal}}}
+                        \setcounter{iXOffset}{0}
+                        \addtocounter{iYOffset}{-3}
+                        
+                        \only<1->
+                        {    
+                            \put(\value{iXOffset}, \value{iYOffset}){\framebox(36, 2)}    
+
+                            \addtocounter{iYOffset}{-2}
+                            \setcounter{i}{1}
+                            \whiledo{\value{i}<6}	
+                            {
+                                \put(\value{iXOffset}, \value{iYOffset}){\framebox(16, .5)}
+                                \dottedline{.5}(\value{iXOffset}, \value{iYOffset})(\value{iXOffset},29)
+                                \addtocounter{iXOffset}{5}
+                                \addtocounter{iYOffset}{-1}
+                                \stepcounter{i} 
+                            }	
+                        }
+                        \only<2->
+                        {    
+                            \put(15,18){{$\Downarrow$}}
+                            
+                            \put(47,16){\ovalbox{\tiny{\parbox{20mm}{\centering{STFT\\ magnitude \& phase}}}}}
+                        }
+                        
+                        \only<3->
+                        {    
+                            \setcounter{iXOffset}{0}
+                            \setcounter{iYOffset}{14}
+                            \setcounter{i}{1}                            
+                            \whiledo{\value{i}<6}	
+                            {
+                                \put(\value{iXOffset}, \value{iYOffset}){\framebox(16, .5)}
+                                %\dashline{4}(0,11)(60,11)
+                                \dottedline{.5}(\value{iXOffset}, \value{iYOffset})(\value{iXOffset},2)
+                                \addtocounter{iXOffset}{7}
+                                \addtocounter{iYOffset}{-1}
+                                \stepcounter{i} 
+                            }	
+                            \addtocounter{iYOffset}{-3}
+                        }
+                        \only<4->
+                        {    
+                            \put(15,6){{$\Downarrow$}}
+                            \put(47,6){\ovalbox{\tiny{\parbox{20mm}{\centering{phase extrapol. \\ window comp.}}}}}
+                        }
+                        
+                        \only<5->
+                        {    
+                            \put(0, 2){\framebox(44, 2)}    
+                            \put(0, 0){\tiny{\textcolor{gtgold}{output signal}}}
+                        }
+                    \end{picture}
+                \end{figure}
+
+            \column{4cm}\vspace{-20mm}
+                    \vspace{20mm}
+                \only<4>
+                {
+                     \begin{figure}
+                        \centering
+                        \includegraphics[scale=.25]{phaseextrapol.pdf}
+                     \end{figure}
+                }
+                \only<5->
+                {
+                    \begin{itemize}
+                        \item   \includeaudio{cathy}\; original 
+                        \item   \includeaudio{cathypvout}\; pv $s = \nicefrac{4}{3}$ 
+                    \end{itemize}
+                }
+        \end{columns}
+        \vspace{50mm}
+    \end{frame}
+
+        \begin{frame}{time stretching}{frequency reassignment: relation of phase and frequency 1/2}
+            \begin{columns}
+            \column{.5\linewidth}
+            \vspace{-10mm}
+            \begin{center}
+                \animategraphics[autoplay,loop]{10}{animatePhasor/Phasor-}{00}{80}        
+            \end{center}
+            \column{.5\linewidth}
+           \begin{itemize}
+                \item   phasor representation:
+                    \begin{enumerate}
+                        \item   sine value is defined by magnitude and phase
+                        \item   decreasing the amplitude $\Rightarrow$ shorter vector
+                        \item   increasing the frequency $\Rightarrow$ increasing speed
+                    \end{enumerate}
+            \end{itemize}
+            \end{columns}
+                        \addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Slides/blob/master/matlab/animatePhasor.m}{matlab/animatePhasor.m}}
+            \inserticon{video}
+        \end{frame}
+        \begin{frame}{time stretching}{frequency reassignment: relation of phase and frequency 2/2}
+
+            \begin{columns}
+            \column{0.3\textwidth}
+            
+            \begin{figure}
+                \begin{tiny}
+                \begin{tikzpicture}[scale=1,cap=round,>=latex]
+                    % draw the coordinates
+                    \draw[->] (-1.5cm,0cm) -- (1.5cm,0cm) node[right,fill=white] {$\Re(X)$};
+                    \draw[->] (0cm,-1.5cm) -- (0cm,1.5cm) node[above,fill=white] {$\Im(X)$};
+        
+                    \draw[fill=gtgold] (0,0) -- (30:.85cm) arc (30:60:.85cm);
+                    \draw (45:1.2cm) node {$\Delta\Phi$};
+                    \draw[->] (0cm,0cm) -- (0.8660cm,0.5cm);
+                    \draw[->] (0cm,0cm) -- (0.5cm,0.8660cm);
+        
+                    % draw the unit circle
+                    \draw[thick] (0cm,0cm) circle(1cm);
+            
+                    \foreach \x in {0,30,...,360} {
+        %	                % dots at each point
+                            \filldraw[black] (\x:1cm) circle(0.2pt);
+                    }
+                \end{tikzpicture}
+                \end{tiny}
+            \end{figure}
+             \column{0.7\textwidth}
+            \begin{itemize}
+                \item   frequency and phase change closely related:
+                    \begin{itemize}
+                        \item<2-> time for full rotation is period length $T$ with \[f = \frac{1}{T}\]
+                        \item<3-> time for fractional rotation $\Delta\Phi$ is corresponding fraction of period length \[f = \frac{\Delta\Phi}{\Delta t}\]
+                        \item<4-> in other words: 
+                        \begin{eqnarray*}
+                            \Phi(t) &=& \omega\cdot t\\
+                            \Rightarrow \frac{d\Phi(t)}{dt} &=& \omega = 2\pi f
+                        \end{eqnarray*}
+                    \end{itemize}
+            \end{itemize}
+            \end{columns}
+        \end{frame}
+        \begin{frame}{time stretching}{frequency reassignment: principles}
+            frequency domain:
+            \begin{itemize}
+                \item   instead of using the bin frequency
+                    \[ f(k) = k*\frac{f_\mathrm{S}}{\mathcal{K}}\]
+                \item   we use the phase of each bin $\Phi(k,n)$
+                \item   to compute the frequency from the phase difference of neighboring blocks
+                    \begin{equation*}\label{eq:phasediff}
+                        \omega_{\mathrm{I}}(k,n)	\propto \Phi(k,n)-\Phi(k,n-1)
+                    \end{equation*}
+                \item<2->   $\omega_{\mathrm{I}}(k,n)$ is called \textbf{instantaneous frequency} per block per bin
+            \end{itemize}
+        \end{frame}
+        \begin{frame}{time stretching}{frequency reassignment: scaling factor}
+            \begin{itemize}
+                \item instantaneous frequency calculation has to take into account
+                    \begin{itemize}
+                        \item   hop size $\mathcal{H}$
+                        \item   sample rate $f_\mathrm{S}$
+                    \end{itemize}
+                
+                    \begin{equation*}
+                        \omega_{\mathrm{I}}(k,n) = \frac{\Delta\Phi_{\mathrm{u}}(k,n)}{\mathcal{H}}\cdot f_{\mathrm{S}} 
+                    \end{equation*}
+                \item<2-> problem: phase ambiguity
+                    \begin{equation*}
+                        \Phi(k,n) = \Phi(k,n) + j\cdot 2\pi
+                    \end{equation*}
+                \item<3->[$\Rightarrow$] \textit{phase unwrapping}
+            \end{itemize}
+        \end{frame}
+        \begin{frame}{time stretching}{frequency reassignment: phase unwrapping}
+
+            \begin{enumerate}
+                \item	compute unwrapped phase $\Phi_{\mathrm{u}}(k,n)$ 
+                        \begin{itemize}
+                            \item	estimate unwrapped bin phase
+                                    \begin{footnotesize}
+                                    \begin{equation*}\label{eq:phi_est}
+                                        \hat{\Phi}(k,n) = \Phi(k,n-1) + \underbrace{2\pi k\cdot\frac{\mathcal{H}}{\mathcal{K}}}_{=\omega_k\cdot\frac{\mathcal{H}}{f_\mathrm{s}}} 
+                                    \end{equation*}
+                                    \end{footnotesize}
+
+                            \item<2->	unwrap phase by shifting current phase to estimate's range
+                                    \begin{footnotesize}
+                                    \begin{equation*}
+                                        \Phi_{\mathrm{u}}(k,n) = \hat{\Phi}(k,n) + \princarg\left[ \Phi(k,n) - \hat{\Phi}(k,n) \right]
+                                    \end{equation*}
+                                    \end{footnotesize}
+                        \end{itemize}
+
+                \item<3->	compute unwrapped phase difference
+                        \begin{footnotesize}
+                        \begin{eqnarray*}
+                            \Delta\Phi_{\mathrm{u}}(k,n)	&=& \Phi_{\mathrm{u}}(k,n) - \Phi(k,n-1)\nonumber\\
+                                                \pause
+                                                &=& \hat{\Phi}(k,n) + \princarg\left[ \Phi(k,n) - \hat{\Phi}(k,n) \right] - \Phi(k,n-1)\nonumber \\
+                                                \pause
+                                                &=& \frac{2\pi k}{\mathcal{K}}\mathcal{H} + \princarg\left[ \Phi(k,n) - \Phi(k,n-1) - \frac{2\pi k}{\mathcal{K}}\mathcal{H} \right]\nonumber
+                        \end{eqnarray*}
+                        \end{footnotesize}
+            \end{enumerate}
+        
+        \end{frame}
+        \begin{frame}{time stretching}{frequency reassignment: problems}
+                \begin{itemize}
+                    \item   \textbf{overlapping spectral components}
+                        \begin{itemize}
+                            \item   sinusoidal components often overlap (spectral leakage, several instruments playing the same pitch, ...)
+                                \begin{itemize}
+                                    \item[$\Rightarrow$] incorrect phase estimate
+                                    \bigskip
+                                    \item<2-> spectrum should be as sparse as possible, increase STFT length
+                                \end{itemize}
+                        \end{itemize}
+                    \item<3->   \textbf{inaccurate phase unwrapping} 
+                        \begin{itemize}
+                            \item   unwrapping algorithm is based on assumption of similarity between predicted and measured phase
+                            \bigskip
+                            \item<2-> decrease hop size
+                        \end{itemize}
+                \end{itemize}
+        \end{frame}
+        \begin{frame}{time stretching}{frequency reassignment: example}
+            \figwithmatlab{InstantaneousFreq}
+        \end{frame}
+
+
+    \begin{frame}\frametitle{time stretching}\framesubtitle{phase vocoder window compensation}
+        \begin{figure}
+            \centerline{\includegraphics[scale=.7]{pvocIntro}}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{time stretching}{phase vocoder --- properties \& artifacts}
+        \begin{itemize}
+            \item   \textbf{advantages}:
+                \begin{itemize}
+                    \item   allows \textit{polyphonic input} (assumption: no overlapping harmonics)
+                    \item   absolute \textit{timing stability} (i.e., sample resolution)
+                \end{itemize}   
+            \pause
+            \bigskip
+            \item   \textbf{disadvantages}:
+                \begin{itemize}
+                    \item   \textit{low granularity} --- FFT block size
+                    \item   artifacts:
+                        \begin{enumerate}
+                            \item   phasing
+                            \item   transient smearing/doubling
+                        \end{enumerate}
+                \end{itemize}
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{time stretching}{phase vocoder artifacts: phasing --- spectral leakage 1/3}
+        \vspace{-3mm}
+            \begin{figure}
+                \centering
+                \includegraphics[scale=.3]{SpectralLeakage}
+            \end{figure}
+            \begin{figure}
+                \centerline{\includegraphics[scale=.5]{PeakSmearingFreq}}
+            \end{figure}
+    \end{frame}
+	\begin{frame}{time stretching}{phase vocoder artifacts: phasing --- spectral leakage 2/3}
+			\begin{figure}
+				\centerline{\includegraphics[scale=.4]{instfreq}}
+			\end{figure}
+    \end{frame}
+	\begin{frame}{time stretching}{phase vocoder artifacts: phasing --- spectral leakage 3/3}
+                \begin{itemize}
+                    \item[$\Rightarrow$] use \textit{frequency reassignment} for grouping and phase sync
+                \end{itemize}
+                \bigskip
+                        \begin{itemize}
+                            \item   original  \includeaudio{cathy}
+                            \item   pv $s = \nicefrac{4}{3}$ \includeaudio{cathypvout}
+                            \item   grouped phase \includeaudio{cathyEffout}
+                        \end{itemize}
+    \end{frame}
+	\begin{frame}{time stretching}{phase vocoder artifacts: phasing --- unsynced harmonics}
+        \vspace{-3mm}
+                        \begin{figure}
+                            \centering
+                                \includegraphics[width=5.3cm,height=2.4cm]{gibbs}
+                        \end{figure}
+		\only<1>{
+		\begin{figure}
+			\centerline{\includegraphics[scale=.5]{phasing}}
+		\end{figure}}
+        \pause
+                \begin{itemize}
+                    \item[$\Rightarrow$] use \textit{harmonic analysis} for grouping and phase sync
+                \end{itemize}
+                        \begin{itemize}
+                            \item   original  \includeaudio{cathy}
+                            \item   pv $s = \nicefrac{4}{3}$ \includeaudio{cathypvout}
+                            \item   synced phase \includeaudio{cathyProout}
+                        \end{itemize}
+        \vspace{50mm}
+    \end{frame}
+	\begin{frame}{time stretching}{phase vocoder artifacts: interchannel phasing}
+        \begin{itemize}
+            \item   phase estimation between channels slightly off due to
+                \begin{itemize}
+                    \item   numerical inaccuracies (cumulative!)
+                    \item   overlapping frequency components
+                \end{itemize}
+                \pause
+                \bigskip
+            \item[$\Rightarrow$] change in spatial image
+                \begin{itemize}
+                            \item   \includeaudio{bigband}\; original  
+                            \item   \includeaudio{bigbandPVoc}\; pv $s = \nicefrac{3}{2}$ 
+                \end{itemize}
+        \end{itemize}
+	\end{frame}
+
+    \begin{frame}{time stretching}{phase vocoder artifacts: transient smearing}
+        \vspace{-8mm}
+        \begin{columns}
+            \column{.65\textwidth}
+            \vspace{-3mm}
+                \begin{figure}
+               %     \centering
+                    \includegraphics[scale=.35]{TransientSmear}
+                \end{figure}
+
+            \column{.3\textwidth}%\vspace{-10mm}
+                \begin{itemize}
+                \vspace{10mm}
+                    \item   \includeaudio{castanets}\; original  
+                    \item   \includeaudio{castanetsPVoc}\; pv $s = \nicefrac{3}{2}$ 
+                \end{itemize}
+        \end{columns}
+        \pause
+        \vspace{-3mm}
+        \begin{itemize}
+            \item[$\Rightarrow$] detect transients and \textit{reset phase} per bin
+                \begin{itemize}
+                    \item   \includeaudio{41_m}\; original  
+                    \item   \includeaudio{41pvout}\; pv $s = \nicefrac{4}{3}$ 
+                    \item   \includeaudio{41Proout}\; phase reset 
+                \end{itemize}
+        \end{itemize}
+    \end{frame}
+
+\begin{frame}\frametitle{time stretching}\framesubtitle{inherent problems}
+	\begin{itemize}
+		\item	stretching the audio data can lead to \textbf{``non-natural'' results}
+		\pause
+        \bigskip
+		\item	\textbf{examples}
+			\begin{itemize}
+				\item tempo dependent \textit{timing variations }
+				\pause
+				\item	other performance related aspects may get inappropriate lengths and speed: \textit{vibrato, tremolo, glissando}
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\section{pitch shifting}
+        \begin{frame}{pitch shifting}{standard approach}
+            \begin{itemize}
+                \item   \textbf{definition}:\\ change pitch without changing tempo
+                \pause
+                \item   \textbf{method}:\\ combine stretching and \textit{sample rate conversion} (interpolation)
+                    \begin{enumerate}
+                        \item   change length with stretching
+                        \item   resample to compensate for length difference
+                    \end{enumerate}
+                \item<2->	\textbf{implementation}: differentiate ``external'' and ``internal'' parameters 
+                        \begin{itemize}
+                            \item	\textit{extern}: stretch $s_e$ and pitch $p_e$
+                            \item	\textit{intern}: stretch $s_i$ and resample $r_i$
+                        \end{itemize}
+                
+                \item<3-> \textbf{example}: pitch shift factor \textbf{$p = \nicefrac{4}{3}$}
+					\begin{enumerate}
+						\item	\textit{time stretch} (increase length/decrease tempo) $s = \nicefrac{4}{3}$
+						\pause
+						\item	\textit{resample} (decrease length, increase pitch) $r = \nicefrac{3}{4}$
+                        \pause
+                        \item[$\Rightarrow$]   audio:
+                            \begin{itemize}
+                                \item   OLA \includeaudio{cathyOLApitch}
+                                \item   phase vocoder \includeaudio{cathypvpitch}
+                            \end{itemize}
+					\end{enumerate}
+            \end{itemize}
+        \end{frame}
+        \begin{frame}{pitch shifting}{standard approach: stretch, pitch, resample factor examples}
+			\setbeamercovered{invisible}
+
+                \begin{itemize}
+					\item	extern: $s_e=1$ $p_e=2$
+					\pause
+					\item[]	intern: $s_i=2$ $r_i=\frac{1}{2}$
+					\pause
+					\item	extern: $s_e=1$ $p_e=\frac{4}{3}$
+					\pause
+					\item[]	intern: $s_i=\frac{4}{3}$ $r_i=\frac{3}{4}$
+					\pause
+					\item	extern: $s_e=\frac{1}{2}$ $p_e=2$
+					\pause
+					\item[]	intern: $s_i=1$ $r_i=\frac{1}{2}$
+					\pause
+					\item	extern: $s_e=2$ $p_e=2$
+					\pause
+					\item[]	intern: $s_i=4$ $r_i=\frac{1}{2}$
+				\end{itemize}
+  			\setbeamercovered{transparent}
+      \end{frame}
+        \begin{frame}{pitch shifting}{frequency domain approach}
+            \begin{enumerate}
+                \item   STFT
+                \item<2->   magnitude and phase
+                \item<3->   magnitude and instantaneous frequency
+                \item<4->   resample both magnitude and frequency spectrum acc.\ to pitch factor
+                \item<5->   magnitude and phase
+                \item<6->   complex spectrum
+                \item<7->   IFFT and OLA
+            \end{enumerate}
+        \end{frame}
+        \subsection{formant preservation}   
+        \begin{frame}{pitch shifting}{formant preservation: time domain}
+	\begin{itemize}
+		\item 	\textbf{idea}
+			\begin{itemize}
+				\item 	signal is pulse train filtered by transfer function
+					\pause
+					\begin{itemize}
+						\item 	pulse train determines fundamental frequency
+						\item	transfer function determines formant shape/timbre characteristics
+					\end{itemize}
+			\end{itemize}
+		\pause
+        \bigskip
+		\item	\textbf{approach}
+			\begin{itemize}
+				\item	change grain/pulse distance
+				\item	grain ``content'' not modified\\ $\rightarrow$ freq domain not modified
+				\pause
+                \bigskip
+				\item[$\Rightarrow$]	\textbf{``same'' spectrum,\\ different pitch}
+			\end{itemize}
+	\end{itemize}
+    \vspace{-30mm}
+        \visible<3->{
+                    \begin{flushright}
+                        \hspace{10mm}\includegraphics[scale=.25]{graph/PsolaPitch}
+                    \end{flushright}   
+                    }
+        \end{frame}
+        \begin{frame}{pitch shifting}{formant preservation: frequency domain}
+           \begin{columns}
+                \column{.5\textwidth}
+                    \begin{itemize}
+                        \item \textbf{idea}
+                            \begin{itemize}
+                                \item   preserve spectral envelope
+                            \end{itemize}
+                        \bigskip
+                        \pause
+                        \item \textbf{approach}
+                            \begin{enumerate}
+                                \item   measure spectral envelope
+                                \item   apply inverse envelope (whitening)
+                                \item   pitch shift
+                                \item   apply spectral envelope
+                            \end{enumerate}
+                  \end{itemize}
+                \column{.5\textwidth}
+        \visible<3->{
+                    \begin{figure}
+                        \centering
+                        \includegraphics[scale=.25]{graph/SpectralEnvelope}
+                    \end{figure}   
+                }
+            \end{columns}
+        \end{frame}
+        \begin{frame}{pitch shifting}{spectral envelope estimate}
+            \begin{itemize}
+                \item   \textbf{approaches}
+                    \begin{itemize}
+                        \item   LPC coefficients
+                        \item   spectral maxima
+                    \end{itemize}
+                \pause
+                \bigskip
+                \item   \textbf{potential issues}
+                    \begin{itemize}
+                        \item   \textit{polyphonic input} audio:\\ 'superposition' of envelopes
+                        \item   \textit{very high/low pitch factors}: high frequency boost/cut
+                        \item   \textit{estimate resolution}
+                            \begin{itemize}
+                                \item   too coarse $\rightarrow$ loss of timbre characteristics
+                                \item   too fine $\rightarrow$ impress pitch characteristics (harmonic pattern) on spectrum
+                            \end{itemize}
+                    \end{itemize}
+            \end{itemize}
+        \end{frame}
+        \begin{frame}{pitch shifting}{audio examples}
+		\begin{table}
+			\begin{center}
+				\begin{tabular}{lccc}
+                 & OLA & PSOLA & PVOC \\\hline
+                orig & \includeaudio{cathy}  &
+                     \includeaudio{cathy} &
+                     \includeaudio{cathy} \\
+
+                resample $p=\nicefrac{4}{3}$ &\includeaudio{cathyOLApitch}  &
+                     \includeaudio{cathySOLpitch} &
+                     \includeaudio{cathyPropitch} \\
+                formant $p=\nicefrac{4}{3}$&\includeaudio{cathyOLApitchf}  &
+                     \includeaudio{cathySOLpitchf} &
+                     \includeaudio{cathyPropitchf} 
+				\end{tabular}  
+			\end{center}
+		\end{table}      
+                \end{frame}
+	
+\section{summary}
+		\begin{frame}{summary}{time stretching and pitch shifting}
+            \begin{itemize}
+                \item   pitch stretching and pitch shifting are largely equivalent algorithms
+                    \begin{itemize}
+                        \item   same artifacts
+                        \item   same workload
+                    \end{itemize}
+                \bigskip
+                \item   monophonic time-stretching with PSOLA-based approaches is
+                    \begin{itemize}
+                        \item   easier to solve
+                        \item   has very bad artifacts is pitch tracker is off
+                    \end{itemize}
+                \bigskip
+                \item   polyphonic time-stretching with PV-based approaches is
+                    \begin{itemize}
+                        \item   complicated due to tradeoffs (e.g., frequency vs time resolution)
+                    \end{itemize}
+                \bigskip
+                \item   general challenges: 
+                    \begin{itemize}
+                        \item   noisy and transient signals
+                        \item   resulting timbre changes
+                        \item   perceived naturalness of result
+                        \item   time resolution/accuracy due to blocked processing
+                    \end{itemize}
+            \end{itemize}
+ 		\end{frame}
+
+\end{document}
+

@@ -1,0 +1,115 @@
+        \subsection{convolution}
+	\begin{frame}\frametitle{convolution}\framesubtitle{introduction}
+        convolution operation describes the \textbf{output of an LTI system}:
+        \pause
+        \begin{itemize}
+            \item   \textbf{linearity}: 
+                \begin{itemize}
+                    \item if input $x_n(t)$ produces output $y_n(t)$
+                    \item[$\rightarrow$] input $\sum a_n x_n(t)$ produces output $\sum a_n y_n(t)$
+                \end{itemize}
+            \item   \textbf{time invariance}:
+                \begin{itemize}
+                    \item   if input $x(t)$ produces output $y(t)$
+                    \item[$\rightarrow$] $x(t-T)$ produces $y(t-T)$
+                \end{itemize}
+        \end{itemize}
+        \pause
+        \begin{eqnarray*}\nonumber
+            y(t) = (x \ast h)(t) &:=& \int\limits_{-\infty}^{\infty}x(\tau)h(t-\tau)d\tau\\
+            y(i) = (x \ast h)(i) &:=& \sum\limits_{j=-\infty}^{\infty}x(j)h(i-j)
+        \end{eqnarray*}
+	\end{frame}
+    
+\begin{frame}{convolution}{animation}
+    \vspace{-5mm}
+    \begin{footnotesize}
+    \begin{equation}
+        y(t) = (x \ast h)(t) := \int\limits_{-\infty}^{\infty}x(\tau)h(t-\tau)d\tau
+    \end{equation}
+    \end{footnotesize}
+    \includevideo{video/ConvAnimation.mp4}
+\end{frame}
+    
+\begin{frame}\frametitle{convolution}\framesubtitle{identity and impulse response}
+    \begin{equation}
+        x(i) = \delta(i)\ast x(i) .
+    \end{equation}
+    \pause
+    \begin{itemize}
+        \item   describes the response of a system to an impulse as a function of time
+        \item   as an impulse includes all frequencies, the IR defines the response for all frequencies
+    \end{itemize}
+    \pause
+    What systems can be described by the IR? Name examples.
+\end{frame}
+    
+	\begin{frame}\frametitle{convolution}\framesubtitle{properties}
+		\begin{equation}
+			y(i) = x(i) \ast h(i) = \sum\limits_{j=-\infty}^{\infty}{h(j)\cdot x(i-j)}
+		\end{equation}
+		\begin{itemize}
+			\item	\textbf{commutativity}
+				\begin{equation}
+					h(i) \ast x(i)	= x(i) \ast h(i)
+				\end{equation}
+			\pause
+			\item	\textbf{associativity}
+				\begin{equation}
+					\big(g(i) \ast h(i)\big) \ast x(i) = g(i) \ast \big(h(i) \ast x(i)\big)
+				\end{equation}
+			\pause
+			\item	\textbf{distributivity}
+				\begin{equation}
+					g(i) \ast \big(h(i) + x(i)\big) = \big(g(i) \ast h(i)\big) + \big(g(i) \ast x(i)\big)
+				\end{equation}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{convolution}\framesubtitle{derivation: commutativity}
+\begin{footnotesize}
+		\begin{equation}
+			h(i) \ast x(i)	= x(i) \ast h(i) .
+		\end{equation}
+		substituting $j'=i-j$:
+		\begin{eqnarray}
+			x(i) \ast h(i)
+					&=& \sum\limits_{j=-\infty}^{\infty}{h(j)\cdot x(i-j)}\nonumber\\
+                    &=& \sum\limits_{j'=-\infty}^{\infty}{h(i-j')\cdot x(j')}\nonumber\\
+					&=& \sum\limits_{j'=-\infty}^{\infty}{x(j')\cdot h(i-j')} .
+		\end{eqnarray}
+\end{footnotesize}
+\end{frame}	
+
+\begin{frame}\frametitle{convolution}\framesubtitle{derivation: associativity}
+\vspace{-8mm}
+\begin{footnotesize}
+		\begin{equation}
+			\big(g(i) \ast h(i)\big) \ast x(i) = g(i) \ast \big(h(i) \ast x(i)\big).
+		\end{equation}
+		changing the order of sums and shifting the operands as shown below:
+		\begin{eqnarray}
+			\big(g(i) \ast h(i)\big) \ast x(i)	&=& \sum\limits_{j=-\infty}^{\infty}{\big(g(j) \ast h(j)\big)\cdot x(i-j)}\nonumber\\
+%												&=& \sum\limits_{j=-\infty}^{\infty}{\left(\sum\limits_{l=-\infty}^{\infty}{g(l)\cdot h(j-l)}\cdot x(i-j)\right)}\nonumber\\
+												&=& \sum\limits_{l=-\infty}^{\infty}{\sum\limits_{j=-\infty}^{\infty}{g(l)\cdot h(j-l)}\cdot x(i-j)}\nonumber\\
+												&=& \sum\limits_{l=-\infty}^{\infty}{g(l)\cdot \sum\limits_{j=-\infty}^{\infty}{h(j-l)}\cdot x(i-j)}\nonumber\\
+												&=& \sum\limits_{l=-\infty}^{\infty}{g(l)\cdot \sum\limits_{j=-\infty}^{\infty}{h(j)}\cdot x(i-l-j)}\nonumber\\
+												&=& \sum\limits_{l=-\infty}^{\infty}{g(l)\cdot  \big(h(i-l) \ast x(i-l)\big)}\nonumber\\
+												&=& g(i) \ast \big(h(i) \ast x(i)\big) .
+		\end{eqnarray}
+\end{footnotesize}
+\end{frame}	
+
+\begin{frame}\frametitle{convolution}\framesubtitle{derivation: distributivity}
+\begin{footnotesize}
+		\begin{equation}
+			g(i) \ast \big(h(i) + x(i)\big) = g(i) \ast h(i) + g(i) \ast x(i) .
+		\end{equation}
+		\begin{eqnarray}
+			g(i) \ast \big(h(i) + x(i)\big) &=& \sum\limits_{j=-\infty}^{\infty}{g(j) \cdot\big(h(i-j) + x(i-j)\big)}\nonumber\\
+									&=& \sum\limits_{j=-\infty}^{\infty}{g(j) \cdot h(i-j) + g(j) \cdot x(i-j)}\nonumber\\
+									&=& \sum\limits_{j=-\infty}^{\infty}{g(j) \cdot h(i-j)} + \sum\limits_{j=-\infty}^{\infty}{g(j) \cdot x(i-j)}\nonumber\\
+									&=& g(i) \ast h(i) + g(i) \ast x(i) .
+		\end{eqnarray}
+\end{footnotesize}
+\end{frame}	

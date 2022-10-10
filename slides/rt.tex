@@ -1,0 +1,62 @@
+        \subsection{real-time systems}
+	\begin{frame}{real-time systems}{introduction}
+		\begin{block}{\textbf{real-time system} (wikipedia)}
+            ``In a real-time digital signal processing (DSP) process, the analyzed (input) and generated (output) samples can be processed (or generated) continuously in the time it takes to input and output the same set of samples independent of the processing delay''
+			
+		\end{block}
+        \pause
+        \begin{itemize}
+            \item   ``processing delay must be bounded even if the processing continues for an unlimited time''
+            \pause  
+            \item   ``mean processing time per sample is no greater than the sampling period, which is the reciprocal of the sampling rate''
+            \pause
+            \item[$\Rightarrow$] ``perform all computations continuously at a fast enough rate that the output (...) keeps up with changes in the input signal'' (Tektronix)
+        \end{itemize}
+        
+	\end{frame}
+
+	\begin{frame}{real-time systems}{properties}
+		\begin{itemize}
+			\item	\textbf{performance}:
+				\begin{itemize}
+					\item	processing time for one block $\leq$ block length
+                    \pause
+                    \item   real-time computing does not necessarily mean high performance computing!
+				\end{itemize}
+			\bigskip
+            \pause
+			\item	\textbf{causality}:
+				\begin{itemize}
+                    \item   system output/state depends only on current and prior values
+					\item	\textit{no} knowledge of future samples
+				\end{itemize}
+			\bigskip
+			\pause
+			\item	\textbf{latency}:
+				\begin{itemize}
+					\item	delay of a system between the stimulus and the response to
+this stimulus
+						\begin{itemize}
+							\item	\textit{algorithmic delay}: (FFT-Processing, Look-Ahead, \ldots)
+							\item	\textit{interface delay}: (block length, ad/da conversion)
+						\end{itemize}
+				\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{real-time systems}{block based processing}
+		processing of \textit{blocks of samples} vs.\ individual samples
+		
+		\begin{figure}
+			\centering
+			\input{\AcaPict/basics_blockprocessing}
+		\end{figure}
+		\pause
+		\vspace{-5mm}
+		\textbf{reasons}:
+		\begin{itemize}
+			\item	block based algorithms (FFT, \ldots)
+			\item	audio hardware characteristics
+			\item	efficiency (SIMD, memory allocation)
+		\end{itemize}
+	\end{frame}

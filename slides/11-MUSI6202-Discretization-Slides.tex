@@ -1,0 +1,371 @@
+% move all configuration stuff into one file so we can focus on the content
+\input{../shared/common}
+\input{../shared/definitions}
+
+
+\subtitle{Part 11: Discretization 2---Quantization}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+    % generate title page
+	\input{titlepage}
+
+\section[intro]{introduction}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization introduction 1/2}
+		\vspace{-3mm}
+        \textbf{quantizer}: \linebreak
+		continuous $\mapsto$ discrete (pre-defined set of allowed values)
+        
+        \pause
+        \begin{itemize}
+            \item   quantization is \textbf{non-linear}
+            \item   quantization is \textbf{irreversible}
+        \end{itemize}
+		\begin{figure}
+			\centering
+				\includegraphics[scale=.4]{Graph/midtread-rise}
+		\end{figure}
+		\hspace{20mm} mid-rise \hspace{30mm} \only<2>{\textcolor{gtgold}}{mid-tread}
+	\end{frame}
+	
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization introduction 2/2}
+		\vspace{-4mm}
+		\begin{figure}
+			\centering
+				\includegraphics[trim={0 0 6.6cm 0},clip]{graph/quant}
+		\end{figure}
+		\vspace{-5mm}
+		\begin{itemize}
+			\item<2->	\textbf{number of quantization steps}: $\mathcal{M} = 16$
+			\item<2->	\textbf{word length (bits)}: \only<2>{?}\only<3->{$w = \log_2(\mathcal{M}) = \unit[4]{bit}$}
+		\end{itemize}
+	\end{frame}
+	
+\section[wordlength]{wordlength}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: word length \& number of steps}
+		\begin{table}
+			\centering
+			\begin{tabular}{lcr}
+			\hline
+				$w$ & $\mathcal{M} = 2^w$ \\
+			\hline
+				1	&	2\\
+				2	&	4\\
+				4	&	16\\
+				8	&	256\\
+				12	&	4096\\
+				16	&	65536\\
+				20	&	1048576\\
+				24	&	16777216\\
+			\end{tabular}  
+		\end{table}
+	\end{frame}
+
+\section[error]{quantization error}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization error: definition}
+		\begin{figure}
+			\centering
+			 \includegraphics[scale=0.13]{Graph/Flowchart_Quantization}
+		\end{figure}
+		\begin{equation*}
+			q(i) = x_{\mathrm{Q}}(i) - x(i)
+		\end{equation*}
+	\end{frame}		
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization error: max.\ amplitude}
+		\question{What is the maximum amplitude of the quantization error}
+		\begin{figure}
+			\centering
+				\includegraphics[scale=.3]{Graph/quant+quanterror}
+				\includegraphics[scale=.55]{graph/quant}
+		\end{figure}
+        \pause
+		\begin{equation*}
+			|q(i)| \leq \frac{\Delta}{2}
+		\end{equation*}
+	\end{frame}		
+
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization error: pdf 1/2}
+		\question{What is the pdf of the quantization error}
+        \vspace{-2mm}assuming $\Delta \ll max(|x(i)|)$
+        \only<2>{
+    	\vspace{-3mm}\begin{figure}[!hbt]
+			\begin{center}
+			\includegraphics[scale=0.4]{Graph/quantpdf}
+			\end{center}
+		\end{figure}
+        }
+        \only<3>{
+    	\begin{figure}[!hbt]
+			\begin{center}
+			\includegraphics[scale=0.15]{Graph/QuantError_ADV}
+			\end{center}
+		\end{figure}
+        }
+	\end{frame}		
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization error: pdf 2/2}
+        \vspace{-3mm}
+        it can be shown that the pdf of the quantization error depends (without derivation)
+        \begin{itemize}
+            \item on the \textbf{variance of the input} signal in relation to the step size
+            \item   on the \textbf{pdf of the input} signal
+            \smallskip
+            \item<2->[$\rightarrow$]   will be \textbf{uniform for large values of} $\frac{\sigma_X}{\Delta}$
+        \end{itemize}
+    	\only<2->{
+        \begin{figure}
+			\includegraphics[scale=0.4]{Graph/pdfquanterr_variance}
+		\end{figure}
+        }
+	\end{frame}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization error: power}
+        \question{how to compute the power $W_\mathrm{Q}$ of the quantization error}
+        
+        \begin{footnotesize}
+        from PDF:
+        \begin{eqnarray*}
+            W_\mathrm{Q} &=& \int\limits_{-\nicefrac{\Delta}{2}}^{\nicefrac{\Delta}{2}}{q^2\cdot \underbrace{p_\mathrm{Q}(q)}_{\nicefrac{1}{\Delta}}}\, dq\\
+            \pause
+            &=& \frac{1}{\Delta}\int\limits_{-\nicefrac{\Delta}{2}}^{\nicefrac{\Delta}{2}} q^2\, dq\\
+            \pause
+            &=& \frac{1}{\Delta} \left[\frac{1}{3}q^3\right]_{-\nicefrac{\Delta}{2}}^{\nicefrac{\Delta}{2}}\\
+            \pause
+            &=& \frac{1}{3\Delta}\left(\frac{\Delta^3}{8} + \frac{\Delta^3}{8}\right)\\
+            \pause
+            &=& \frac{\Delta^2}{12}
+        \end{eqnarray*}
+        \end{footnotesize}
+        
+	\end{frame}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization error: spectrum}
+		\vspace{-4mm}
+        quantization error of a full-scale sinusoidal
+        \vspace{-3mm}
+        \begin{figure}
+			\centering
+				\includegraphics[scale=.75]{Graph/quantcorr}
+		\end{figure}
+	\end{frame}		
+\section[audio]{audio examples}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: audio examples}
+        \begin{footnotesize}
+		\begin{table}
+			\begin{center}
+				\begin{tabular}{lcccccc}
+                $w$ & $x_\mathrm{Q,sine}(i)$ & $q_\mathrm{sine}(i)$ & $x_\mathrm{Q,speech}(i)$ & $q_\mathrm{speech}(i)$ & $x_\mathrm{Q,music}(i)$ & $q_\mathrm{music}(i)$\\\hline
+                $16$& \includeaudio{sine_quant_16bit} & \includeaudio{sine_quant_16bit_Q}  &
+                     \includeaudio{sqam_49_female_16bit} & \includeaudio{sqam_49_female_16bit_Q} &
+                     \includeaudio{bigband_16bit} & \includeaudio{bigband_16bit_Q} \\
+
+                $12$ &\includeaudio{sine_quant_12bit} & \includeaudio{sine_quant_12bit_Q}  &
+                     \includeaudio{sqam_49_female_12bit} & \includeaudio{sqam_49_female_12bit_Q} &
+                     \includeaudio{bigband_12bit} & \includeaudio{bigband_12bit_Q} \\
+                $8$ &\includeaudio{sine_quant_8bit} & \includeaudio{sine_quant_8bit_Q}  &
+                     \includeaudio{sqam_49_female_8bit} & \includeaudio{sqam_49_female_8bit_Q} &
+                     \includeaudio{bigband_8bit} & \includeaudio{bigband_8bit_Q} \\
+                $6$ &\includeaudio{sine_quant_6bit} & \includeaudio{sine_quant_6bit_Q}  &
+                     \includeaudio{sqam_49_female_6bit} & \includeaudio{sqam_49_female_6bit_Q} &
+                     \includeaudio{bigband_6bit} & \includeaudio{bigband_6bit_Q} \\
+                $4$ &\includeaudio{sine_quant_4bit} & \includeaudio{sine_quant_4bit_Q}  &
+                     \includeaudio{sqam_49_female_4bit} & \includeaudio{sqam_49_female_4bit_Q} &
+                     \includeaudio{bigband_4bit} & \includeaudio{bigband_4bit_Q} \\
+                $2$ &\includeaudio{sine_quant_2bit} & \includeaudio{sine_quant_2bit_Q}  &
+                     \includeaudio{sqam_49_female_2bit} & \includeaudio{sqam_49_female_2bit_Q} &
+                     \includeaudio{bigband_2bit} & \includeaudio{bigband_2bit_Q} 
+				\end{tabular}  
+			\end{center}
+		\end{table}
+        \end{footnotesize}
+    \end{frame}		
+	
+\section[SNR]{SNR}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quality assessment of a quantizer: SNR}
+        Signal-to-Noise Ratio (SNR): 
+        \begin{itemize}
+            \item power of the signal in relation to power of the (quantization) noise
+                \begin{equation*}\nonumber
+                    SNR' = \frac{\text{signal energy}}{\text{noise energy}} = \frac{W_{\mathrm{S}}}{W_{\mathrm{Q}}}
+                \end{equation*}
+            \smallskip
+            \item<2-> often in decibel
+                \begin{equation*}\label{eq:snr}
+                    SNR = 10\cdot\log_{10}\left(\frac{W_{\mathrm{S}}}{W_{\mathrm{Q}}}\right)\; [dB] 
+                \end{equation*}
+            \smallskip
+            \item<3-> SNR grows by
+                \begin{itemize}
+                    \item   reducing the noise power
+                    \item   increasing the signal power
+                \end{itemize}
+        \end{itemize}
+	\end{frame}		
+	
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: SNR 1/3}
+		\question{What is the SNR of a quantized full-scale sinusoidal}
+        \begin{footnotesize}
+			\begin{equation*}\nonumber
+				SNR = 10\cdot\log_{10}\left(\frac{W_{\mathrm{S}}}{W_{\mathrm{Q}}}\right)\; [dB] 
+			\end{equation*}
+			
+			\hspace{3mm}use: $sin^2(t) = \frac{1-cos(2t)}{2}$
+			\pause
+		\begin{eqnarray*}
+			W_\mathrm{S} &=& \frac{A^2}{2}\; \stackrel{\rightarrow}{\text{\tiny{full-scale}}} W_\mathrm{S} =\frac{(\Delta\cdot 2^{w-1})^2}{2}\\
+			W_\mathrm{Q} &=& \frac{\Delta^2}{12}\\
+			\pause
+			\frac{W_\mathrm{S}}{W_\mathrm{Q}} &=& \frac{3}{2}\cdot 2^{2w}
+		\end{eqnarray*}
+        \pause
+			\begin{equation*}\nonumber
+				SNR = w\cdot 20\log_{10}\left(2\right) + 10\cdot\log_{10}\left(\frac{3}{2}\right)\; [dB] 
+			\end{equation*}
+        \end{footnotesize}
+    \end{frame}		
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: SNR 2/3}
+        \question{derive the SNR for a full-scale square wave}
+        \begin{footnotesize}
+			\begin{equation*}\nonumber
+				SNR = 10\cdot\log_{10}\left(\frac{W_{\mathrm{S}}}{W_{\mathrm{Q}}}\right)\; [dB] 
+			\end{equation*}
+			
+		\begin{eqnarray*}
+			W_\mathrm{S} &=& {A^2}\; \stackrel{\rightarrow}{\text{\tiny{full-scale}}} W_\mathrm{S} ={(\Delta\cdot 2^{w-1})^2}\\
+			W_\mathrm{Q} &=& \frac{\Delta^2}{12}\\
+			\pause
+			\frac{W_\mathrm{S}}{W_\mathrm{Q}} &=& {3}\cdot 2^{2w}
+		\end{eqnarray*}
+        \pause
+			\begin{equation*}\nonumber
+				SNR = w\cdot 20\log_{10}\left(2\right) + 10\cdot\log_{10}\left(3\right)\; [dB] 
+			\end{equation*}
+        \end{footnotesize}
+	\end{frame}		
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: SNR 3/3}
+		\vspace{-5mm}\toremember{}
+        \vspace{-3mm}
+        \begin{block}{Signal-to-Noise Ratio}
+			\centering
+			\begin{equation*}
+				SNR = 6.02\cdot w + c_{\mathrm{S}}\quad [dB]
+			\end{equation*}
+            \vspace{-2mm}
+			\begin{itemize}
+				\item	every additional bit adds app.\ \unit[6]{dB} SNR
+				\item	constant $c_{\mathrm{S}}$ depends on signal (scaling and PDF shape)
+			\end{itemize}
+		\end{block}
+        \pause
+		\begin{itemize}
+            \item[] SNR for different input signal examples
+                \begin{itemize}
+                    \item	square wave (full scale): $c_{\mathrm{S}} =  \unit[4.77]{dB}$
+                    \item	sinusoidal wave (full scale): $c_{\mathrm{S}} =  \unit[1.76]{dB}$
+                    \item	rectangular {PDF} (full scale): $c_{\mathrm{S}} =  \unit[0]{dB}$
+                    \item	Gaussian {PDF} (full scale = $4\sigma_{g}$): $c_{\mathrm{S}} =  \unit[-7.27]{dB}$
+                \end{itemize}
+		\end{itemize}
+	\end{frame}		
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: word length and SNR}
+			\begin{table}
+			\centering
+				\begin{footnotesize}
+					\begin{tabular}{lccc}
+					\hline
+						\textbf{w} & \textbf{$\Delta$} & \textbf{Max.\ Amp} & \textbf{theo.\ SNR} \\
+					\hline
+						8 (Int)	&	$\pm1$ & $0\ldots255$ & $\approx$\unit[48]{dB}\\
+						16 (Int)	&	$\pm1$ & $-32768\ldots32767$ & $\approx$\unit[96]{dB}\\
+						20 (Int)	&	$\pm1$ & $-524288\ldots524287$ & $\approx$\unit[120]{dB}\\
+						24 (Int)	&	$\pm1$ & $-16777216\ldots16777215$ & $\approx$\unit[144]{dB}\\
+					\hline
+						32 (Float)	&	$\pm1.175\cdot10^{-38}$ & $\pm3.403\cdot10^{1038}$ & \unit[1529]{dB}\\
+						64 (Float)	&	$\pm2.225\cdot10^{-308}$ & $\pm1.798\cdot10^{10308}$ & \unit[12318]{dB}\\
+					\hline
+					\end{tabular}  
+				\end{footnotesize}
+			\end{table}
+            \bigskip
+	\end{frame}	
+	
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: SNR and auditory sensation area}
+        \question{so how many bits do we need}
+	    \only<2>{
+        \begin{figure}
+			\centering
+				\includegraphics[scale=0.5]{Graph/hoerfeld}
+		\end{figure}
+        }
+	    \only<3->{
+        \vspace{-3mm}
+        \begin{figure}
+			\centering
+				\includegraphics[scale=0.25]{Graph/hoerfeld}
+		\end{figure}
+        }
+        \begin{itemize}
+            \item<3->   to cover the whole range of hearing: 20--24 bit
+            \item<3->   practically, a lower range is sufficient as the dynamic range of recordings has to be much lower
+            \item<3->   in production with many processing and possible requantization steps, high resolution (if possible floating point) is recommended
+        \end{itemize}
+	\end{frame}
+
+\section[clipping]{clipping}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: SNR and signal scaling}
+	    \begin{figure}
+			\centering
+				\includegraphics[scale=0.7]{Graph/snr}
+		\end{figure}
+        
+     \begin{itemize}
+         \item[] full scale:
+            \begin{itemize}
+                \item   absolute maximum before clipping
+                \item   usually $1$ (in floating point systems)
+                \item   marks \unit[0]{dbFS}
+            \end{itemize}
+     \end{itemize}
+	\end{frame}
+	
+	%\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: clipping}
+	    %\begin{figure}
+	    	%\centering
+				%\includegraphics[scale=0.5]{Graph/Lerch14-11}
+		%\end{figure}
+	%\end{frame}	
+	%
+
+	\section{summary}	
+		\begin{frame}{sampling and quantization}{quantization: summary }
+			\vspace{-3mm}
+            \begin{itemize}
+                \item   quantization is  \textbf{non-linear} \& \textbf{irreversible}
+                    \begin{itemize}
+                        \item   information is lost
+                        \item   error is introduced
+                    \end{itemize}
+                \smallskip
+                \item<2->   quantization \textbf{error}
+                    \begin{itemize}
+                        \item   power is determined by number of bits (wordlength)
+                        \item   is approximately white noise (flat spectrum and uncorrelated to signal) when the signal power is much higher than the quantization step size
+                        \item   special severe case: clipping
+                    \end{itemize}
+                \smallskip
+                \item<3->   \textbf{SNR} is used to assess quantizer quality
+                    \begin{itemize}
+                        \item   depends on both signal power and quant error power (ratio)
+                        \item   each additional bit gains \unit[6]{dB} SNR
+                        \item   different signals with identical maximum amplitude yield different SNRs
+                    \end{itemize}
+                \smallskip
+                \item<4-> \textbf{typical word lengths} include
+                    \begin{itemize}
+                        \item   \unit[8]{bit}: phone
+                        \item   \unit[16]{bit}: consumer audio
+                        \item   \unit[24]{bit} and higher: production audio
+                    \end{itemize}
+			\end{itemize}
+		\end{frame}
+ 
+
+\end{document}
+

@@ -1,0 +1,332 @@
+% move all configuration stuff into one file so we can focus on the content
+\input{../shared/common}
+\input{../shared/definitions}
+
+
+\subtitle{Part 3: Signals}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+    % generate title page
+	\input{titlepage}
+
+\section{introduction}
+\begin{frame}{introduction}{sound}
+    \begin{itemize}
+        \item   sound is a vibration propagating through a medium
+        \item   vibrating source excites medium and vibration is received by microphone/ear
+        \item   microphone converts sound pressure (velocity) into electrical voltage
+        
+        \bigskip
+        \item<2-> the vibration/oscillation at each of these steps is a \textbf{signal}
+        \item<2-> here, we are mostly interested in the electrical signal
+        
+        \bigskip
+        \item<3-> audio signal
+            \begin{itemize}
+                \item   representation of sound (speech, music, etc.)
+                \item   main frequency content is below \unit{12}[kHz]
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{audio signals}{categorization}
+	\begin{itemize}
+		\item	\textbf{deterministic signals}:\\
+				\textit{predictable}: future shape of the signal can be known (example: sinusoidal)
+		\pause		
+		\item	\textbf{random signals}:\\
+				\textit{unpredictable}: no knowledge can help to predict what is coming next (example: white noise)
+	\end{itemize}
+	
+	Every ``real-world'' audio signal can be modeled as a time-varying combination of 
+	\begin{itemize}
+		\item	(quasi-)periodic parts
+		\item	(quasi-)random parts
+	\end{itemize}
+\end{frame}
+
+    \section[properties]{signal properties}
+        \begin{frame}{signals}{properties of real-world signals}
+            \begin{itemize}
+                \item   \textbf{real-valued}:
+                    \begin{itemize}
+                        \item   real-world signals are usually real-valued.
+                    \end{itemize}
+                \item<2->   \textbf{finite}:
+                    \begin{itemize}
+                        \item   amplitude: $max|x(t)|<\infty$ 
+                        \item<3->   energy or power:
+                            \begin{eqnarray*}
+                                E &=& \int\limits_{-\infty}^{\infty}{x^2(t) dt}\\
+                                P &=& \lim_{T \rightarrow \infty}\frac{1}{2T}\int\limits_{-T}^{T}{x^2(t) dt}
+                            \end{eqnarray*}
+                    \end{itemize}
+                \item<4->   \textbf{smooth}:
+                    \begin{itemize}
+                        \item  no ``abrupt'' changes $\rightarrow$ finite bandwidth 
+                    \end{itemize}
+            \end{itemize}
+        \end{frame}
+\section{periodic signals}
+\begin{frame}{audio signals}{periodic signals 1/3}
+	\vspace{-3mm}
+    periodic signals most prominent examples of deterministic signals: 
+	\begin{eqnarray}
+		x(t) 	&=& x(t+T_0)\nonumber\\
+		f_0 	&=& \frac{1}{T_0}\nonumber\\
+		\omega_0&=& \frac{2\pi}{T_0}\nonumber
+	\end{eqnarray}
+	
+	\begin{figure}
+		\centering
+			\only<2>{\vspace{-2mm}\includegraphics{graph/Sinusoidal}}
+			\only<3>{\vspace{-5mm}\includegraphics[height=5cm,width=\textwidth]{graph/periodic}}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{audio signals}{periodic signals 2/3}
+
+    \begin{block}{reconstruction}
+    	periodic signals can be reconstructed through a sum of sinusoidals at frequencies $k\cdot\omega_0$
+    \end{block}
+    \only<1>{\vspace{70mm}}
+    \vspace{-5mm}
+	\setcounter{i}{1}
+	\whiledo{\value{i}<6}	
+	{
+		\pause
+		\only<\value{beamerpauses}>
+		{
+        
+        
+            \only<2>{
+            \begin{equation}\nonumber
+                \hat{x}(t) = a_1\cdot sin(\omega_0 t)
+            \end{equation}}
+            \only<3>{
+            \begin{equation}\nonumber
+                \hat{x}(t) = a_1\cdot sin(\omega_0 t) + a_2\cdot sin(2\cdot\omega_0 t)+\ldots+ a_{3}\cdot sin(3\cdot\omega_0 t)
+            \end{equation}}
+            \only<4>{
+            \begin{equation}\nonumber
+                \hat{x}(t) = a_1\cdot sin(\omega_0 t) + a_2\cdot sin(2\cdot\omega_0 t)+\ldots+ a_{10}\cdot sin(10\cdot\omega_0 t)
+            \end{equation}}
+            \only<5>{
+            \begin{equation}\nonumber
+                \hat{x}(t) = a_1\cdot sin(\omega_0 t) + a_2\cdot sin(2\cdot\omega_0 t)+\ldots+ a_{25}\cdot sin(25\cdot\omega_0 t)
+            \end{equation}}
+            \only<6>{
+            \begin{equation}\nonumber
+                \hat{x}(t) = a_1\cdot sin(\omega_0 t) + a_2\cdot sin(2\cdot\omega_0 t)+\ldots+ a_{50}\cdot sin(50\cdot\omega_0 t)
+            \end{equation}}
+			\vspace{-10mm}
+            \begin{figure}
+			\centering
+                %\includemovie[poster=graph/additivesynthesis_saw_\arabic{i}.pdf,autoplay=true]{\textwidth}{4cm}{audio/additivesynthesis_saw_\arabic{i}.mp3}
+                \includegraphics[width=\textwidth, height=4cm]{graph/additivesynthesis_saw_\arabic{i}.pdf}
+			\end{figure}
+            \vspace{-5mm}
+			\begin{figure}
+			\flushright
+                \includemedia[
+                    addresource=audio/additivesynthesis_saw_\arabic{i}.mp3,
+                    width=.3\textwidth,
+                    height=3mm,
+                    activate=pageopen,
+                    flashvars={
+                        source=audio/additivesynthesis_saw_\arabic{i}.mp3  
+                        &autoPlay=true
+                    }]
+                    {}
+                    {APlayer.swf}
+			\end{figure}
+		}
+		\stepcounter{i} 
+	}	
+	\setcounter{i}{1}
+	\whiledo{\value{i}<6}	
+	{
+		\pause
+		\only<\value{beamerpauses}>
+		{
+        
+            \only<7>{
+            \begin{equation}\nonumber
+                \hat{x}(t) = a_1\cdot sin(\omega_0 t)
+            \end{equation}}
+            \only<8>{
+            \begin{equation}\nonumber
+                \hat{x}(t) = a_1\cdot sin(\omega_0 t) + a_3\cdot sin(3\cdot\omega_0 t)+\ldots+ a_{5}\cdot sin(5\cdot\omega_0 t)
+            \end{equation}}
+            \only<9>{
+            \begin{equation}\nonumber
+                \hat{x}(t) = a_1\cdot sin(\omega_0 t) + a_3\cdot sin(3\cdot\omega_0 t)+\ldots+ a_{19}\cdot sin(19\cdot\omega_0 t)
+            \end{equation}}
+            \only<10>{
+            \begin{equation}\nonumber
+                \hat{x}(t) = a_1\cdot sin(\omega_0 t) + a_3\cdot sin(3\cdot\omega_0 t)+\ldots+ a_{49}\cdot sin(49\cdot\omega_0 t)
+            \end{equation}}
+            \only<11>{
+            \begin{equation}\nonumber
+                \hat{x}(t) = a_1\cdot sin(\omega_0 t) + a_3\cdot sin(3\cdot\omega_0 t)+\ldots+ a_{99}\cdot sin(99\cdot\omega_0 t)
+            \end{equation}}
+            \vspace{-10mm}
+			\begin{figure}
+			\centering
+                %\includemovie[poster=graph/additivesynthesis_rect_\arabic{i}.pdf,autoplay=true]{\textwidth}{4cm}{audio/additivesynthesis_rect_\arabic{i}.mp3}
+                \includegraphics[width=\textwidth, height=4cm]{graph/additivesynthesis_rect_\arabic{i}.pdf}
+ 			\end{figure}
+            \vspace{-5mm}
+            \begin{figure}
+			\flushright
+               \includemedia[
+                    addresource=audio/additivesynthesis_rect_\arabic{i}.mp3,
+                    width=.3\textwidth,
+                    height=3mm,
+                    activate=pageopen,
+                    flashvars={
+                        source=audio/additivesynthesis_rect_\arabic{i}.mp3  
+                        &autoPlay=true
+                    }]
+                    {}
+                    {APlayer.swf}
+
+ 			\end{figure}
+		}
+		\stepcounter{i} 
+	}	
+\end{frame}
+
+\begin{frame}{audio signals}{periodic signals 3/3}
+    youtube --- mechanical additive synthesis:
+    
+    \url{http://youtu.be/8KmVDxkia_w}
+    
+\end{frame}
+
+
+\begin{frame}{audio signals}{superposition of sinusoidals 1/2}
+    \begin{itemize}
+        \item   \textbf{partials}: a set of frequencies comprising a (pitched) sound
+        \item   \textbf{overtones}: as partials but without the fundamental frequency
+        \item   \textbf{harmonics}: integer multiples of the fundamental frequency, including the fundamental frequency
+    \end{itemize}
+    
+    %\pause
+    %\bigskip
+    %\toremember{all periodic signals ...}
+    %\begin{itemize}
+        %\item   have fundamental frequency (even if weight might be zero)
+        %\item   consist  only of sinusoidals at integer multiples of fundamental frequency
+    %\end{itemize}
+\end{frame}
+
+\begin{frame}{audio signals}{superposition of sinusoidals 2/2}
+    \vspace{-6mm}
+    \begin{footnotesize}
+        \begin{eqnarray*}
+            y(t) &=& \underbrace{\sin\left(2\pi (f+\frac{\Delta f}{2})t\right)}_{\sin(2\pi f)\cos\left(2\pi t\frac{\Delta f}{2}\right) + \cos(2\pi f)\sin\left(2\pi t\frac{\Delta f}{2}\right)} + \underbrace{\sin\left(2\pi (f-\frac{\Delta f}{2})t\right)}_{\sin(2\pi f)\cos\left(-2\pi t\frac{\Delta f}{2}\right) + \cos(2\pi f)\sin\left(-2\pi t\frac{\Delta f}{2}\right)}\\
+          &=& 2\sin\left(2\pi f\right)\cdot \cos\left(2\pi\frac{\Delta f}{2}t\right)
+        \end{eqnarray*}
+    \only<1>{
+        \vspace{-3mm}
+        \figwithmatlab{Beating}
+    }
+    \only<2>{
+    
+    \bigskip
+    audio examples: addition of sines
+    \begin{table}
+        \centering
+            \begin{tabular}{l|ccccccccc}
+                $500\unit{Hz}$ & $+1000$ & $+750$ & $+667$ & $+625$ & $+600$ &$+530$ &$+502$ &$+501$\\
+                \includeaudio{Beating_sine}& \includeaudio{Beating_1000}& \includeaudio{Beating_750}& \includeaudio{Beating_667}& \includeaudio{Beating_625}& \includeaudio{Beating_600}& \includeaudio{Beating_530}& \includeaudio{Beating_502}& \includeaudio{Beating_501} \\
+            \end{tabular}
+    \end{table}
+     }
+    \end{footnotesize}
+    \vspace{30mm}
+\end{frame}
+
+\section{random signals}	
+\begin{frame}{audio signals}{random process}
+	\textbf{random process}: ensemble of random series
+	\begin{figure}
+		\centering
+			\includegraphics[scale=.25]{graph/randomprocess}
+	\end{figure}
+	\pause
+	special cases:
+	\begin{itemize}
+		\item	\textbf{stationarity}: all parameters (such as the mean) are time invariant
+		\item	\textbf{ergodicity}: process with equal time and ensemble mean (implies stationarity)
+	\end{itemize}
+\end{frame}
+
+\section{prototype signals}
+
+\begin{frame}{deterministic prototype signals}{periodic signals}
+            \begin{itemize}
+                \item   \textbf{sinusoidal}
+                    \[x(t) = \sin(\underbrace{2\pi f}_{\omega} t {\color{gray}{+ \Phi}})\]
+                \item<3->   \textbf{sawtooth}
+                    \begin{equation*}
+                        x(t) = 2\left(\frac{t}{T_0}-\floor\left(\frac{1}{2}+\frac{t}{T_0}\right)\right)
+                    \end{equation*}
+                \item<4->   \textbf{square wave}
+                    \[x(t) = \sign\left(\sin(\omega t)\right)\]
+            \end{itemize}
+\end{frame}
+\begin{frame}{deterministic prototype signals}{non-periodic deterministic signals}
+    \begin{itemize}
+        \item   \textbf{DC}
+            \[ x(t) = 1\]
+        \item<2->   \textbf{impulse}
+            \begin{equation*}
+                \delta(t) = 
+                    \begin{cases}
+                            \infty & t = 0 \\
+                            0   & t \neq 0
+                    \end{cases}
+            \end{equation*}
+            \begin{equation*}
+                \delta(t) = \int\limits_{-\infty}^{\infty}{\delta(t) dt = 1}
+            \end{equation*}
+        \item<3->   \textbf{exponential}
+            \[ x(t) = \e^{-\alpha t}\]
+    \end{itemize}
+\end{frame}
+%\begin{frame}{non-deterministic prototype signals}{non-periodic signals}
+    %\begin{itemize}
+        %\item   white noise
+            %\begin{itemize}
+                %\item   completely random: no possibility of predicting the event
+                %\item<2-> but: if noise is stationary (doesn't change over time), then signal properties are predictable
+                    %\begin{itemize}
+                        %\item mean \[ m = \int\limits_{\infty}^{\infty}{x(t) dt}\]
+                        %\item   power
+                    %\end{itemize}
+            %\end{itemize}
+    %\end{itemize}
+%\end{frame}
+
+\section{summary}
+    \begin{frame}{audio signals}{summary}
+        \begin{itemize}
+            \item   two basic signal classes, \textbf{deterministic} and \textbf{random}
+            \bigskip
+            \item   \textit{deterministic} signals can be described by a function and are predictable
+                \begin{itemize}
+                    \item   special case: periodic signals --- sum of sinusoidals with freq. integer ratio
+                \end{itemize}
+            \bigskip
+            \item   \textit{random signals} are not predictable
+                \begin{itemize}
+                    \item   special case: ergodic signals can be described statistically 
+                \end{itemize}
+        \end{itemize}
+    \end{frame}
+    
+\end{document}
+

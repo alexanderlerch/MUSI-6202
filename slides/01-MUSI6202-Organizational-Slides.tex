@@ -1,0 +1,180 @@
+% move all configuration stuff into one file so we can focus on the content
+\input{../shared/common}
+\input{../shared/definitions}
+
+\subtitle{Part 1: Organizational}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+    % generate title page
+	\input{titlepage}
+
+    \section[contact]{contact \& resources}
+        \begin{frame}\frametitle{organizational}\framesubtitle{links \& contact}
+            \begin{itemize}
+                \item \textbf{contact info}
+                    \begin{itemize}
+                        \item   \textit{alexander lerch}
+                            \begin{itemize}
+                                \item   {email}: \url{mailto:alexander.lerch@gatech.edu}
+                                \item   {www}: \url{www.audiocontentanalysis.org}
+                                \item   {office}: Couch 205B
+                                \item   {office hours}:  \textbf{by appointment}: \url{https://www.calendly.com/alexanderlerch}
+                            \end{itemize}
+                        %\item   \textit{teaching assistants}
+                            %\begin{itemize}
+                                %\item    Siddharth Gururani: \url{siddgururani@gatech.edu}
+                                %\item    Ashis Pati: \url{ashis.pati@gatech.edu}
+                            %\end{itemize}
+                    \end{itemize}
+                
+                \smallskip
+                \item<2-> \textbf{classes}
+                    \begin{itemize}
+                        \item   Mon, Wed  3:00--4:15pm in WV163
+                        \item   additional \textit{tutorial group}: TBD
+                    \end{itemize}
+                
+                \smallskip
+                \item<3-> \textbf{class resources}
+                    \begin{itemize}
+                        \item	\textit{canvas}:
+                            \begin{itemize}
+                                \item   syllabus, grades, slides: \url{www.canvas.gatech.edu}
+                            \end{itemize}
+                    \end{itemize}
+            \end{itemize}
+        \end{frame}
+
+    \section{course intro}
+        \begin{frame}\frametitle{organizational}\framesubtitle{goals \& requirements}
+            \begin{itemize}
+                \item	\textbf{goals}
+                        \begin{enumerate}
+                            \item   ability to comprehend typical representations of digital systems such as block diagrams and difference equations,
+                            \item   understanding of typical transforms in DSP such as the Fourier transform or the Z-transform,
+                            \item    ability to use this understanding to design audio processing systems such as audio effects, and
+                            \item	ability to implement such designs in a programming language such as Matlab.
+                        \end{enumerate}
+
+                \smallskip
+                \item<2-> \textbf{requirements}	
+                        \begin{itemize}
+                            \item	math
+                            \item	rudimentary programming skills, familiarity with Matlab
+                        \end{itemize}
+            \end{itemize}
+        \end{frame}
+        \begin{frame}\frametitle{organizational}\framesubtitle{outline}
+            \vspace{-3mm}
+            \begin{scriptsize}
+                \begin{tabular}{l|p{.4\linewidth}|p{.1\linewidth}|p{.2\linewidth}||p{.1\linewidth}}
+            \textbf{date} & \textbf{topics} & \textbf{exercise} & \textbf{assignment} & \textbf{notes}\\
+            \hline\hline
+            01/07 & introduction, signals, periodicity, random processes, pdf, moments, correlation & correlation &  &  \\
+            01/14 & convolution, power spectral density & FIR filter& filter \& convolution & \\
+            01/21 & Fourier series \& Fourier transform& DFT & Fourier analysis & MLK Hldy.\\
+            01/28 &Fourier transform, sampling, quantization, SNR, number formats& quantization&& \\
+            02/04 &oversampling, dither, noise-shaping, non-linear quant.&&dither, ns  & \\
+            02/11 &z-transform, digital audio filters, FIR/IIR, FFT filtering& biquad& & midterm I\\
+            02/18 &sample rate conversion, real-time systems &resampling&& \\
+            02/25 &delay-based FX and reverb&vibrato& mod. fx&\\
+            03/04 &dynamics processing& PPM & limiter & guthman\\
+            03/11 &time-segment processing (OLA)&ola&& midterm II \\
+            03/18 &&&&spring break \\
+            03/25 &phase-vocoder&& phase voc&\\
+            04/01 &source coding: LPC, ADPCM&&& \\
+            04/08 &source coding: Huffman, AAC&&& \\
+            04/15 &denoising&&& \\
+            04/22 &competition results&&& \\
+                \end{tabular}
+            \end{scriptsize}
+        \end{frame}
+
+    \section{materials}
+        \begin{frame}\frametitle{organizational}\framesubtitle{course materials}
+        \begin{itemize}
+            \item   \textbf{roughly based on}:  
+                \begin{itemize}
+                    \item   Z\"olzer, Udo (2008): \textit{Digital Audio Signal Processing}, Wiley 
+                \end{itemize}
+             \pause
+             \bigskip
+             \item   \textbf{additional  reading}:  
+                \begin{itemize}
+                    \item   Lyon, Richard (2011): \textit{Understanding Digital Signal Processing}, Prentice Hall 
+                    \item   Z\"olzer, Udo (2011): \textit{DAFX: Digital Audio Effects}, Wiley
+                \end{itemize}
+            \pause
+            \bigskip
+            \item   \textbf{{additional} additional reading}:
+                \begin{itemize}
+                    \item   Pohlmann, Ken (2000): Principles of Digital Audio, 4th, McGraw-Hill
+                    \item   Watkinson, John (2001): The Art of Digital Audio, Focal Press
+                \end{itemize}
+
+                %\only<1-2>{\vspace{5mm}
+                %\begin{columns}[c]
+                    %\column{.1\textwidth}
+                    %\column{.3\textwidth}\includegraphics[scale=0.005]{graph/psychologyofhearing}
+                    %\column{.3\textwidth}\includegraphics[scale=0.005]{graph/psychologyofmusic}
+                    %\column{.3\textwidth}\includegraphics[scale=0.25]{graph/musicophilia}
+                %\end{columns}}
+            \pause
+            \bigskip
+            \item   \textbf{software}: 
+                \begin{itemize}
+                    \item   Matlab: \url{www.matlab.gatech.edu}
+                    \item   github.com etc
+                \end{itemize}
+        \end{itemize}
+       \end{frame}
+
+    \section{assessment}
+        \begin{frame}\frametitle{organizational}\framesubtitle{assessment}
+            \begin{itemize}
+                \item	\textbf{40\%: assignments} (equally weighted): projected deadlines see syllabus
+                        \begin{enumerate}
+                            \item	convolution and FIR filters
+                            \item   Fourier analysis
+                            \item   Dither \& Noise Shaping
+                            \item   modulated audio effects
+                            \item   compressor \& limiter
+                            \item   (phase vocoder)
+                        \end{enumerate}
+
+                \smallskip
+                \item   \textbf{10\%: mid-term exam I}
+                \item   \textbf{10\%: mid-term exam II}
+
+                \smallskip
+                \item   \textbf{5\%: participation}
+
+                \smallskip
+                \item   \textbf{15\%: quizzes}
+                    \begin{itemize}
+                        \item   every week?! 
+                    \end{itemize}
+                
+                \smallskip
+                \item   \textbf{20\% codec competition}
+            \end{itemize}
+        \end{frame}
+
+    \section{to do}
+        \begin{frame}\frametitle{organizational}\framesubtitle{to do}
+            \begin{enumerate}
+                %\item   \textbf{find group partner}\\
+                %mixed group (1st year + 2nd year) preferred
+            
+                \smallskip
+                \item<2->   \textbf{install Matlab} (Octave/Freemat)
+            
+                \smallskip
+                \item<3->   \textbf{brush up} your math and Matlab
+            
+            \end{enumerate}
+        \end{frame}
+
+\end{document}
+

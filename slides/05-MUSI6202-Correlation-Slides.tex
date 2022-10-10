@@ -1,0 +1,236 @@
+% move all configuration stuff into one file so we can focus on the content
+\input{../shared/common}
+\input{../shared/definitions}
+
+
+\subtitle{Part 5: Signal Similarity --- Correlation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+    % generate title page
+	\input{titlepage}
+
+\section{introduction}
+\begin{frame}{signal similarity}{introduction}
+    \begin{itemize}
+        \item   correlation function
+            \begin{itemize}
+                \item   indicates (linear) dependencies between two signals
+                \item   shifts the signals to find the dependency for each shift in time
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{CCF}
+
+\begin{frame}{signal similarity}{correlation function}
+	compute similarity between two \textbf{stationary} signals $x$,$y$
+    \begin{equation*}
+        r_\mathrm{xy}(\tau)=\mathcal{E}\lbrace x(t)y(t+\tau)\rbrace  
+    \end{equation*}  
+	\pause
+    
+	\begin{itemize}
+		\item	\textbf{continuous}:
+            \begin{equation*}
+                r_\mathrm{xy}(\tau) = \int\limits_{-\infty}^{\infty}{x(t)\cdot y(t+\tau)dt}
+            \end{equation*}
+		\item	\textbf{discrete}:
+            \begin{equation*}
+                r_\mathrm{xy}(\eta) = \sum\limits_{i=-\infty}^{\infty}{x(i)\cdot y(i+\eta)}
+            \end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{signal similarity}{correlation function: animation}
+    \vspace{-5mm}
+    \begin{footnotesize}
+    \begin{equation*}
+        r_\mathrm{xy}(\tau) = \int\limits_{-\infty}^{\infty}{x(t)\cdot y(t+\tau)}dt
+    \end{equation*}
+    \end{footnotesize}
+    \includevideo{XCorrAnimation}
+\end{frame}
+
+\begin{frame}{signal similarity}{correlation function: use cases}
+    \begin{itemize}
+        \item   find (linear!) similarity between two signals (e.g., clean and noisy)
+        \item   find time shift between to similar signals
+        \pause
+        \bigskip
+        \item   example: \textbf{radar}
+            \begin{itemize}
+                \item   correlate sent signal with received signal
+                \item   pick maximum location and convert to distance of object
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section[correlation coefficient]{normalized correlation and correlation coefficient}
+\begin{frame}{signal similarity}{correlation coefficient}
+    \begin{equation*}\nonumber
+        r_\mathrm{xy}(\tau) = \frac{\mathcal{E}\lbrace(X-\mu_X)(Y-\mu_Y)\rbrace}{\sigma_X\sigma_Y}
+    \end{equation*}
+    
+    special case: \textbf{Pearson Correlation Coefficient} $r_\mathrm{xy}(0)$ after normalization
+    \bigskip
+    \bigskip
+    \question{What are possible reasons for normalization}
+        \begin{itemize}
+            \item   ensuring that function will always be between -1 and 1
+            \item   shifting and scaling one signal will not change the coefficient
+        \end{itemize}
+\end{frame}
+
+\section{possible issues}
+\begin{frame}{signal similarity}{correlation function: problems as summary statistic}
+Anscombe's quartet:
+    \begin{itemize}
+        \item   identical mean: 7.5
+        \item   identical variance: 4.2
+        \item   identical \textbf{Pearson correlation coefficient}: 0.816
+    \end{itemize}
+    \begin{figure}
+        \includegraphics[scale=.2]{graph/Anscombes_quartet}
+    \end{figure}
+\end{frame}
+
+\section{examples}
+\begin{frame}\frametitle{correlation function}\framesubtitle{examples 1/3}
+		\question{Describe the (cross) correlation function between the following signals}
+			
+		\begin{itemize}
+			\item	rectangular window vs.
+			\item	windowed sine vs.
+			\item	noise
+		\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{correlation function}\framesubtitle{examples 2/3}
+    \vspace{-5mm}
+    \begin{figure}
+        \centering
+            \includegraphics[scale=.5]{graph/xcorr}
+        \label{fig:xcorr}
+    \end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{correlation function}\framesubtitle{animation}
+            \vspace{-5mm}
+            \begin{footnotesize}
+                    \begin{equation*}
+                        %r_\mathrm{xy}(\tau) &=& \int\limits_{-\infty}^{\infty}{x(t)\cdot y(t+\tau)dt}\\
+                        r_\mathrm{xy}(\eta) = \sum\limits_{i=-\infty}^{\infty}{x(i)\cdot y(i+\eta)}
+                    \end{equation*}
+            \end{footnotesize}
+            \begin{center}
+                \animategraphics[loop]{10}{animateCorrelation/Correlation-}{000}{250}        
+            \end{center}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Slides/blob/master/matlab/animateCorrelation.m}{matlab/animateCorrelation.m}}
+            \inserticon{video}
+\end{frame}	
+        \begin{frame}{correlation function}{blocked correlation: animation}
+            \begin{center}
+                \animategraphics[loop]{24}{animateBlockedCorrelation/BlockedCorrelation-}{001}{1023}        
+            \end{center}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Slides/blob/master/matlab/animateBlockedCorrelation.m}{matlab/animateBlockedCorrelation.m}}
+            \inserticon{video}
+        \end{frame}	 
+
+\section{ACF}
+\begin{frame}{correlation function}{auto correlation function}
+		\begin{equation*}
+			r_\mathrm{xx}(\tau)=\mathcal{E}\lbrace x(t)x(t+\tau)\rbrace  
+		\end{equation*}
+
+		\pause
+		\begin{block}{autocorrelation function properties}
+			\begin{itemize}
+				\item	\textbf{power}: $r_{xx}(0) = 	\mathcal{E}\lbrace X^2\rbrace $ 
+
+				\smallskip
+				\item<2->	\textbf{symmetry} $r_{xx}(\tau)=r_{xx}(-\tau)$\\
+					(substitute $t=t'+\tau$)
+
+				\smallskip
+                \item<3->	\textbf{global max}: $r_{xx}(\tau)\leq r_{xx}(0)$ 
+					%(Binomial theorem $E\left\lbrace \big(x(t)x(t-\tau)\big)^2\right\rbrace $ )
+
+				\smallskip
+				\item<4->	\textbf{periodicity}:\\
+					The {ACF} of a periodic signal is periodic (period length of input signal)
+
+			\end{itemize}	
+		\end{block}
+\end{frame}	
+
+%\begin{frame}{correlation and power spectral density}{PSD}
+	%\begin{itemize}
+		%\item	\textbf{problem}: how to calculate the spectrum of a random process?
+				%\begin{itemize}
+					%\item	no analytic function to integrate
+				%\end{itemize}
+				%
+		%\pause
+		%\item	\textbf{solution}: Wiener-Khinchin theorem
+		%\pause
+		%\begin{equation*}
+			%S_{xx}(\omega) = \mathfrak{F}\lbrace \varphi_{xx}(\tau)\rbrace 
+		%\end{equation*}
+	%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}{correlation and power spectral density}{PSD: properties}
+%
+		%\begin{block}{PSD properties}
+			%\begin{itemize}
+				%\item	\textbf{real} (symmetry in time domain!) 
+%
+				%\pause
+				%\item	\textbf{power preservation}
+					%\begin{equation*}
+						%\mathcal{E}\lbrace x^2\rbrace  = \varphi_{xx}(\tau = 0) = \frac{1}{2\pi}\int\limits_{-\infty}^{\infty}{S_{xx}(\omega)\enspace d\omega} 
+					%\end{equation*}
+			%\end{itemize}	
+		%\end{block}
+%\end{frame}	
+%
+%\begin{frame}{correlation and power spectral density}{PSD: discrete signals}
+	%\begin{itemize}
+		%\item	\textbf{correlation}
+				%\begin{equation*}
+					%\varphi_{xx}(l) = \mathcal{E}\lbrace x(n)\cdot x(n-l)\rbrace 
+				%\end{equation*}
+		%\pause
+		%\item	\textbf{PSD}
+				%\begin{equation*}
+					%\varphi_{xx}(l) = \mathfrak{F^{-1}}\lbrace S_{xx}(\Omega)\rbrace =\frac{1}{2\pi}\int\limits_{-\pi}^{+\pi}S_{xx}(\Omega)e^{j\Omega l}\enspace d\Omega
+				%\end{equation*}  
+		%\pause
+		%\item	\textbf{power}
+				%\begin{equation*}
+					%\varphi_{xx}(0)=\frac{1}{2\pi}\int\limits_{-\pi}^{+\pi}S_{xx}(\Omega)\enspace d\Omega
+				%\end{equation*}
+	%\end{itemize}
+%\end{frame}	
+
+
+\section{summary}
+\begin{frame}{correlation function}{summary}
+    \begin{itemize}
+        \item   correlation function is useful tool to
+            \begin{itemize}
+                \item   \textbf{determine the similarity} between two signals (CCF)
+                \item   \textbf{identify a shift/latency} between two similar signals (CCF)
+                \item   \textbf{identify periodicity} vs. noisiness in a signal (ACF)
+            \end{itemize}
+        \smallskip
+        \item<2->   continues to be standard approach for all applications related to the above tasks
+        \smallskip
+        \item<3->   note: CCF or ACF do not display time information (lost in integration)
+    \end{itemize}
+\end{frame}		
+
+    
+\end{document}
+

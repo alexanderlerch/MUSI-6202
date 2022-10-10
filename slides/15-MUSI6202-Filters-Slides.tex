@@ -1,0 +1,740 @@
+% move all configuration stuff into one file so we can focus on the content
+\input{../shared/common}
+\input{../shared/definitions}
+
+
+\subtitle{Part 15: Digital Filters I}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+    % generate title page
+	\input{titlepage}
+
+\section[intro]{introduction}
+	\begin{frame}{filters}{introduction 1/2}
+        \begin{block}{filter --- broad description}
+            system that amplifies or attenuates certain components/aspects of a signal
+        \end{block}
+        \pause
+        \bigskip
+        \begin{block}{filter --- narrow}
+            linear time-invariant system for changing the magnitude and phase of specific frequency regions            
+        \end{block}
+        \pause
+        \bigskip
+        \begin{itemize}
+            \item   example for other type of filters:
+                \begin{itemize}
+                    \item	adaptive  and time-variant (e.g., denoising)
+                \end{itemize}
+            \item	examples for ``real-world'' filters
+                \begin{itemize}
+                    \item	reverberation
+                    \item	absorption
+                    \item	echo
+                \end{itemize}
+        \end{itemize}
+	\end{frame}
+	\begin{frame}{filters}{introduction 2/2}
+        \vspace{-8mm}
+        \begin{columns}
+            \column{.6\linewidth}
+                \begin{itemize}
+                    \item   \textbf{audio equalization}
+                        \begin{itemize}
+                            \item   parametric EQs
+                            \item   graphic EQs
+                        \end{itemize}
+                    %\smallskip
+                    \item<2->   \textbf{removal} of unwanted components
+                        \begin{itemize}
+                            \item   remove DC, rumble
+                            \item   remove hum
+                            \item   remove hiss
+                        \end{itemize}
+                    %\smallskip
+                    \item<3->   \textbf{pre-emphasis/de-emphasis}
+                        \begin{itemize}
+                            \item   Vinyl
+                            \item   old Dolby noise reduction systems
+                        \end{itemize}
+                    %\smallskip
+                    \item<4->   \textbf{weighting} function
+                        \begin{itemize}
+                            \item   dBA, dBC, \ldots
+                        \end{itemize}
+                    %\smallskip
+                    \item<5->   (parameter) \textbf{smoothing}
+                        \begin{itemize}
+                            \item   smooth sudden changes
+                        \end{itemize}
+                \end{itemize}
+                \vspace{70mm}
+            \column{.4\linewidth}
+                \only<1>{
+                    \begin{figure}
+                        \includegraphics[scale=.15]{graphic_equalizer}
+                    \end{figure}}
+                \only<2>{
+                    \begin{figure}
+                        \includegraphics[scale=.25]{hum_removal}
+                    \end{figure}}
+                \only<3>{
+                    \begin{figure}
+                        \includegraphics[scale=.4]{riaa_emphasis}
+                    \end{figure}}
+                \only<4>{
+                    \begin{figure}
+                        \includegraphics[scale=.4]{loudnessweighting}
+                    \end{figure}}
+                \only<5>{
+                    \begin{figure}
+                        \includegraphics[scale=.35]{parameter_smoothing}
+                    \end{figure}}
+        \end{columns}
+	\end{frame}
+ 
+    \begin{frame}{filters}{reminder: system theory}
+        \begin{itemize}
+            \item output of a system (filter) $y$ computed by \textbf{convolution} of input $x$ and impulse response $h$
+                \begin{equation*}
+                    y(t) = x(t) \ast h(t)   
+                \end{equation*}
+            \bigskip
+            \item<2-> this is equivalent to a frequency domain multiplication 
+                \begin{eqnarray*}
+                    Y(\jom) &=& X(\jom) \cdot H(\jom)\\
+                    H(\jom) &=& \frac{Y(\jom)}{X(\jom)}
+                \end{eqnarray*}
+            \bigskip
+            \item<3-> \textbf{transfer function} $H(\jom)$ is complex, often represented as 
+                \begin{itemize}
+                    \item \textbf{magnitude} $|H(\jom)|$ and 
+                    \item phase $\Phi_\mathrm{H}(\jom)$
+                \end{itemize}
+        \end{itemize}
+    \end{frame}
+   
+    \section{equalization}
+	\begin{frame}{filters}{common transfer function shapes}
+            \question{what are typical filters/spectral filter shapes}
+
+            \begin{columns}
+            \column{.4\linewidth}
+            \begin{itemize}
+                \item   very common:
+                    \begin{itemize}
+                        \item   low/high pass
+                    \end{itemize}
+                \smallskip
+                \item<3->   common for non-audio:
+                    \begin{itemize}
+                        \item   band pass/band stop
+                    \end{itemize}
+                \smallskip
+                \item<4->   also common in audio apps:
+                    \begin{itemize}
+                        \item<4->   low/high shelving
+                        \item<5->   peak filter
+                        \item<6->   resonance/notch
+                    \end{itemize}
+            \end{itemize}
+            \column{.65\linewidth}
+                \vspace{-3mm}
+                \only<2-3>{
+                    \begin{figure}%
+                        \includegraphics[width=.8\columnwidth]{generalfilters_overview}%
+                    \end{figure}
+                }
+                \only<4>{
+                    \begin{figure}%
+                        \includegraphics[width=.5\columnwidth]{filter_shelving}%
+                    \end{figure}
+                }
+                \only<5>{
+                    \begin{figure}%
+                        \includegraphics[width=\columnwidth]{filter_peak}%
+                    \end{figure}
+                }
+                \only<6>{
+                    \begin{figure}%
+                        \includegraphics[width=.5\columnwidth]{filter_notch}%
+                    \end{figure}
+                }
+            \end{columns}
+    \end{frame}
+	\begin{frame}{filters}{common transfer function shapes}
+			\begin{figure}
+				\centerline{\includegraphics[scale=.5]{graph/filter}}
+			\end{figure}
+	\end{frame}
+    \begin{frame}{filters}{filter banks}
+        \vspace{-3mm}
+        \only<1>{
+        \begin{figure}%
+            \includegraphics[width=.6\columnwidth]{filterbank}%
+        \end{figure}
+        }
+        \vspace{-2mm}
+        \only<2>{
+        \begin{figure}%
+            \includegraphics[width=.9\columnwidth]{filterbank2}%
+        \end{figure}
+        }
+    \end{frame}
+    
+\section{parameters}
+        \begin{frame}{filters}{filter parameters --- lowpass/highpass}
+            \begin{columns}
+            \column{.5\linewidth}
+                \begin{itemize}
+                    \item   \textbf{cut-off} frequency $f_\mathrm{c}$
+                        \begin{itemize}
+                            \item   frequency marking the transition of pass to stop band
+                            \item   \unit[-3]{dB} of pass band level
+                        \end{itemize}
+                    \smallskip
+                    \item   \textbf{slope}/steepness
+                        \begin{itemize}
+                            \item   measured in dB/Octave or dB/Decade
+                            \item   typically directly related to filter order
+                        \end{itemize}
+                    \smallskip
+                    \item   sometimes: \textbf{resonance}    
+                        \begin{itemize}
+                            \item   level increase in narrow band around cut-off frequency
+                        \end{itemize}
+                \end{itemize}
+            \column{.5\columnwidth}
+                \begin{figure}%
+                    \includegraphics[width=1.1\columnwidth]{filter_parameters_lowpass}%
+                \end{figure}
+            \end{columns}
+        \end{frame}
+        \begin{frame}{filters}{filter parameters --- bandpass/bandstop}
+            \begin{columns}
+            \column{.5\linewidth}
+                \begin{itemize}
+                    \item   \textbf{center} frequency $f_\mathrm{c}$
+                        \begin{itemize}
+                            \item   frequency marking the center of the pass or stop band
+                        \end{itemize}
+                    \smallskip
+                    \item   \textbf{bandwidth} $\Delta B$
+                        \begin{itemize}
+                            \item   width of the pass band
+                            \item   at \unit[-3]{dB} of max pass band level
+                        \end{itemize}
+                    \smallskip
+                    \item   possibly: \textbf{slope}    
+                        \begin{itemize}
+                            \item   typically directly related to filter order
+                        \end{itemize}
+                \end{itemize}
+            \column{.5\columnwidth}
+                \begin{figure}%
+                    \includegraphics[width=1.1\columnwidth]{filter_parameters_bandpass}%
+                \end{figure}
+            \end{columns}
+        \end{frame}
+        \begin{frame}{filters}{filter parameters --- peak}
+            \begin{columns}
+            \column{.5\linewidth}
+                \begin{itemize}
+                    \item   \textbf{center} frequency $f_\mathrm{c}$
+                        \begin{itemize}
+                            \item   frequency marking the center of the peak
+                        \end{itemize}
+                    \smallskip
+                    \item   \textbf{Q factor} or \textbf{bandwidth} $\Delta B$
+                        \begin{itemize}
+                            \item   width of the bell
+                            \item   at \unit[-3]{dB} of max gain
+                            \[Q = \frac{f_\mathrm{c}}{\Delta B}\]
+                        \end{itemize}
+                    \smallskip
+                    \item   \textbf{gain}    
+                        \begin{itemize}
+                            \item   amplification/attenuation in dB
+                        \end{itemize}
+                \end{itemize}
+            \column{.5\columnwidth}
+                \begin{figure}%
+                    \includegraphics[width=1.1\columnwidth]{filter_parameters_peak}%
+                \end{figure}
+            \end{columns}
+        \end{frame}
+        \begin{frame}{filters}{filter parameters --- overview}
+            \begin{footnotesize}
+            \begin{table}%
+            \begin{tabular}{l|ccccc}
+                \textit{parameter} & \textbf{lowpass} & \textbf{low shelving} & \textbf{band pass} & \textbf{peak} & \textbf{resonance}\\ \hline
+                \textit{frequency} &cut-off&cut-off&center&center&center\\
+                \textit{bandwidth/Q} &res.\ gain&---&$\Delta B$& $Q$ &---\\
+                %slope &dB/Oct&---&dB/Oct&---&---\\
+                \textit{gain} &---&yes&---&yes&---
+            \end{tabular}
+            \end{table}
+            \end{footnotesize}
+        \end{frame}
+        
+\section{examples}	
+	\begin{frame}{filters}{digital filter description}
+		filter is defined by its
+		\begin{itemize}
+			\item	complex transfer function $H(\mathrm{j}\omega)$, or its
+			\item	impulse response $h(t)$, or its
+			\item	\textit{list of pole and zero positions in the Z-plane}
+		\end{itemize}
+		\pause
+		\begin{equation*}
+			H(\mathrm{j}\omega) = \mathfrak{F}\{h(t)\}
+		\end{equation*}
+	\end{frame}
+
+	
+	\begin{frame}{filters}{example 1}
+        \setbeamercovered{invisible}
+
+	        \begin{figure}
+				\begin{center}
+	            \begin{picture}(50,30)
+	
+	                %boxes
+	                \put(25,5){\framebox(7,6){\footnotesize{$z^{-1}$}}}
+	
+	                %lines horizontal
+	                \put(5,20){\vector(1,0){22.5}}
+	                \put(29.5,20){\vector(1,0){11.5}}
+	                \put(43,20){\vector(1,0){10}}
+	                
+	                \put(15,8){\vector(1,0){10}}
+	                \put(32,8){\line(1,0){10}}
+	
+	                %lines vertical
+	                \put(15,20){\line(0,-1){12}}
+	                \put(42,8){\vector(0,1){4}}
+	                \put(42,14){\vector(0,1){5}}
+	                
+	                %circles
+	                \put(27,19){$\otimes$}
+	                \put(40.5,19){$\oplus$} % 42-20
+	                \put(40.5,12){$\otimes$}
+	                
+	                \put(15,20){\circle*{1}}
+	
+	                %text
+	                \put(26,24){\footnotesize{\shortstack[c]{$\nicefrac{1}{2}$}}}
+	                \put(46,10){\footnotesize{\shortstack[c]{$\nicefrac{1}{2}$}}}
+	
+	                \put(4,22){\footnotesize{\shortstack[c]{x(i)}}}
+	                \put(52,22){\footnotesize{\shortstack[c]{y(i)}}}
+	
+	            \end{picture}
+				\end{center}
+	        \end{figure}
+        
+        	\pause
+            \begin{equation*}
+        		y(i) = 0.5\cdot x(i) + 0.5\cdot x(i-1)
+        	\end{equation*}
+	\end{frame}	
+	
+	\begin{frame}{filters}{example 1: transfer function 1/2}
+    	\begin{eqnarray*}
+	        		y(i) &=& 0.5\cdot x(i) + 0.5\cdot x(i-1)\\
+	        		H(z) &=& 0.5  + 0.5\cdot z^{-1}\\
+	       	\pause
+	        		H(j\omega) &=& 0.5  + 0.5\cdot e^{-j\omega}\\
+	       	\pause
+	       			|H(j\omega)| &=&0.5 \cdot \left| e^{-j\frac{\omega}{2}} \cdot \left( e^{j\frac{\omega}{2}} + e^{-j\frac{\omega}{2}}\right)\right| \\
+	       	\pause
+	       				&=&0.5 \cdot \underbrace{\left| e^{-j\frac{\omega}{2}}\right|}_{1} \cdot  \underbrace{\left|\left( e^{j\frac{\omega}{2}} + e^{-j\frac{\omega}{2}}\right)\right|}_{\left| 2\cos\left(\frac{\omega}{2}\right) \right|} \\
+	       	\pause
+	       	&=& \left| \cos\left(\frac{\omega}{2}\right) \right|
+    	\end{eqnarray*}
+	\end{frame}	
+	
+	\begin{frame}{filters}{example 1: transfer function 2/2}
+		\begin{figure}
+			\centerline{\includegraphics[scale=.5]{graph/fx_01}}
+		    \label{fig:fx_01}
+		\end{figure}
+	\end{frame}	
+	
+	\begin{frame}{filters}{example 2}
+        \setbeamercovered{invisible}
+        \begin{figure}
+			\begin{center}
+            \begin{picture}(50,30)
+
+                %boxes
+                \put(25,5){\framebox(7,6){\footnotesize{$z^{-1}$}}}
+
+                %lines horizontal
+                \put(5,20){\vector(1,0){22.5}}
+                \put(29.5,20){\vector(1,0){11.5}}
+                \put(43,20){\vector(1,0){10}}
+                
+                \put(15,8){\vector(1,0){10}}
+                \put(32,8){\line(1,0){10}}
+
+                %lines vertical
+                \put(15,20){\line(0,-1){12}}
+                \put(42,8){\vector(0,1){4}}
+                \put(42,14){\vector(0,1){5}}
+                
+                %circles
+                \put(27,19){$\otimes$}
+                \put(40.5,19){$\oplus$} % 42-20
+                \put(40.5,12){$\otimes$}
+                
+                \put(15,20){\circle*{1}}
+
+                %text
+                \put(26,24){\footnotesize{\shortstack[c]{$\nicefrac{1}{2}$}}}
+                \put(46,10){\footnotesize{\shortstack[c]{$-\nicefrac{1}{2}$}}}
+
+                \put(4,22){\footnotesize{\shortstack[c]{x(i)}}}
+                \put(52,22){\footnotesize{\shortstack[c]{y(i)}}}
+
+            \end{picture}
+			\end{center}
+        \end{figure}
+        \pause
+    	\begin{eqnarray*}
+    		y(i) &=& 0.5\cdot x(i) - 0.5\cdot x(i-1)\\
+    		H(z) &=& 0.5  - 0.5\cdot z^{-1}\\
+    	\pause
+    		|H(j\omega)| &=& \left| \sin\left(\frac{\omega}{2}\right) \right|
+    	\end{eqnarray*}
+	\end{frame}	
+	
+	\begin{frame}{filters}{example 2: transfer function}
+		\begin{figure}
+			\centerline{\includegraphics[scale=.5]{graph/fx_02}}
+		\end{figure}
+	\end{frame}	
+	
+	\begin{frame}{filters}{example 3}
+        \setbeamercovered{invisible}
+       \begin{figure}[!hbt]
+			\begin{center}
+            \begin{picture}(50,30)
+
+                %boxes
+                \put(25,5){\framebox(7,6){\footnotesize{$z^{-N}$}}}
+
+                %lines horizontal
+                \put(5,20){\vector(1,0){22.5}}
+                \put(29.5,20){\vector(1,0){11.5}}
+                \put(43,20){\vector(1,0){10}}
+                
+                \put(15,8){\vector(1,0){10}}
+                \put(32,8){\line(1,0){10}}
+
+                %lines vertical
+                \put(15,20){\line(0,-1){12}}
+                \put(42,8){\vector(0,1){4}}
+                \put(42,14){\vector(0,1){5}}
+                
+                %circles
+                \put(27,19){$\otimes$}
+                \put(40.5,19){$\oplus$} % 42-20
+                \put(40.5,12){$\otimes$}
+                
+                \put(15,20){\circle*{1}}
+
+                %text
+                \put(26,24){\footnotesize{\shortstack[c]{$\nicefrac{1}{2}$}}}
+                \put(46,10){\footnotesize{\shortstack[c]{$-\nicefrac{1}{2}$}}}
+
+                \put(4,22){\footnotesize{\shortstack[c]{x(i)}}}
+                \put(52,22){\footnotesize{\shortstack[c]{y(i)}}}
+
+            \end{picture}
+			\end{center}
+        \end{figure}
+		\pause      
+    	\begin{eqnarray*}
+    		y(i) &=& 0.5\cdot x(i) - 0.5\cdot x(i-N)\\
+    		H(z) &=& 0.5  - 0.5\cdot z^{-N}\\
+			\pause
+    		|H(j\omega)| &=& 0.5\cdot\left| e^{-j\frac{N\omega}{2}} \cdot \left(e^{j\frac{N\omega}{2}} - e^{-j\frac{N\omega}{2}} \right) \right|\\
+			\pause
+    		 &=& \left| \sin\left(\frac{N\omega}{2}\right) \right|
+    	\end{eqnarray*}
+	\end{frame}	
+	
+	\begin{frame}{filters}{example 3: transfer function}
+		\begin{figure}
+			\centerline{\includegraphics[scale=.5]{graph/fx_03}}
+		    \label{fig:fx_03}
+		\end{figure}
+	\end{frame}	
+	
+	\begin{frame}{filters}{example 4}
+        \setbeamercovered{invisible}
+        \begin{figure}
+			\begin{center}
+            \begin{picture}(50,70)
+
+                %boxes
+                \put(25,50){\framebox(7,6){\footnotesize{$z^{-1}$}}}
+                \put(25,38){\framebox(7,6){\footnotesize{$z^{-2}$}}}
+                \put(28,28){\shortstack[c]{$\vdots$}}
+                \put(21,14){\framebox(14,6){\footnotesize{$z^{-(\mathcal{J}-1)}$}}}
+
+                %lines horizontal
+                \put(5,65){\vector(1,0){22.5}}
+                \put(29.5,65){\vector(1,0){11.5}}
+                \put(43,65){\vector(1,0){10}}
+                
+                \put(15,53){\vector(1,0){10}}
+                \put(32,53){\vector(1,0){4}}
+                \put(38,53){\vector(1,0){3}}
+                
+                \put(15,41){\vector(1,0){10}}
+                \put(32,41){\vector(1,0){4}}
+                \put(38,41){\vector(1,0){3}}
+                
+                \put(15,29){\vector(1,0){10}}
+                \put(32,29){\vector(1,0){4}}
+                \put(38,29){\vector(1,0){3}}
+                
+                \put(15,17){\vector(1,0){6}}
+                \put(35,17){\line(1,0){7}}
+
+                %lines vertical
+                \put(15,65){\line(0,-1){48}}
+                \put(42,54){\vector(0,1){10}}
+                %\put(42,60){\vector(0,1){4}}
+                
+                \put(42,42){\vector(0,1){10}}
+                %\put(42,48){\vector(0,1){4}}
+                
+                \put(42,30){\vector(0,1){10}}
+                %\put(42,36){\vector(0,1){4}}
+                
+                \put(42,17){\vector(0,1){5}}
+                \put(42,24){\vector(0,1){4}}
+                
+                %circles
+                \put(27,64){$\otimes$}
+                \put(40.5,64){$\oplus$} % 42-20
+                \put(40.5,52){$\oplus$} % 42-20
+                \put(40.5,40){$\oplus$} % 42-20
+                \put(40.5,28){$\oplus$} % 42-20
+                
+                \put(35.5,52){$\otimes$}
+                \put(35.5,40){$\otimes$}
+                \put(35.5,28){$\otimes$}
+                \put(40.5,22){$\otimes$}
+                
+                \put(15,65){\circle*{1}}
+                \put(15,53){\circle*{1}}
+                \put(15,41){\circle*{1}}
+                \put(15,29){\circle*{1}}
+
+                %text
+                \put(26,69){\footnotesize{\shortstack[c]{$\nicefrac{1}{\mathcal{J}}$}}}
+                \put(35,57){\footnotesize{\shortstack[c]{$\nicefrac{1}{\mathcal{J}}$}}}
+                \put(35,45){\footnotesize{\shortstack[c]{$\nicefrac{1}{\mathcal{J}}$}}}
+                \put(35,33){\footnotesize{\shortstack[c]{$\nicefrac{1}{\mathcal{J}}$}}}
+                \put(44,21){\footnotesize{\shortstack[c]{$\nicefrac{1}{\mathcal{J}}$}}}
+
+                \put(4,67){\footnotesize{\shortstack[c]{x(i)}}}
+                \put(52,67){\footnotesize{\shortstack[c]{y(i)}}}
+
+            \end{picture}
+			\end{center}
+        \end{figure}
+        
+    	\vspace{-20mm}
+        \pause
+    	\begin{equation*}
+    		y(i) = \frac{1}{\mathcal{J}}\sum_{j=0}^{\mathcal{J}-1} x(i-j)
+    	\end{equation*}
+	\end{frame}
+	\begin{frame}{filters}{example 4: transfer function}
+		\begin{figure}
+			\centerline{\includegraphics[scale=.5]{graph/fx_04}}
+		\end{figure}
+    	\begin{equation*}
+    		H(j\omega) = e^{-\mathrm{j}\mathcal{J}\frac{\omega}{2}}\frac{\sin\left(\mathcal{J}\cdot\frac{\omega}{2} \right)}{\mathcal{J}\cdot\sin\left(\frac{\omega}{2} \right)}
+    	\end{equation*}
+	\end{frame}	
+	\begin{frame}{filters}{example 4: recursive implementation}
+		\begin{eqnarray*}
+			y(i) &=& \sum\limits_{j=0}^{\mathcal{J}-1}{\frac{1}{\mathcal{J}}\cdot x(i-j)}\nonumber\\
+			\pause
+			&=& \frac{1}{\mathcal{J}}\cdot \big(x(i) - x(i-\mathcal{J})\big) + \underbrace{\sum\limits_{j=1}^{\mathcal{J}}{\frac{1}{\mathcal{J}}\cdot x(i-j)}}_{y(i-1)}\nonumber\\
+			\pause
+			&=& \frac{1}{\mathcal{J}}\cdot \big(x(i) - x(i-\mathcal{J})\big) + y(i-1) 
+		\end{eqnarray*} 
+		\pause
+		\textcolor{gtgold}{not applicable with windowed coefficients!}
+	\end{frame}
+	\begin{frame}{filters}{example 5}
+        \setbeamercovered{invisible}
+	        \begin{figure}[!hbt]
+				\begin{center}
+	            \begin{picture}(50,30)
+	
+	                %boxes
+	                \put(25,5){\framebox(7,6){\footnotesize{$z^{-1}$}}}
+	
+	                %lines horizontal
+	                \put(0,20){\vector(1,0){6}}
+	                \put(8,20){\vector(1,0){47}}
+	                
+	                \put(15,8){\line(1,0){10}}
+	                \put(42,8){\vector(-1,0){10}}
+	
+	                %lines vertical
+	                \put(42,20){\line(0,-1){12}}
+	                \put(15,8){\vector(0,1){4}}
+	                \put(15,14){\vector(0,1){5}}
+	                
+	                %circles
+	                \put(5.5,19){$\otimes$}
+	                \put(13.5,19){$\oplus$} % 15-20
+	                \put(13.5,12){$\otimes$}
+	                
+	                \put(42,20){\circle*{1}}
+	
+	                %text
+	                \put(4,22){\footnotesize{\shortstack[c]{$(1-\alpha)$}}}
+	                \put(11,10){\footnotesize{\shortstack[c]{$\alpha$}}}
+	
+	                \put(-2,22){\footnotesize{\shortstack[c]{x(i)}}}
+	                \put(52,22){\footnotesize{\shortstack[c]{y(i)}}}
+	
+	            \end{picture}
+				\end{center}
+	        \end{figure}
+            \pause
+        	\begin{eqnarray*}
+        		y(i) &=& (1-\alpha)\cdot x(i) + \alpha\cdot y(i-1)\\
+        			&=& x(i) + \alpha \cdot (y(i-1) - x(i))
+        	\end{eqnarray*}
+	\end{frame}
+	
+	\begin{frame}{Example 5: transfer function 1/2}
+    	\begin{eqnarray*}
+        		y(i) &=& (1-\alpha)\cdot x(i) + \alpha\cdot y(i-1)\\
+        		H(z) &=& \frac{1-\alpha}{1-\alpha z^{-1}}\\
+        \pause
+        		H(j\omega) &=& \frac{1-\alpha}{1-\alpha e^{-j\omega}}\\
+        \pause
+        		|H(j\omega)| &=& \left|\frac{1-\alpha}{1-\alpha e^{-j\omega}}\right| \\
+        \pause
+        		&=&\frac{1-\alpha}{\sqrt{\left(1 + \alpha^2 - 2\alpha\cos(\omega)\right)}} 
+    	\end{eqnarray*}
+	\end{frame}
+	\begin{frame}{filters}{example 5: transfer function 2/2}
+		\begin{figure}
+			\centerline{\includegraphics[scale=.5]{graph/fx_05}}
+		\end{figure}
+	\end{frame}
+	\begin{frame}{filters}{example 6}
+        \begin{figure}[!hbt]
+			\begin{center}
+            \begin{picture}(50,30)
+
+                %boxes
+                \put(25,5){\framebox(7,6){\footnotesize{$z^{-N}$}}}
+
+                %lines horizontal
+                \put(0,20){\vector(1,0){14}}
+                \put(16,20){\vector(1,0){32}}
+                \put(50,20){\vector(1,0){5}}
+                
+                \put(15,8){\line(1,0){10}}
+                \put(42,8){\vector(-1,0){10}}
+
+                %lines vertical
+                \put(42,20){\line(0,-1){12}}
+                \put(15,8){\vector(0,1){4}}
+                \put(15,14){\vector(0,1){5}}
+                
+                %circles
+                \put(47.5,19){$\otimes$}
+                \put(13.5,19){$\oplus$} % 15-20
+                \put(13.5,12){$\otimes$}
+                
+                \put(42,20){\circle*{1}}
+
+                %text
+                \put(43,22){\footnotesize{\shortstack[c]{$b_0$}}}
+                \put(8,10){\footnotesize{\shortstack[c]{$-a_N$}}}
+
+                \put(-2,22){\footnotesize{\shortstack[c]{x(i)}}}
+                \put(52,22){\footnotesize{\shortstack[c]{y(i)}}}
+
+            \end{picture}
+			\end{center}
+        \end{figure}
+    	\begin{equation*}
+    		y(i) = b_0\cdot x(i) - a_N\cdot y(i-N)
+    	\end{equation*}
+	\end{frame}
+	\begin{frame}{filters}{example 6: transfer function}
+		\begin{figure}
+			\centerline{\includegraphics[scale=.5]{graph/fx_06}}
+		    \label{fig:fx_06}
+		\end{figure}
+    	\begin{equation*}
+    		H(j\omega) = \frac{b_0}{1-a_N\cdot e^{-j\omega N}}
+    	\end{equation*}
+	\end{frame}
+	\begin{frame}{filters}{biquad: structure}
+        \vspace{-3mm}
+		\begin{figure}
+			\centerline{\includegraphics[scale=.3]{graph/general_biquad_jos}}
+		    \label{fig:general_biquad}
+		\end{figure}
+		\pause
+		\vspace{-3mm}
+		\begin{eqnarray*}
+			\text{diff eq}: y(i) 	&=& \sum_{k=0}^{K_1}{b_k\cdot x(i-k)} + \sum_{k=1}^{K_2}{-a_k\cdot y(i-k)} \nonumber\\
+			\text{trans. fct}: H(z) 	&=& \frac{Y(z)}{X(z)} =  \frac{\sum_{k=0}^{K_1}{b_k\cdot z^{-k}}}{1 + \sum_{k=1}^{K_2}{a_k\cdot z^{-k}}} 
+		\end{eqnarray*}
+	\end{frame}
+
+	\section{summary}	
+        \begin{frame}{filters}{summary}
+            \vspace{-3mm}
+            \begin{itemize}
+                \item   filter (equalization) can be used for various tasks
+                    \begin{itemize}
+                        \item   changing the sound quality of a signal
+                        \item   hiding unwanted frequency components
+                        \item   smoothing
+                        \item   processing for measurement and transmission
+                    \end{itemize}
+                \item<2->   most common audio filter types are
+                    \begin{itemize}
+                        \item   low/high pass
+                        \item   peak
+                        \item   shelving
+                    \end{itemize}
+                \item<3->   filter parameters include
+                    \begin{itemize}
+                        \item   frequency (mid, cutoff)
+                        \item   bandwidth or Q
+                        \item   gain
+                    \end{itemize}
+                \item<4->   filter orders
+                    \begin{itemize}
+                        \item   typical orders are 1st, 2nd, maybe 4th
+                        \item   higher order give more flexibility wrt transfer function
+                        \item   higher orders are difficult to design and control
+                        \item   higher orders can be split into multiple low order filters
+                    \end{itemize}
+            \end{itemize}
+        \end{frame}
+ 
+
+\end{document}
+

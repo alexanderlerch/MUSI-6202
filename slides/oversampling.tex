@@ -1,0 +1,67 @@
+\subsection{oversampling}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{oversampling: introduction}
+		\begin{itemize}
+            \item   \textbf{oversampling}: sample at higher sample rate than necessary
+            \begin{itemize}
+                \item	less steep anti-aliasing filters
+                \item	?
+            \end{itemize}
+            \pause
+			\item	\textbf{quantization error properties}
+			\begin{enumerate}
+				\item	\textit{white} noise: flat spectrum
+				\item	noise power \textit{sample rate independent}
+			\end{enumerate}
+            \pause
+            \bigskip
+			\item[$\Rightarrow$] 
+			$|Q(\jom)|^2 \sim \frac{\Delta^2}{12\cdot \omega_\mathrm{S}}$
+            \pause
+            \bigskip
+			\item[$\Rightarrow$] use oversampling to \textbf{reduce quantization error power }in lower frequencies
+		\end{itemize}
+	\end{frame}	
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{oversampling: visualization}
+		\vspace{-5mm}
+        \only<2>{
+		\begin{figure}
+			\centering
+				\includegraphics[scale=.9]{Graph/oversampling1}
+		\end{figure}
+		}
+		\only<1>{
+		\begin{figure}
+			\centering
+				\includegraphics[scale=.35]{Graph/oversampling2}
+		\end{figure}
+		}
+	\end{frame}	
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{oversampling: SNR gain}
+		\begin{eqnarray*}
+			\omega^\ast_S &=& L\cdot \omega_S\\
+            \bigskip
+			|Q(\jom)|^2 &=& \frac{\Delta^2}{12\cdot \omega^\ast_S}\\
+			&=& \frac{\Delta^2}{12\cdot L\cdot \omega_S}\\
+			\pause
+            \bigskip
+			W^\ast_\mathrm{Q,LP} &=& \frac{\Delta^2}{12\cdot L}\\
+			\pause
+            \Rightarrow&&\\
+			SNR^\ast &=& \only<3>{?}\only<4->{6.02\cdot w + 10\log_{10} (L) + c_S}
+		\end{eqnarray*}
+	\end{frame}	
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{oversampling: summary}
+		\vspace{-10mm}
+        \begin{flushright}
+			 \includegraphics[scale=.25]{Graph/exclamation-mark}
+		\end{flushright}
+		\begin{block}{\textbf{oversampling}}
+			\centering
+			\begin{equation}
+				SNR = 6.02\cdot w + c_{\mathrm{S}} + 10\cdot\log_{10} (L)\quad [dB]
+			\end{equation}
+			\begin{itemize}
+				\item	every doubling of $f_{\mathrm{S}}$ adds app.\ \unit[3]{dB} SNR
+			\end{itemize}
+		\end{block}
+	\end{frame}	
