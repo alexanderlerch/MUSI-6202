@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 \subtitle{Part 1: Organizational}
 
@@ -18,20 +17,19 @@
                             \begin{itemize}
                                 \item   {email}: \url{mailto:alexander.lerch@gatech.edu}
                                 \item   {www}: \url{www.audiocontentanalysis.org}
-                                \item   {office}: Couch 205B
-                                \item   {office hours}:  \textbf{by appointment}: \url{https://www.calendly.com/alexanderlerch}
+                                \item   {office}: Couch 203
+                                \item   {office hours}:  \textbf{by appointment}: \url{https://go.oncehub.com/alexanderlerch}
                             \end{itemize}
-                        %\item   \textit{teaching assistants}
-                            %\begin{itemize}
-                                %\item    Siddharth Gururani: \url{siddgururani@gatech.edu}
-                                %\item    Ashis Pati: \url{ashis.pati@gatech.edu}
-                            %\end{itemize}
+                        \item   \textit{teaching assistant}
+                            \begin{itemize}
+                                \item    Karn Watcharasupat: \url{kwatchar3@gatech.edu}
+                            \end{itemize}
                     \end{itemize}
                 
                 \smallskip
                 \item<2-> \textbf{classes}
                     \begin{itemize}
-                        \item   Mon, Wed  3:00--4:15pm in WV163
+                        \item   Mon, Wed  3:00--4:15pm in WV175
                         \item   additional \textit{tutorial group}: TBD
                     \end{itemize}
                 
@@ -40,7 +38,7 @@
                     \begin{itemize}
                         \item	\textit{canvas}:
                             \begin{itemize}
-                                \item   syllabus, grades, slides: \url{www.canvas.gatech.edu}
+                                \item   syllabus, grades, slides: \url{https://canvas.gatech.edu}
                             \end{itemize}
                     \end{itemize}
             \end{itemize}
@@ -51,10 +49,11 @@
             \begin{itemize}
                 \item	\textbf{goals}
                         \begin{enumerate}
-                            \item   ability to comprehend typical representations of digital systems such as block diagrams and difference equations,
-                            \item   understanding of typical transforms in DSP such as the Fourier transform or the Z-transform,
-                            \item    ability to use this understanding to design audio processing systems such as audio effects, and
-                            \item	ability to implement such designs in a programming language such as Matlab.
+                            \item   the ability to comprehend typical representations of digital systems such as block diagrams and difference equations,
+                            \item   an understanding of typical transforms in DSP such as the Fourier transform or the Z-transform,
+                            \item   an understanding of typical signal processing approaches to audio and music signals,
+                            \item   the ability to use this understanding to design audio processing systems such as audio effects, and
+                            \item   the ability to implement such designs in a programming language such as Matlab.
                         \end{enumerate}
 
                 \smallskip
@@ -71,22 +70,22 @@
                 \begin{tabular}{l|p{.4\linewidth}|p{.1\linewidth}|p{.2\linewidth}||p{.1\linewidth}}
             \textbf{date} & \textbf{topics} & \textbf{exercise} & \textbf{assignment} & \textbf{notes}\\
             \hline\hline
-            01/07 & introduction, signals, periodicity, random processes, pdf, moments, correlation & correlation &  &  \\
-            01/14 & convolution, power spectral density & FIR filter& filter \& convolution & \\
-            01/21 & Fourier series \& Fourier transform& DFT & Fourier analysis & MLK Hldy.\\
-            01/28 &Fourier transform, sampling, quantization, SNR, number formats& quantization&& \\
-            02/04 &oversampling, dither, noise-shaping, non-linear quant.&&dither, ns  & \\
-            02/11 &z-transform, digital audio filters, FIR/IIR, FFT filtering& biquad& & midterm I\\
-            02/18 &sample rate conversion, real-time systems &resampling&& \\
-            02/25 &delay-based FX and reverb&vibrato& mod. fx&\\
-            03/04 &dynamics processing& PPM & limiter & guthman\\
-            03/11 &time-segment processing (OLA)&ola&& midterm II \\
-            03/18 &&&&spring break \\
-            03/25 &phase-vocoder&& phase voc&\\
-            04/01 &source coding: LPC, ADPCM&&& \\
-            04/08 &source coding: Huffman, AAC&&& \\
-            04/15 &denoising&&& \\
-            04/22 &competition results&&& \\
+            01/09 & introduction, signals, periodicity, random processes, pdf, expectation values/moments, correlation & correlation &  &  \\
+            01/16 & convolution & FIR filter& filter \& convolution & \\
+            01/23 & Fourier series \& Fourier transform& DFT & Fourier analysis & MLK Hldy.\\
+            01/30 &Fourier transform, sampling, quantization, SNR, number formats& quantization&& \\
+            02/06 &oversampling, dither, noise-shaping, non-linear quant.&&dither, ns  & \\
+            02/13 &z-transform, digital audio filters, FIR/IIR, FFT filtering& biquad& & midterm I\\
+            02/20 &sample rate conversion, real-time systems &resampling&& \\
+            02/27 &denoising&&& \\
+            03/06 &delay-based FX and reverb&vibrato& mod. fx&guthman?\\
+            03/13 &dynamics processing& PPM & limiter & midterm II \\
+            03/20 &&&&spring break \\
+            03/27 &time-segment processing (OLA)&ola&& \\
+            04/03 &phase-vocoder&& phase voc&\\
+            04/10 &source coding: LPC, ADPCM&&& \\
+            04/17 &source coding: Huffman, AAC&&& \\
+            04/24 &competition results&&& \\
                 \end{tabular}
             \end{scriptsize}
         \end{frame}
@@ -157,7 +156,7 @@
                     \end{itemize}
                 
                 \smallskip
-                \item   \textbf{20\% codec competition}
+                \item   \textbf{20\% denoising competition}
             \end{itemize}
         \end{frame}
 

@@ -1,0 +1,112 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% theme & layout
+\usetheme{Frankfurt}
+\useinnertheme{rectangles}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{frametitle}[default][colsep=-4bp,rounded=false,shadow=false]
+\setbeamertemplate{frametitle}
+{%
+    \nointerlineskip%
+    %\vskip-0.5ex
+    \begin{beamercolorbox}[wd=\paperwidth,ht=3.5ex,dp=0.6ex]{frametitle}
+        \hspace*{1.3ex}\insertframetitle%
+        
+        \hspace*{1.3ex}\small\insertframesubtitle%
+    \end{beamercolorbox}%
+    \begin{textblock*}{100mm}(13.75cm,1cm)
+        \includegraphics[height=.4cm,keepaspectratio]{../shared/Logo_GTCMT_white}
+    \end{textblock*}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{title page}[default][colsep=-4bp,rounded=false,shadow=false]
+\setbeamertemplate{title page}
+{
+    %\begin{textblock*}{100mm}(15cm,.51cm)
+            %\href{https://github.com/alexanderlerch/ACA-Slides/blob/2nd_edition/\jobname.pdf}{\includegraphics[height=.5cm,keepaspectratio]{graph/Logo_github}}\hspace*{2ex}
+    %\end{textblock*}
+    %\begin{textblock*}{100mm}(15cm,1.3cm)
+            %\href{\IEEELink}{\includegraphics[height=.5cm,keepaspectratio]{graph/icon/book}}\hspace*{2ex}
+    %\end{textblock*}
+    \vskip-10ex
+    \begin{beamercolorbox}[wd=\paperwidth,ht=.7\paperheight,dp=0.6ex]{frametitle} %35ex
+        %\begin{flushright}
+            %\href{http://www.gtcmt.gatech.edu}{\includegraphics[height=.8cm,keepaspectratio]{graph/Logo_GTCMT_black}}\hspace*{2ex}
+        %\end{flushright}
+        
+        \hspace*{1.8ex}\LARGE\inserttitle%
+        
+        \vspace*{.5ex}
+        
+        \hspace*{1.3ex}\small\insertsubtitle%
+        
+        \vspace*{.5ex}
+    \end{beamercolorbox}%
+    \nointerlineskip%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=.4\paperheight,dp=0.6ex]{page number in head/foot}
+        %\vspace*{-.5ex}
+        \hspace*{1.7ex}\small\insertauthor%
+        
+        %\hspace*{1.7ex}\small }%
+        
+        \vspace*{12ex}
+        \vfill
+        \begin{flushright}
+            \href{http://www.gtcmt.gatech.edu}{\includegraphics[height=.5cm,keepaspectratio]{../shared/Logo_GTCMT_black}}\hspace*{2ex}
+        \end{flushright}
+    \end{beamercolorbox}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\makeatother
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,left,leftskip=1ex]{page number in head/foot}%
+    \insertsubtitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,right,rightskip=1ex]{page number in head/foot}%
+    \hfill
+    \insertframenumber{} / \inserttotalframenumber
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+%\makeatletter
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[default]%[rounded=false,shadow=false]
+\setbeamertemplate{itemize item}[square]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{itemize subsubitem}[triangle]
+\setbeamertemplate{enumerate item}[square]
+\setbeamertemplate{enumerate subitem}[circle]
+\setbeamertemplate{enumerate subsubitem}[circle]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% colors
+\setbeamercolor{structure}{fg=darkgray}
+\setbeamercovered{transparent} %invisible
+\setbeamercolor{bibliography entry author}{fg=black}
+\setbeamercolor*{bibliography entry title}{fg=black}
+\setbeamercolor*{bibliography entry note}{fg=black}
+\setbeamercolor{frametitle}{fg=black}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{subtitle}{fg=white}
+\setbeamercolor{frametitle}{fg=white}
+\setbeamercolor{framesubtitle}{fg=white}
+\setbeamercolor{mini frame}{fg=white, bg=black}
+\setbeamercolor{section in head/foot}{fg=white, bg=darkgray}
+\setbeamercolor{page number in head/foot}{fg=black, bg=gtgold}
+\setbeamercolor{item projected}{fg=white, bg=black}
+
+%---------------------------------------------------------------------------------

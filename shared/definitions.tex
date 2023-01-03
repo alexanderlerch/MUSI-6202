@@ -1,7 +1,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % colors
-\definecolor{gtgold}{HTML}{E0AA0F} %{rgb}{0.88,0.66,1,0.06} [234, 170, 0]/256
+\definecolor{gtgold}{rgb}{.914, .664, 0} %0e7eed {rgb}{0.88,0.66,1,0.06} [234, 170, 0]/256 %96caff
+\definecolor{darkgray}{rgb}{.15, .15, .15}
+\definecolor{lightblue}{HTML}{0e7eed}
+\definecolor{highlight}{rgb}{0, 0, 1} %_less!40
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% relative paths
+\graphicspath{{graph/}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% units
+\setlength{\unitlength}{1mm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28,55 +42,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % media9
-\newcommand{\includeaudio}[1]{{\includemedia[
-                        addresource=audio/#1.mp3,
-                        width=5mm,
-                        height=5mm,
-                        activate=onclick,
-                        flashvars={
-                            source=audio/#1.mp3  
-                            &autoPlay=true
-                        }]
-                        {\includegraphics[width=5mm, height=5mm]{SpeakerIcon}}
-                        {APlayer.swf}}}
-\newcommand{\audioautoplay}[1]{{\begin{center}\includemedia[
-                            addresource=audio/#1.mp3,
-                            width=.1\linewidth,
-                            height=.01\linewidth,
-                            activate=pageopen,
-                            flashvars={
-                                source=audio/#1.mp3  
-                                &autoPlay=true
-                            }]
-                            {}
-                            {APlayer.swf}\end{center}}}
+\newcommand{\includeaudio}[1]{
+\href{run:audio/#1.mp3}{\includegraphics[width=5mm, height=5mm]{graph/SpeakerIcon}}}
 
-\newcommand{\includevideo}[1]{{\begin{center}\includemedia[
-                        addresource=video/#1.mp4,
-                        width=0.8\linewidth,
-                        height=0.4\linewidth,
-                        activate=onclick,
-                        flashvars={
-                            source=video/#1.mp4  
-                            &autoPlay=true
-                        }]
-                        {}
-                        {VPlayer.swf}\end{center}}}
-\newcommand{\videowithmatlab}[1]{{\begin{center}\includemedia[
-                        addresource=video/animate#1.mp4,
-                        width=0.8\linewidth,
-                        height=0.4\linewidth,
-                        activate=onclick,
-                        flashvars={
-                            source=video/animate#1.mp4  
-                            &autoPlay=true
-                        }]
-                        {}
-                        {VPlayer.swf}\end{center}\addreference{matlab source: matlab/animate#1.m}}}
 \newcommand{\includeanimation}[4]{{\begin{center}
-                        \animategraphics[autoplay,loop]{#4}{animate#1/#1-}{#2}{#3}        
-                        \end{center} 
-                        \addreference{matlab source: \href{https://bitbucket.org/lerch/classes/raw/master/MUSI2525-Slides/matlab/animate#1.m}{matlab/animate#1.m}}}
+                        \animategraphics[autoplay,loop,scale=.7]{#4}{animation/#1-}{#2}{#3}        
+                        \end{center}
+                        \addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Plots/blob/master/matlab/animate#1.m}{matlab/animate#1.m}}}
                         \inserticon{video}}
                         
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -85,28 +57,17 @@
 \newcommand{\question}[1]{%\vspace{-4mm}
                           \setbeamercovered{invisible}
                           \begin{columns}[T]
-                            \column{.8\textwidth}
+                            \column{.9\textwidth}
                                 \textbf{#1}
-                            \column{.2\textwidth}
+                            \column{.1\textwidth}
                                 \vspace{-8mm}
                                 \begin{flushright}
-                                     \includegraphics[scale=.5]{question_mark}
+                                     \includegraphics[width=.9\columnwidth]{graph/question_mark}
                                 \end{flushright}
                                 \vspace{6mm}
                           \end{columns}\pause\vspace{-12mm}}
 
-\newcommand{\toremember}[1]{%\vspace{-4mm}
-                          %\begin{columns}[T]
-                            %\column{.8\textwidth}
-                                %\textbf{#1}
-                            %\column{.2\textwidth}
-                                %\vspace{-4mm}
-                                %\begin{flushright}
-                                     %\includegraphics[scale=.5]{exclamation_mark}
-                                %\end{flushright}
-                                %\vspace{6mm}
-                          %\end{columns}\vspace{-6mm}
-                        \textbf{#1}
+\newcommand{\toremember}[1]{
                         \inserticon{lightbulb}
                         }
 
@@ -117,38 +78,41 @@
                                 \textbf{matlab exercise}: #1
                             \column{.2\textwidth}
                                 \begin{flushright}
-                                     \includegraphics[scale=.5]{logo_matlab}
+                                     \includegraphics[scale=.5]{graph/logo_matlab}
                                 \end{flushright}
                                 %\vspace{6mm}
                           \end{columns}}
 
 \newcommand{\addreference}[1]{  
                   
-                    \begin{textblock*}{\baselineskip }(1.12\textwidth,.3\textheight) %(1.15\textwidth,.4\textheight)
-                        \rotatebox{90}{\tiny {#1}}
-                    \end{textblock*}}
+                    \begin{textblock*}{\baselineskip }(.98\paperwidth,.5\textheight) %(1.15\textwidth,.4\textheight)
+                         \begin{minipage}[b][.5\paperheight][b]{1cm}%
+                            \vfill%
+                             \rotatebox{90}{\tiny {#1}}
+                        \end{minipage}
+                   \end{textblock*}
+                    }
                     
 \newcommand{\figwithmatlab}[1]{
                     \begin{figure}
                         \centering
-                        \includegraphics{#1}
+                        \includegraphics[scale=.7]{#1}
                         %\label{fig:#1}
                     \end{figure}
                     
-                    \addreference{matlab source: \href{https://bitbucket.org/lerch/classes/raw/master/MUSI2525-Slides/matlab/disp#1.m}{matlab/disp#1.m}}}
+                    \addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Plots/blob/main/matlab/plot#1.m}{plot#1.m}}}
 \newcommand{\figwithref}[2]{
                     \begin{figure}
                         \centering
-                        \includegraphics{#1}
+                        \includegraphics[scale=.7]{#1}
                         \label{fig:#1}
                     \end{figure}
                     
                     \addreference{#2}}  
                                     
 \newcommand{\inserticon}[1]{
-
                     \begin{textblock*}{100mm}(14.5cm,7.5cm)
-                        \includegraphics[height=.8cm,keepaspectratio]{icon/#1}
+                        \includegraphics[height=.8cm,keepaspectratio]{graph/#1}
                     \end{textblock*}}            
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -161,6 +125,7 @@
 \newcounter{iXBlockSize}
 \newcounter{iYBlockSize}
 \newcounter{iYBlockSizeDiv2}
+\newcounter{iXBlockSizeDiv2}
 \newcounter{iDistance}
 
-\graphicspath{{../shared/}{Graph/}}
+\newcommand{\IEEELink}{https://ieeexplore.ieee.org/servlet/opac?bknumber=9965970}
