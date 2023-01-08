@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 3: Signals}
@@ -25,7 +24,7 @@
         \item<3-> audio signal
             \begin{itemize}
                 \item   representation of sound (speech, music, etc.)
-                \item   main frequency content is below \unit{12}[kHz]
+                \item   main frequency content is below \unit[12]{kHz}
             \end{itemize}
     \end{itemize}
 \end{frame}
@@ -38,6 +37,9 @@
 		\item	\textbf{random signals}:\\
 				\textit{unpredictable}: no knowledge can help to predict what is coming next (example: white noise)
 	\end{itemize}
+    
+    \pause
+    \bigskip
 	
 	Every ``real-world'' audio signal can be modeled as a time-varying combination of 
 	\begin{itemize}
@@ -72,17 +74,18 @@
 \begin{frame}{audio signals}{periodic signals 1/3}
 	\vspace{-3mm}
     periodic signals most prominent examples of deterministic signals: 
-	\begin{eqnarray}
-		x(t) 	&=& x(t+T_0)\nonumber\\
-		f_0 	&=& \frac{1}{T_0}\nonumber\\
-		\omega_0&=& \frac{2\pi}{T_0}\nonumber
-	\end{eqnarray}
+    \begin{columns}
+    \column{.2\linewidth}
+        \begin{eqnarray}
+            x(t) 	&=& x(t+T_0)\nonumber\\
+            f_0 	&=& \frac{1}{T_0}\nonumber\\
+            \omega_0&=& \frac{2\pi}{T_0}\nonumber
+        \end{eqnarray}
 	
-	\begin{figure}
-		\centering
-			\only<2>{\vspace{-2mm}\includegraphics{graph/Sinusoidal}}
-			\only<3>{\vspace{-5mm}\includegraphics[height=5cm,width=\textwidth]{graph/periodic}}
-	\end{figure}
+    \column{.8\linewidth}
+        \only<2>{\figwithmatlab{Sine}}
+        \only<3>{\figwithmatlab{Periodic}}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{audio signals}{periodic signals 2/3}
@@ -121,26 +124,22 @@
                 \hat{x}(t) = a_1\cdot sin(\omega_0 t) + a_2\cdot sin(2\cdot\omega_0 t)+\ldots+ a_{50}\cdot sin(50\cdot\omega_0 t)
             \end{equation}}
 			\vspace{-10mm}
-            \begin{figure}
-			\centering
-                %\includemovie[poster=graph/additivesynthesis_saw_\arabic{i}.pdf,autoplay=true]{\textwidth}{4cm}{audio/additivesynthesis_saw_\arabic{i}.mp3}
-                \includegraphics[width=\textwidth, height=4cm]{graph/additivesynthesis_saw_\arabic{i}.pdf}
-			\end{figure}
-            \vspace{-5mm}
-			\begin{figure}
-			\flushright
-                \includemedia[
-                    addresource=audio/additivesynthesis_saw_\arabic{i}.mp3,
-                    width=.3\textwidth,
-                    height=3mm,
-                    activate=pageopen,
-                    flashvars={
-                        source=audio/additivesynthesis_saw_\arabic{i}.mp3  
-                        &autoPlay=true
-                    }]
-                    {}
-                    {APlayer.swf}
-			\end{figure}
+            \begin{columns}
+            \column{.9\linewidth}
+                \begin{figure}
+                    \centering
+                    \includegraphics[scale=.75]{AdditiveSynthesisSaw-\arabic{i}}
+                \end{figure}
+            \column{.1\linewidth}
+                
+                \bigskip
+                \only<2>{\includeaudio{additivesynthesis_saw_1} }
+                \only<3>{\includeaudio{additivesynthesis_saw_2} }
+                \only<4>{\includeaudio{additivesynthesis_saw_3} }
+                \only<5>{\includeaudio{additivesynthesis_saw_4} }
+                \only<6>{\includeaudio{additivesynthesis_saw_5} }
+            \end{columns}
+            \addreference{{matlab source: \href{https://github.com/alexanderlerch/MUSI6202/blob/master/matlab/plotAdditiveSynthesis.m}{plotAdditiveSynthesis.m}}}
 		}
 		\stepcounter{i} 
 	}	
@@ -172,27 +171,22 @@
                 \hat{x}(t) = a_1\cdot sin(\omega_0 t) + a_3\cdot sin(3\cdot\omega_0 t)+\ldots+ a_{99}\cdot sin(99\cdot\omega_0 t)
             \end{equation}}
             \vspace{-10mm}
-			\begin{figure}
-			\centering
-                %\includemovie[poster=graph/additivesynthesis_rect_\arabic{i}.pdf,autoplay=true]{\textwidth}{4cm}{audio/additivesynthesis_rect_\arabic{i}.mp3}
-                \includegraphics[width=\textwidth, height=4cm]{graph/additivesynthesis_rect_\arabic{i}.pdf}
- 			\end{figure}
-            \vspace{-5mm}
-            \begin{figure}
-			\flushright
-               \includemedia[
-                    addresource=audio/additivesynthesis_rect_\arabic{i}.mp3,
-                    width=.3\textwidth,
-                    height=3mm,
-                    activate=pageopen,
-                    flashvars={
-                        source=audio/additivesynthesis_rect_\arabic{i}.mp3  
-                        &autoPlay=true
-                    }]
-                    {}
-                    {APlayer.swf}
-
- 			\end{figure}
+            \begin{columns}
+            \column{.9\linewidth}
+                \begin{figure}
+                    \centering
+                    \includegraphics[scale=.75]{AdditiveSynthesisRect-\arabic{i}}
+                \end{figure}
+            \column{.1\linewidth}
+                
+                \bigskip
+                \only<7>{\includeaudio{additivesynthesis_rect_1} }
+                \only<8>{\includeaudio{additivesynthesis_rect_2} }
+                \only<9>{\includeaudio{additivesynthesis_rect_3} }
+                \only<10>{\includeaudio{additivesynthesis_rect_4} }
+                \only<11>{\includeaudio{additivesynthesis_rect_5} }
+            \end{columns}
+            \addreference{{matlab source: \href{https://github.com/alexanderlerch/MUSI6202/blob/master/matlab/plotAdditiveSynthesis.m}{plotAdditiveSynthesis.m}}}
 		}
 		\stepcounter{i} 
 	}	
@@ -208,9 +202,11 @@
 
 \begin{frame}{audio signals}{superposition of sinusoidals 1/2}
     \begin{itemize}
-        \item   \textbf{partials}: a set of frequencies comprising a (pitched) sound
-        \item   \textbf{overtones}: as partials but without the fundamental frequency
-        \item   \textbf{harmonics}: integer multiples of the fundamental frequency, including the fundamental frequency
+        \item   \textbf{partials}:\\ a set of frequencies comprising a (pitched) sound
+        \bigskip
+        \item   \textbf{overtones}:\\ as partials but without the fundamental frequency
+        \bigskip
+        \item   \textbf{harmonics}:\\ integer multiples of the fundamental frequency, including the fundamental frequency
     \end{itemize}
     
     %\pause
@@ -236,7 +232,8 @@
     \only<2>{
     
     \bigskip
-    audio examples: addition of sines
+    \bigskip
+    {\normalsize audio examples: addition of sines}
     \begin{table}
         \centering
             \begin{tabular}{l|ccccccccc}
@@ -252,16 +249,22 @@
 \section{random signals}	
 \begin{frame}{audio signals}{random process}
 	\textbf{random process}: ensemble of random series
-	\begin{figure}
-		\centering
-			\includegraphics[scale=.25]{graph/randomprocess}
-	\end{figure}
-	\pause
+    \begin{columns}
+    \column{.6\linewidth}
+    \vspace{-5mm}
+    \figwithmatlab{RandomProcess}
+	%\begin{figure}
+		%\centering
+			%\includegraphics[scale=.25]{graph/randomprocess}
+	%\end{figure}
+    \column{.4\linewidth}
 	special cases:
 	\begin{itemize}
-		\item	\textbf{stationarity}: all parameters (such as the mean) are time invariant
-		\item	\textbf{ergodicity}: process with equal time and ensemble mean (implies stationarity)
+		\item	\textbf{stationarity}:\\ all parameters (such as the mean) are time invariant
+		\bigskip
+        \item	\textbf{ergodicity}:\\ process with equal time and ensemble mean (implies stationarity)
 	\end{itemize}
+    \end{columns}
 \end{frame}
 
 \section{prototype signals}
@@ -270,11 +273,13 @@
             \begin{itemize}
                 \item   \textbf{sinusoidal}
                     \[x(t) = \sin(\underbrace{2\pi f}_{\omega} t {\color{gray}{+ \Phi}})\]
-                \item<3->   \textbf{sawtooth}
+                \smallskip
+                \item<2->   \textbf{sawtooth}
                     \begin{equation*}
                         x(t) = 2\left(\frac{t}{T_0}-\floor\left(\frac{1}{2}+\frac{t}{T_0}\right)\right)
                     \end{equation*}
-                \item<4->   \textbf{square wave}
+                \smallskip
+                \item<3->   \textbf{square wave}
                     \[x(t) = \sign\left(\sin(\omega t)\right)\]
             \end{itemize}
 \end{frame}
@@ -282,6 +287,7 @@
     \begin{itemize}
         \item   \textbf{DC}
             \[ x(t) = 1\]
+        \smallskip
         \item<2->   \textbf{impulse}
             \begin{equation*}
                 \delta(t) = 
@@ -293,6 +299,7 @@
             \begin{equation*}
                 \delta(t) = \int\limits_{-\infty}^{\infty}{\delta(t) dt = 1}
             \end{equation*}
+        \smallskip
         \item<3->   \textbf{exponential}
             \[ x(t) = \e^{-\alpha t}\]
     \end{itemize}
