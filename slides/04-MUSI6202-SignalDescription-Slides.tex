@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 4: Signal Description}
@@ -105,10 +104,11 @@
 	\begin{equation*} \label{gaussverteilung}
 		p_X(x)= \frac{1}{\sqrt{2\pi}\sigma_X}e^{-\frac{(x-\mu_X)^2}{2\sigma_X^2}}
 	\end{equation*}
-	\begin{figure}
-		\centering
-			\includegraphics[scale=.5]{graph/gaussdist}
-	\end{figure}
+    \figwithmatlab{Gaussian}
+	%\begin{figure}
+		%\centering
+			%\includegraphics[scale=.5]{graph/gaussdist}
+	%\end{figure}
 \end{frame}	
 
 \begin{frame}{audio signal description}{example PDF: Exponential}
@@ -119,10 +119,11 @@
 		  0 & \textrm{else} 
 	\end{array}\right.
 	\end{equation*}
-    \begin{figure}
-		\centering
-			\includegraphics[scale=.5]{graph/expdist}
-	\end{figure}
+    \figwithmatlab{Exponential}
+    %\begin{figure}
+		%\centering
+			%\includegraphics[scale=.5]{graph/expdist}
+	%\end{figure}
 \end{frame}	
 	
 \begin{frame}{audio signal description}{example PDF: Laplace (2-sided exp)}
@@ -130,22 +131,35 @@
 	\begin{equation*}
 		p_X(x)= \frac{1}{\sqrt{2}\sigma_X}e^{-\sqrt{2}\frac{\mid x-\mu_X\mid}{\sigma_X}}
 	\end{equation*}
-	\begin{figure}
-		\centering
-			\includegraphics[scale=.5]{graph/laplacedist}
-	\end{figure}
+    \figwithmatlab{Laplace}
+	%\begin{figure}
+		%\centering
+			%\includegraphics[scale=.5]{graph/laplacedist}
+	%\end{figure}
+\end{frame}	
+	
+\begin{frame}{audio signal description}{example PDF: Laplace (2-sided exp)}
+    \vspace{-5mm}
+	\begin{equation*}
+		p_X(x)= \left\lbrace  \begin{array}{ll}
+		  \frac{1}{width} & |x-mu_x| < width/2 \\
+		  0 & \textrm{else} 
+	\end{array}\right.
+	\end{equation*}
+    \figwithmatlab{Uniform}
+	%\begin{figure}
+		%\centering
+			%\includegraphics[scale=.5]{graph/laplacedist}
+	%\end{figure}
 \end{frame}	
 
 \begin{frame}{audio signal description}{measured RDF}
-	\begin{figure}
-		\centering
-            \only<1>{\includegraphics[scale=1.]{graph/Lerch14-9}}
-            \only<2>{\includegraphics[scale=.5]{graph/pdf}}
-	\end{figure}
+    \figwithmatlab{Rfd}
 \end{frame}	
 	
 \begin{frame}{audio signal description}{PDFs of generated signals 1/2}
     \question{describe the shape of the following PDFs}
+    \only<2>{
 	\begin{itemize}
 		\item	white noise (uniform)
 		\item	white noise (Gaussian)
@@ -154,15 +168,19 @@
 		\item	sinusoidal
 		\item	sawtooth
 	\end{itemize}
+    }
+    \only<3>{
+    \figwithmatlab{PdfExamples}
+    }
 \end{frame}	
 	
-\begin{frame}{audio signal description}{distributions of generated signals 2/2}
-    \vspace{-5mm}
-	\begin{figure}
-		\centering
-			\includegraphics[scale=.5]{graph/pdfs}
-	\end{figure}
-\end{frame}	
+%\begin{frame}{audio signal description}{distributions of generated signals 2/2}
+    %\vspace{-5mm}
+	%\begin{figure}
+		%\centering
+			%\includegraphics[scale=.5]{graph/pdfs}
+	%\end{figure}
+%\end{frame}	
 
 \section{moments}
 \begin{frame}{audio signal description}{expected value 1/3}
@@ -324,6 +342,67 @@
 		\end{itemize}		
 	\end{block}
 \end{frame}		
+
+\begin{frame}{audio signal description}{arithmetic mean}
+    \vspace{-7mm}
+    \begin{columns}
+    \column{.3\linewidth} 
+    \begin{itemize}
+        \item   from time series $x$:
+            \begin{equation*}\label{eq:arith_mean}
+                \mu_x(n) = \frac{1}{\mathcal{K}}\sum\limits_{i=i_{\mathrm{s}}(n)}^{i_{\mathrm{e}}(n)}{x(i)} 
+            \end{equation*}
+        \item   from distribution $p_x$:
+            \begin{equation*}\label{eq:arith_mean2}
+                \mu_x(n) = \sum\limits_{x=-\infty}^{\infty}{x\cdot p_x(x)} 
+            \end{equation*}
+    \end{itemize}
+    \column{.7\linewidth} 
+     
+       \figwithmatlab{ArithmeticMean}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{statistical signal description}{variance \& standard deviation}
+    \vspace{-2mm}
+    measure of \textit{spread} of the signal around its mean
+    \vspace{-5mm}
+    \begin{columns}
+    \column{.4\linewidth} 
+    \begin{itemize}
+        \item \textbf{variance}
+            \begin{itemize}
+                \item   from signal block:
+                \vspace{-2mm}
+                    \begin{footnotesize}
+                    \begin{equation*}
+                        \sigma_x^2(n) = \frac{1}{\mathcal{K}}\sum\limits_{i= i_{\mathrm{s}}(n)}^{i_{\mathrm{e}}(n)}{\big(x(i)-\mu_x(n)\big)^2} 
+                    \end{equation*}
+                     \end{footnotesize}
+                \pause
+                \item   from distribution:
+                \vspace{-2mm}
+                     \begin{footnotesize}
+                    \begin{equation*}
+                        \sigma_x^2(n) = \sum\limits_{x=-\infty}^{\infty}{\big(x-\mu_x\big)^2\cdot p_x(x)} 
+                    \end{equation*}
+                     \end{footnotesize}
+            \end{itemize}
+        \pause
+        \bigskip
+        \item \textbf{standard deviation}
+                \vspace{-2mm}
+                 \begin{footnotesize}
+            \begin{equation*}
+                \sigma_x(n) = \sqrt{\sigma_x^2(n)} 
+            \end{equation*}
+             \end{footnotesize}
+    \end{itemize}
+    \column{.6\linewidth} 
+        
+       \figwithmatlab{StandardDeviation}
+    \end{columns}
+\end{frame}
 
 \begin{frame}{audio signal description}{central moments summary}
     \begin{footnotesize}

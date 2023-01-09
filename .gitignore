@@ -275,3 +275,4 @@ TSWLatexianTemp*
 # Makeindex log files
 *.lpz
 *.asv
+/slides/MUSI6202-slides.tcp
