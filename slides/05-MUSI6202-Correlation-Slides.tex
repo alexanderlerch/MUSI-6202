@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 5: Signal Similarity --- Correlation}
@@ -18,6 +17,13 @@
                 \item   indicates (linear) dependencies between two signals
                 \item   shifts the signals to find the dependency for each shift in time
             \end{itemize}
+        \bigskip
+        \item lecture content
+            \begin{itemize}
+                \item (cross) correlation function (CCF)
+                \item   auto correlation function (ACF)
+            \end{itemize}
+            
     \end{itemize}
 \end{frame}
 
@@ -49,30 +55,45 @@
         r_\mathrm{xy}(\tau) = \int\limits_{-\infty}^{\infty}{x(t)\cdot y(t+\tau)}dt
     \end{equation*}
     \end{footnotesize}
-    \includevideo{XCorrAnimation}
+    \includeanimation
+        {Correlation}
+        {000}
+        {250}
+        {10}
 \end{frame}
 
 \begin{frame}{signal similarity}{correlation function: use cases}
     \begin{itemize}
         \item   find (linear!) similarity between two signals (e.g., clean and noisy)
         \item   find time shift between to similar signals
-        \pause
         \bigskip
-        \item   example: \textbf{radar}
+        \item<2->   example: \textbf{radar}
             \begin{itemize}
                 \item   correlate sent signal with received signal
                 \item   pick maximum location and convert to distance of object
             \end{itemize}
     \end{itemize}
+    \only<2>{
+    \includeanimationnomatlab
+        {radar}
+        {00}
+        {43}
+        {10}
+        {\href{https://en.wikipedia.org/wiki/Radar}{en.wikipedia.org/wiki/Radar}}
+    }    
 \end{frame}
 
 \section[correlation coefficient]{normalized correlation and correlation coefficient}
-\begin{frame}{signal similarity}{correlation coefficient}
-    \begin{equation*}\nonumber
-        r_\mathrm{xy}(\tau) = \frac{\mathcal{E}\lbrace(X-\mu_X)(Y-\mu_Y)\rbrace}{\sigma_X\sigma_Y}
-    \end{equation*}
+\begin{frame}{signal similarity}{normalization \& correlation coefficient}
+    \begin{itemize}
+        \item normalization
+        \begin{equation*}\nonumber
+            r_\mathrm{xy}(\tau) = \frac{\mathcal{E}\lbrace(X-\mu_X)(Y-\mu_Y)\rbrace}{\sigma_X\sigma_Y}
+        \end{equation*}
+        \item   special case: \textbf{Pearson Correlation Coefficient} $r_\mathrm{xy}(0)$ after normalization
+    \end{itemize}
     
-    special case: \textbf{Pearson Correlation Coefficient} $r_\mathrm{xy}(0)$ after normalization
+    
     \bigskip
     \bigskip
     \question{What are possible reasons for normalization}
@@ -84,19 +105,27 @@
 
 \section{possible issues}
 \begin{frame}{signal similarity}{correlation function: problems as summary statistic}
-Anscombe's quartet:
+    Anscombe's quartet:
+    \begin{columns}
+    \column{.5\linewidth}
     \begin{itemize}
-        \item   identical mean: 7.5
-        \item   identical variance: 4.2
-        \item   identical \textbf{Pearson correlation coefficient}: 0.816
+        \item descriptive statistics
+            \begin{itemize}
+                \item   identical mean: 7.5
+                \item   identical variance: 4.2
+                \item   identical \textbf{Pearson correlation coefficient}: 0.816
+            \end{itemize}
     \end{itemize}
+    \column{.5\linewidth}
     \begin{figure}
         \includegraphics[scale=.2]{graph/Anscombes_quartet}
     \end{figure}
+    \end{columns}
+    \addreference{\href{https://en.wikipedia.org/wiki/Anscombe's_quartet}{en.wikipedia.org/wiki/Anscombe's\_quartet}}
 \end{frame}
 
 \section{examples}
-\begin{frame}\frametitle{correlation function}\framesubtitle{examples 1/3}
+\begin{frame}\frametitle{correlation function}\framesubtitle{examples 1/2}
 		\question{Describe the (cross) correlation function between the following signals}
 			
 		\begin{itemize}
@@ -106,36 +135,32 @@ Anscombe's quartet:
 		\end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{correlation function}\framesubtitle{examples 2/3}
-    \vspace{-5mm}
-    \begin{figure}
-        \centering
-            \includegraphics[scale=.5]{graph/xcorr}
-        \label{fig:xcorr}
-    \end{figure}
+\begin{frame}\frametitle{correlation function}\framesubtitle{examples 2/2}
+    \figwithmatlab{Correlation}
 \end{frame}
 
-\begin{frame}\frametitle{correlation function}\framesubtitle{animation}
-            \vspace{-5mm}
-            \begin{footnotesize}
-                    \begin{equation*}
-                        %r_\mathrm{xy}(\tau) &=& \int\limits_{-\infty}^{\infty}{x(t)\cdot y(t+\tau)dt}\\
-                        r_\mathrm{xy}(\eta) = \sum\limits_{i=-\infty}^{\infty}{x(i)\cdot y(i+\eta)}
-                    \end{equation*}
-            \end{footnotesize}
-            \begin{center}
-                \animategraphics[loop]{10}{animateCorrelation/Correlation-}{000}{250}        
-            \end{center}
-            \addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Slides/blob/master/matlab/animateCorrelation.m}{matlab/animateCorrelation.m}}
-            \inserticon{video}
-\end{frame}	
-        \begin{frame}{correlation function}{blocked correlation: animation}
-            \begin{center}
-                \animategraphics[loop]{24}{animateBlockedCorrelation/BlockedCorrelation-}{001}{1023}        
-            \end{center}
-            \addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Slides/blob/master/matlab/animateBlockedCorrelation.m}{matlab/animateBlockedCorrelation.m}}
-            \inserticon{video}
-        \end{frame}	 
+%\begin{frame}\frametitle{correlation function}\framesubtitle{animation}
+    %\vspace{-5mm}
+    %\begin{footnotesize}
+            %\begin{equation*}
+                %%r_\mathrm{xy}(\tau) &=& \int\limits_{-\infty}^{\infty}{x(t)\cdot y(t+\tau)dt}\\
+                %r_\mathrm{xy}(\eta) = \sum\limits_{i=-\infty}^{\infty}{x(i)\cdot y(i+\eta)}
+            %\end{equation*}
+    %\end{footnotesize}
+    %%\begin{center}
+        %%\animategraphics[loop]{10}{animateCorrelation/Correlation-}{000}{250}        
+    %%\end{center}
+    %%\addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Slides/blob/master/matlab/animateCorrelation.m}{matlab/animateCorrelation.m}}
+    %\inserticon{video}
+%\end{frame}	
+%
+\begin{frame}{correlation function}{blocked correlation: animation}
+    \includeanimation
+        {BlockedCorrelation}
+        {001}
+        {1023}
+        {24}
+\end{frame}	 
 
 \section{ACF}
 \begin{frame}{correlation function}{auto correlation function}
@@ -220,14 +245,14 @@ Anscombe's quartet:
     \begin{itemize}
         \item   correlation function is useful tool to
             \begin{itemize}
-                \item   \textbf{determine the similarity} between two signals (CCF)
-                \item   \textbf{identify a shift/latency} between two similar signals (CCF)
-                \item   \textbf{identify periodicity} vs. noisiness in a signal (ACF)
+                \item   \textit{determine the similarity} between two signals (CCF)
+                \item   \textit{identify a shift/latency} between two similar signals (CCF)
+                \item   \textit{identify periodicity} vs. noisiness in a signal (ACF)
             \end{itemize}
-        \smallskip
+        \bigskip
         \item<2->   continues to be standard approach for all applications related to the above tasks
-        \smallskip
-        \item<3->   note: CCF or ACF do not display time information (lost in integration)
+        \bigskip
+        \item<3->   note: CCF/ACF only convey similarity/periodicity information, no absolute time or phase information (lost in integration)
     \end{itemize}
 \end{frame}		
 
