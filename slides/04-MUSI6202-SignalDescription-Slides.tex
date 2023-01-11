@@ -288,13 +288,13 @@
 
 \begin{frame}{audio signal description}{expected value 2/3}
 	\begin{equation*}
-		\mu = \frac{2}{5}\cdot 1 + \frac{1}{5}\cdot 2 + \frac{1}{5}\cdot 3 + \frac{0}{5}\cdot 4 + \frac{1}{5}\cdot 5  = 2.4
+		\mu_X = 1\cdot\frac{2}{5} + 2\cdot\frac{1}{5} + 3\cdot\frac{1}{5} + 4\cdot\frac{0}{5} + 5\cdot\frac{1}{5} = 2.4
 	\end{equation*}
 	
 	\pause
 	\begin{eqnarray*}
-		\mu_X 	= \sum\limits_{\forall x} p(x)\cdot x\\
-		\mu_X=\mathcal{E}\lbrace   X\rbrace  =\int\limits_{-\infty}^{+\infty}xp_X(x)dx
+		\mu_X 	= \sum\limits_{\forall x} x\cdot p_X(x)\\
+		\mu_X=\mathcal{E}\lbrace   X\rbrace  =\int\limits_{-\infty}^{+\infty}x\cdot p_X(x)dx
 	\end{eqnarray*}
 \end{frame}		
 \begin{frame}{audio signal description}{expected value 3/3}
@@ -422,31 +422,31 @@
                  order & name  & obs (disc) & pdf (disc)\\\hline
                 1 & $\mu_X$         &  $\frac{1}{N}\sum\limits_{i=0}^{N} x(i)$              & $\sum\limits_{\forall x} x p(x)$ \\
                 2 & $\sigma_X^2$    &  $\frac{1}{N}\sum\limits_{i=0}^{N} (x(i)-\mu_X)^2$    & $\sum\limits_{\forall x} (x-\mu_X)^2p(x)$ \\
-                %3 & skewness $\gamma_{X,3}$ & & $\int\limits_{-\infty}^{\infty} (x-\mu)^2p_X(x)dx$ &&\\
-                %4 & kurtosis $\gamma_{X,4} & & $\int\limits_{-\infty}^{\infty} xp_X(x)dx$ &&\\
+                3 & skewness: $\mathcal{E}\lbrace  (X-\mu_X)^3\rbrace$ & $\frac{1}{N}\sum\limits_{i=0}^{N} (x(i)-\mu_X)^3$ & $\sum\limits_{\forall x} (x-\mu_X)^3p(x)$ &\\
+                4 & kurtosis: $\mathcal{E}\lbrace  (X-\mu_X)^4\rbrace$ & $\frac{1}{N}\sum\limits_{i=0}^{N} (x(i)-\mu_X)^4$ & $\sum\limits_{\forall x} (x-\mu_X)^4p(x)$ &\\
              \end{tabular}
      \end{table}
     \end{footnotesize}
-    \begin{itemize}
-        \item[] standard deviation $\sigma_X = \sqrt{\sigma_X^2}$
-    \end{itemize}
+    %\begin{itemize}
+        %\item[] standard deviation $\sigma_X = \sqrt{\sigma_X^2}$
+    %\end{itemize}
 \end{frame}		
 
 \section{summary}
 \begin{frame}{audio signal description}{summary}
     \begin{enumerate}
-        \item   PDF can tell us many important details about a signal
+        \item   PDF and derived metrics are often an \textbf{effective description or the signal}
         \smallskip
-        \item<2->   statistical measures can be used to describe signal properties, but cannot used to reconstruct the signal
+        \item<2->   statistical measures can be used to describe PDF and signal properties, but \textbf{cannot be used to reconstruct the signal}
         \smallskip
-        \item<3->   statistical measures can be derived from both the time domain signal and its pdf
+        \item<3->   statistical measures \textbf{can be derived from both the time domain signal and its PDF}
         \smallskip
         \item<4->   often-used measures are:
             \begin{itemize}
                 \item   mean and median
                 \item   variance and standard deviation
                 \item   higher order moments less frequently (skewness, kurtosis)
-                \item   other pdf description possible (quartile-distances etc.)
+                \item   other pdf descriptions (quartile-distances etc.)
             \end{itemize}
     \end{enumerate}
 \end{frame}		
