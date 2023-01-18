@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 6: LTI Systems \& Convolution}
@@ -11,6 +10,14 @@
 	\input{titlepage}
 
     \section[intro]{introduction}
+        \begin{frame}{lecture content}{overview}
+            \begin{enumerate}
+                \item   LTI systems and their properties
+                \smallskip
+                \item   convolution
+            \end{enumerate}
+        \end{frame}
+
         \begin{frame}{systems}{introduction}
             a system:
             \begin{itemize}
@@ -32,7 +39,7 @@
 		        \end{picture}
 		    \end{figure}
             \vspace{-25mm}
-            \question{name examples for systems in signal processing}
+            \question{name examples for systems in signal processing/the real world}
             
             \begin{itemize}
                 \item   filters, effects
@@ -61,12 +68,13 @@
             \end{itemize}
             \column{.3\linewidth}
             \begin{figure}%
-                \includegraphics[scale=.75]{linearnonlinear}%
+                \includegraphics[scale=.75]{graph/linearnonlinear}%
             \end{figure}
             \end{columns}
 
             \addreference{\url{http://www.sfu.ca/sonic-studio/handbook/Linear.html}}
         \end{frame}
+
         \begin{frame}{systems}{linearity}
             \toremember{linearity is defined by two properties}
             
@@ -86,6 +94,7 @@
                     \[f\left(x(t-\tau)\right) = f(x)(t-\tau)\]
             \end{itemize}
             \pause
+            \bigskip
             \begin{block}{LTI: Linear Time-invariant Systems}
                 are a great simplification for many real-world systems we would like to model --- circuits, spring-mass-damper systems, etc.
             \end{block}
@@ -125,17 +134,18 @@
         \end{frame}
 \begin{frame}{convolution}{animation}
             \vspace{-5mm}
-            \begin{center}
-                 \animategraphics[autoplay,loop]{10}{animateConvolution/Convolution-}{000}{600}        
-            \end{center}
-            \addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Slides/blob/master/matlab/animateConvolution.m}{matlab/animateConvolution.m}}
-            \inserticon{video}
+            \includeanimation{Convolution}{000}{600}{10}
+            %\begin{center}
+                 %\animategraphics[autoplay,loop]{10}{animateConvolution/Convolution-}{000}{600}        
+            %\end{center}
+            %\addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Slides/blob/master/matlab/animateConvolution.m}{matlab/animateConvolution.m}}
+            %\inserticon{video}
 \end{frame}
     
 \begin{frame}\frametitle{convolution}\framesubtitle{exercise --- convolution by hand}
     compute the convolution of the following two signals
     \begin{figure}%
-    \includegraphics[width=.75\columnwidth]{convolution_exercise}%
+    \includegraphics[width=.75\columnwidth]{graph/convolution_exercise}%
     \end{figure}
     \bigskip
     steps:
@@ -148,6 +158,7 @@
     \end{enumerate}
 \end{frame}
     
+\section[conv. prop.]{convolution properties}
 \begin{frame}\frametitle{convolution}\framesubtitle{identity and impulse response}
     \begin{eqnarray*}
         x(t) &=& \delta(t)\ast x(t) \\
@@ -185,6 +196,8 @@
 				\end{equation*}
 		\end{itemize}
 \end{frame}
+
+\section[deriv]{convolution property derivation}
 
 \begin{frame}\frametitle{convolution}\framesubtitle{derivation: commutativity}
 \begin{footnotesize}
@@ -238,30 +251,30 @@
 
     \section[summary]{summary}
         \begin{frame}{systems}{summary}
+            \vspace{-3mm}
             \begin{itemize}
-                \item   many real-world systems can be approximated by an \textbf{LTI system}
-                \smallskip
-                \item<2-> properties of an LTI system:
+                \item   \textbf{LTI system}: approximation of many real-world systems
                     \begin{itemize}
-                        \item   linearity 1: homogeneity (scaling)
-                        \item   linearity 2: superposition (additivity)
-                        \item   time invariance (system doesn't change)
+                    \item<2-> properties:
+                        \begin{itemize}
+                            \item   linearity 1: homogeneity (scaling)
+                            \item   linearity 2: superposition (additivity)
+                            \item   time invariance (system doesn't change)
+                            \item<3->   causality (no future input)
+                            \item<3->   BIBO --- bounded input bounded output
+                        \end{itemize}
                     \end{itemize}
-                \smallskip
-                \item<3-> additional properties:
+                \bigskip
+                \item<4-> \textbf{impulse response} is a complete description of an LTI system
+                \bigskip
+                \item<5-> \textbf{convolution}: describes process of generating output of LTI system from input
                     \begin{itemize}
-                        \item   causality (no future input)
-                        \item   BIBO --- bounded input bounded output
-                    \end{itemize}
-                \smallskip
-                \item<4-> impulse response is a complete description of an LTI system
-                \smallskip
-                \item<5-> convolution:
-                    \begin{itemize}
-                        \item   describes the process of generating the output of an LTI system from the input
-                        \item   is commutative
-                        \item   is associative
-                        \item   is distributive
+                    \item<6-> properties:
+                        \begin{itemize}
+                            \item   commutative
+                            \item   associative
+                            \item   distributive
+                        \end{itemize}
                     \end{itemize}
             \end{itemize}
         \end{frame}
