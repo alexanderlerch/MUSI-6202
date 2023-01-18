@@ -135,27 +135,30 @@
 \begin{frame}{convolution}{animation}
             \vspace{-5mm}
             \includeanimation{Convolution}{000}{600}{10}
-            %\begin{center}
-                 %\animategraphics[autoplay,loop]{10}{animateConvolution/Convolution-}{000}{600}        
-            %\end{center}
-            %\addreference{matlab source: \href{https://github.com/alexanderlerch/ACA-Slides/blob/master/matlab/animateConvolution.m}{matlab/animateConvolution.m}}
-            %\inserticon{video}
 \end{frame}
     
 \begin{frame}\frametitle{convolution}\framesubtitle{exercise --- convolution by hand}
-    compute the convolution of the following two signals
-    \begin{figure}%
-    \includegraphics[width=.75\columnwidth]{graph/convolution_exercise}%
-    \end{figure}
-    \bigskip
-    steps:
-    \begin{enumerate}
-        \item   flip one signal
-        \item   multiply the two signals
-        \item   integrate the result
-        \item   shift
-        \item   go to 2.
-    \end{enumerate}
+    compute the convolution of the following two signals $y(n) = x(n) * v(n)$
+    \figwithmatlab{ConvolutionByHand}
+    
+    \vspace{-4mm}
+    \begin{columns}
+    \column{.4\linewidth}
+        steps:
+        \begin{enumerate}
+            \item   flip one signal
+            \item   multiply the two signals
+            \item   integrate the result
+            \item   shift
+            \item   go to 2.
+        \end{enumerate}
+    \column{.6\linewidth}
+        \only<2>{
+        \begin{figure}%
+            \includegraphics[scale=.7]{ConvolutionByHand-Solution}
+        \end{figure}
+        }
+    \end{columns}
 \end{frame}
     
 \section[conv. prop.]{convolution properties}
