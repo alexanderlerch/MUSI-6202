@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 8: Fourier Transform}
@@ -22,16 +21,20 @@
         \end{frame}
 
 	\begin{frame}{Fourier transform}{introduction}
-		\begin{figure}
-			\centering
-				\includegraphics[scale=.5]{fft}
-		\end{figure}
+		%\vspace{-4mm}
+        \begin{columns}
+        \column{.4\linewidth}
 		Fourier series is cool, but:
 		\begin{itemize}
 			\item	works only for periodic signals 
 			\item	difficult to use for real-world analysis as it requires knowledge of fundamental frequency
 			\item<2->[$\Rightarrow$]	\textbf{Fourier transform}
 		\end{itemize}
+        \column{.4\linewidth}
+        \only<2->{
+        \figwithmatlab{FourierTransform}
+        }
+        \end{columns}
 	\end{frame}	
     \section{FS to FT}
 	\begin{frame}{Fourier transform}{Fourier series revisited}
@@ -72,9 +75,11 @@
 \section{continuous FT}
 
 	\begin{frame}{Fourier transform}{definition (continuous)}
+        \begin{block}{Fourier transform definition}
 		\begin {equation*}\label{eq:Fourier_transformation}
 			X(\jom) = \mathfrak{F}[x(t)] = \int\limits_{-\infty}^{\infty} {x(t) \e^{-\jom t}\, dt}
 		\end {equation*}
+        \end{block}
 	\end{frame}	
 
 	\begin{frame}{Fourier transform}{example 1: rect window}
@@ -174,8 +179,11 @@
 			Y(\jom) &= H(\jom)\cdot X(\jom) \nonumber
 		\end{eqnarray*}
 		\pause
-		\begin{itemize}
-			\item[]	derivation
+        \begin{columns}
+        \column{.3\linewidth}
+            derivation
+        \column{.7\linewidth}
+        \vspace{-5mm}
 					\begin{footnotesize}
 				\begin{eqnarray*}
 					Y(\jom)	&=& \int_{-\infty}^{\infty} {y(t) \e^{-\jom t}\, dt}\nonumber\\
@@ -191,7 +199,25 @@
 								&=& H(\jom) \cdot X(\jom)\label{eq:mult_conv} 
 				\end{eqnarray*}
 					\end{footnotesize}
-		\end{itemize}
+        \end{columns}
+		%\begin{itemize}
+			%\item[]	derivation
+					%\begin{footnotesize}
+				%\begin{eqnarray*}
+					%Y(\jom)	&=& \int_{-\infty}^{\infty} {y(t) \e^{-\jom t}\, dt}\nonumber\\
+							%\pause
+								%&=& \int_{-\infty}^{\infty} {\left(\int_{-\infty}^{\infty} {h(\tau) \cdot x(t-\tau)\, d\tau}\right) \e^{-\jom t}\, dt}\nonumber\\
+							%\pause
+								%&=& \int_{-\infty}^{\infty} {h(\tau) \int_{-\infty}^{\infty} {x(t-\tau)} \e^{-\jom t}\, dt\, d\tau}\nonumber\\
+							%\pause
+								%&=& \int_{-\infty}^{\infty} {h(\tau)  \e^{-\jom \tau} \underbrace{\int_{-\infty}^{\infty} {x(t-\tau)} \e^{-\jom (t-\tau)}\, d(t-\tau)}_{X(\jom)}\, d\tau}\nonumber\\
+							%\pause
+								%&=& \int_{-\infty}^{\infty} {h(\tau) \e^{-\jom \tau}\, d\tau} \cdot X(\jom)\nonumber\\
+							%\pause
+								%&=& H(\jom) \cdot X(\jom)\label{eq:mult_conv} 
+				%\end{eqnarray*}
+					%\end{footnotesize}
+		%\end{itemize}
 	\end{frame}	
 
 	\begin{frame}{Fourier transform}{property 4: Parseval's theorem}
@@ -205,7 +231,7 @@
 				\begin{equation*}
 					\int_{-\infty}^{\infty}{h(\tau)\cdot x(t-\tau)\, d\tau} = \frac{1}{2\pi}\int_{-\infty}^{\infty} {H(\jom)\cdot X(\jom) \e^{\jom t} d\omega}\nonumber
 				\end{equation*}
-				 \centering $H(\jom) \longrightarrow X^\ast (\jom)$/$h(\tau)\longrightarrow x(-\tau)$, $t = 0$
+				 \centering $H(\jom) \longrightarrow X^\ast (\jom)$ and $h(\tau)\longrightarrow x(-\tau)$, $t = 0$
 							\pause
 				\begin{eqnarray*}
 					\int_{-\infty}^{\infty}{x(-\tau)\cdot x(-\tau)\, d\tau} &=& \frac{1}{2\pi}\int_{-\infty}^{\infty} {X^\ast (\jom)\cdot X(\jom) \, d\omega}\nonumber\\
@@ -350,19 +376,12 @@
 	\end{frame}	
 
 	\begin{frame}{Fourier transform}{STFT: windowing}
-        \begin{center}
-            \animategraphics[scale=.8]{1}{windowing/windowing_}{1}{5}        
-        \end{center}
+        \includeanimation{Windowing}{01}{05}{1}
+        %\begin{center}
+            %\animategraphics[scale=.8]        
+        %\end{center}
 	\end{frame}	
     
-	\begin{frame}{Fourier transform}{STFT: spectrogram}
-		\begin{figure}
-			\centering
-				\includegraphics[scale=1]{specgram}
-		\end{figure}
-        \vspace{-5mm}\flushright{\includeaudio{alto-sax}}
-	\end{frame}	
-
 	\begin{frame}{Fourier transform}{reminder: FT of rectangular window}
         \vspace{-8mm}
         \begin{footnotesize}
@@ -391,6 +410,7 @@
         \begin{enumerate}
             \item   triangular window is output convolution of two rectangular windows
             \item   convolution in time domain is multiplication in the frequency domain
+            \item[$\Rightarrow$] sinc squared
         \end{enumerate}
 	\end{frame}	
 
@@ -402,11 +422,12 @@
 
 		\pause		
 		$\Rightarrow$\textbf{spectral leakage}
-		\begin{figure}
-			\centering
-				\includegraphics[scale=.8]{windows.pdf}
-			\label{fig:windows}
-		\end{figure}
+        \figwithmatlab{SpectralWindows}
+		%\begin{figure}
+			%\centering
+				%\includegraphics[scale=.8]{windows.pdf}
+			%\label{fig:windows}
+		%\end{figure}
 	\end{frame}	
 
 	\begin{frame}{Fourier transform}{STFT: window function properties}
@@ -415,17 +436,18 @@
                 \begin{itemize}
                     \item   how much does the main lobe ``smear'' a peak
                 \end{itemize}
-            \pause
-			\item	\textbf{side lobe height}
+            \bigskip
+			\item<2->	\textbf{side lobe height}
                 \begin{itemize}
                     \item   how dominant is the (highest) side lobe
                 \end{itemize}
-			\pause
-            \item	\textbf{side lobe attenuation/fall-off}
+			\bigskip
+            \item<3->	\textbf{side lobe attenuation/fall-off}
                 \begin{itemize}
                     \item   how much influence have distant sidelobes
                 \end{itemize}
-            \item   \textbf{process and scalloping loss} (DFT)
+            \bigskip
+            \item<4->\textbf{process and scalloping loss} (DFT)
                 \begin{itemize}
                     \item   how accurate is the amplitude (best case and worst case)
                 \end{itemize}
@@ -459,34 +481,24 @@
 								&=& \mathfrak{F}[x(t)]\ast \mathfrak{F}[\delta_\mathrm{T}(t)]\nonumber\\
 								&=& X(\jom)\ast \Delta_\mathrm{T}(\jom) \nonumber
 		\end{eqnarray*}
-		\pause
-        \visible<4->{
+        \only<3>{
+            \vspace{-5mm}
+            \figwithmatlab{SpecSampling}
+        }
+		\only<4>{
+        \begin{columns}
+        \column{.3\linewidth}
+        %\visible<4->{
 		transformed signal is 
         \begin{itemize}
             \item   still \textbf{continuous}
             \item   \textbf{periodic}
         \end{itemize}
+        %}
+        \column{.7\linewidth}
+        \includeanimation{Aliasing}{01}{48}{10}
+        \end{columns}
         }
-        \only<3>{
-		\begin{figure}
-			\centering
-				\includegraphics[scale=.7]{graph/spectrum_sampling_1}
-		\end{figure}}
-        \only<4>{
-		\begin{figure}
-			\centering
-				\includegraphics[scale=.7]{graph/spectrum_sampling_2}
-		\end{figure}}
-        \only<5->{
-        \begin{center}
-            \animategraphics[scale=.5,autoplay,loop]{10}{graph/SpectralAliasing/aliasing_}{1}{101}        
-        \end{center}
-        }
-		%\begin{figure}
-			%\centering
-				%\includegraphics[scale=.7]{\AcaGraph/spectral_overlap}
-		%\end{figure}
-        \vspace{50mm}
 	\end{frame}	
 	\begin{frame}{Fourier transform}{sampled time signals 2/2}
         \begin{eqnarray*}
@@ -569,7 +581,24 @@
                 \end{tabular}
         \end{table}
 	\end{frame}	
-    
+
+	\begin{frame}{Fourier transform}{STFT: spectrogram}
+           \vspace{-2mm}
+            \begin{itemize}
+                \item   spectrogram allows to visualize temporal changes in the spectrum
+                \item   displays the \textit{magnitude spectrum }only
+            \end{itemize}
+            \vspace{-8mm}
+            \begin{columns}
+                \column{.9\linewidth}
+                    \figwithmatlab{Specgram}
+                \column{.1\linewidth}
+                    \begin{figure}
+                    \includeaudio{sax_example}
+                    \end{figure}
+            \end{columns}
+	\end{frame}	
+
     \section[summary]{summary}
             \begin{frame}{Fourier transform}{summary 1/2}
                 \textbf{FT properties}
