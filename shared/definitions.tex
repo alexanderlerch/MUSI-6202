@@ -9,7 +9,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % relative paths
-\graphicspath{{../graph/}}
+\graphicspath{{../graph}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,8 +51,8 @@
                         \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/animate#1.m}{matlab/animate#1.m}}}
                         \inserticon{video}}
 
-\newcommand{\includeanimationnomatlab}[5]{{\begin{center}
-                        \animategraphics[autoplay,loop,scale=.7]{#4}{animation/#1-}{#2}{#3}        
+\newcommand{\includeanimationnomatlab}[6]{{\begin{center}
+                        \animategraphics[autoplay,loop,scale=#6]{#4}{animation/#1-}{#2}{#3}        
                         \end{center}
                         \addreference{#5}}
                         \inserticon{video}}

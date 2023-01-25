@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 7: Fourier Series}
@@ -15,7 +14,7 @@
             \begin{enumerate}
                 \item   \textbf{Fourier series}:\\ periodic signals as sum of sinusoidals
                 \bigskip
-                \item   \textbf{Fourier transform}:\\ frequency content of any signal
+                \item   \textbf{Fourier transform} (next slide deck):\\ frequency content of any signal
                     \begin{itemize}
                         \item   Fourier series to transform
                         \item   properties
@@ -30,9 +29,9 @@
             \smallskip
             \item<2-> \textbf{properties}
                 \begin{itemize}
-                    \item   amplitude
-                    \item   frequency as integer multiple of fundamental $f_0$
-                    \item   phase
+                    \item   amplitude $a_k$
+                    \item   frequency as integer multiple $k$ of fundamental $f_0$
+                    \item   phase $\Phi_k$
                 \end{itemize}
                 \begin {equation*}
                     x(t) = \sum\limits_{k=0}^{\infty} a_k \sin(k\omega_0 t + \Phi_k) \nonumber
@@ -79,10 +78,30 @@
                 \sin(\omega t) &=& \only<2>{?}\only<3->{\frac{1}{2\mathrm{j}}\left(e^{\mathrm{j}\omega t} - e^{-\mathrm{j}\omega t}\right)}\nonumber
             \end{eqnarray*}
         \end{frame}
+        \begin{frame}{Fourier series}{phasor representation}
+            \begin{columns}
+            \column{.5\linewidth}
+                \vspace{-10mm}
+                \includeanimation
+                    {Phasor}
+                    {00}
+                    {160}
+                    {10}
+            \column{.5\linewidth}
+                \begin{itemize}
+                    \item   phasor representation:
+                        \begin{enumerate}
+                            \item   sine value is defined by magnitude and phase
+                            \item   decreasing the amplitude $\Rightarrow$ shorter vector
+                            \item   increasing the frequency $\Rightarrow$ increasing speed
+                        \end{enumerate}
+                \end{itemize}
+            \end{columns}
+        \end{frame}
         
         \begin{frame}{fundamentals}{conjugate complex multiplication}
             \begin{figure}
-                \includegraphics[scale=.45]{xkcd_complex_conjugate}
+                \includegraphics[scale=.45]{graph/xkcd_complex_conjugate}
             \end{figure}
             
             \addreference{\url{https://xkcd.com/849}}
@@ -91,10 +110,14 @@
         \begin{frame}{Fourier series}{real to complex}
             \vspace{-5mm}
             \begin{footnotesize}
-            \begin{eqnarray*}
-                \cos(\omega t) &=& \frac{1}{2}\left(e^{\jom t} + e^{-\jom t}\right)\nonumber\\
-                \sin(\omega t) &=& \frac{1}{2\mathrm{j}}\left(e^{\jom t} - e^{-\jom t}\right)\nonumber
-            \end{eqnarray*}
+            \begin{equation*}
+                \cos(\omega t) = \frac{1}{2}\left(e^{\jom t} + e^{-\jom t}\right)\quad\quad
+                \sin(\omega t) = \frac{1}{2\mathrm{j}}\left(e^{\jom t} - e^{-\jom t}\right)
+            \end{equation*}
+            %\begin{eqnarray*}
+                %\cos(\omega t) &=& \frac{1}{2}\left(e^{\jom t} + e^{-\jom t}\right)\nonumber\\
+                %\sin(\omega t) &=& \frac{1}{2\mathrm{j}}\left(e^{\jom t} - e^{-\jom t}\right)\nonumber
+            %\end{eqnarray*}
             \pause
             \vspace{-2mm}
             \begin{eqnarray*}
@@ -138,9 +161,9 @@
                         %
                     %\end{equation*}
                 \begin{eqnarray*}
-                    \int\limits_0^{T_0} e^{\jom_0(k-n)t}dt &= 0 &\;\;\;k\neq n\nonumber\\
-                    \int\limits_0^{T_0} e^{\jom_0(k-n)t}dt &= T_0 &\;\;\;k= n\nonumber\\
-                    \Rightarrow \int\limits_0^{T_0}{x(t)\cdot e^{-\jom_0nt}}dt &=& c_n T_0
+                    \int\limits_0^{T_0} e^{\jom_0(k-n)t}dt &= 0 \;\;\;k\neq n\quad\quad\quad
+                    \int\limits_0^{T_0} e^{\jom_0(k-n)t}dt &= T_0 \;\;\;k= n\nonumber\\
+                    \Rightarrow &\int\limits_0^{T_0}{x(t)\cdot e^{-\jom_0nt}}dt = c_n T_0&
                 \end{eqnarray*}
             \end{enumerate}
             \end{footnotesize}
@@ -153,16 +176,17 @@
             \hat{x}(t) = \sum\limits_{k=-\mathcal{K}}^{\mathcal{K}} c_k e^{\jom_0kt}
         \end {equation*}
         \only<1>{
-        \begin{figure}
-            \centering
-                \includegraphics[height=4cm,width=\textwidth]{additivesynthesis-1}
-        \end{figure}
+        \figwithmatlab{FourierSeries}
+        %\begin{figure}
+            %\centering
+                %\includegraphics[width=\textwidth]{FourierSeries}
+        %\end{figure}
         }
-        \only<2->{
-        \begin{center}
-            \animategraphics[scale=.5,autoplay,loop]{10}{FourierSeriesSquare/frame_}{000}{059}        
-            \hspace{5mm}\animategraphics[scale=.5,autoplay,loop]{10}{FourierSeriesSaw/frame_}{000}{059}  
-        \end{center}
+        \only<2>{
+        \includeanimationnomatlab{FourierSeriesSquare/frame}{000}{059}{10}{\href{https://commons.wikimedia.org/wiki/File:Fourier_series_square_wave_circles_animation.gif}{commons.wikimedia.org/wiki/File:Fourier\_series\_square\_wave\_circles\_animation.gif}}{.5}
+        }
+        \only<3->{
+        \includeanimationnomatlab{FourierSeriesSaw/frame}{000}{059}{10}{\href{https://commons.wikimedia.org/wiki/File:Fourier_series_square_wave_circles_animation.gif}{commons.wikimedia.org/wiki/File:Fourier\_series\_sawtooth\_wave\_circles\_animation.gif}}{.5}
         }
     \end{frame}
 
