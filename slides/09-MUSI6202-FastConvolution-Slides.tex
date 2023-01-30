@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 9: Fast Convolution}
@@ -23,19 +22,21 @@
 \section[DFT]{DFT convolution}
 	\begin{frame}{DFT convolution}{signal and impulse response 1/2}
 		\begin{itemize}
-			\item	multiplication: length of $H(z) = M$ must equal length of $X(z) = N$
+			\item	multiplication: two signals cannot be multiplied if of unequal length ($M = length(H)$, $N = length(X)$)
+            \item[$\Rightarrow$] zeropad both signals
 			\item	minimum DFT length: $L \leq M+N-1$
 		\end{itemize}
 		\only<1>{
 		\begin{figure}
 			\centering
-				\includegraphics[scale=.4]{graph/conv_dft_zp}
+				\includegraphics[scale=.3]{graph/conv_dft_zp}
 		\end{figure}
 		}
 		\only<2->{
+        \bigskip
 		\begin{enumerate}
-			\item	$X = DFT(x'(i))$
-			\item	$H = DFT(h'(i))$
+			\item	$X = DFT(x_\mathrm{pad}(i))$
+			\item	$H = DFT(h_\mathrm{pad}(i))$
 			\item	$Y = X\cdot H$
 			\item	$y = DFT^{-1}(Y)$
 			\item   throw away zeros if DFT was longer than $M+N$
@@ -44,7 +45,7 @@
 		\only<3>{
 		\begin{figure}
 			\centering
-				\includegraphics[scale=.4]{graph/conv_dft_res}
+				\includegraphics[scale=.3]{graph/conv_dft_res}
 		\end{figure}
 		}
 		\vspace{50mm}
@@ -53,9 +54,11 @@
 	\begin{frame}{DFT convolution}{signal and impulse response 2/2}
 		\textbf{properties}:
 		\begin{itemize}
-			\item	no real-time: signal has to be known completely
-			\item	high memory requirements (signal length $N$ + impulse response length $M$)
+			\item	no real-time:\\ signal has to be known completely
+			\smallskip
+            \item	high memory requirements:
 			\begin{itemize}
+                \item   signal length $N$ + impulse response length $M$
 				\item	when FFT: next larger power of two
 			\end{itemize}
 		\end{itemize}
@@ -71,19 +74,19 @@
 		\only<1>{
 		\begin{figure}
 			\centering
-				\includegraphics[scale=.4]{graph/conv_dft_split}
+				\includegraphics[scale=.3]{graph/conv_dft_split}
 		\end{figure}
 		}
 		\only<2>{
 		\begin{figure}
 			\centering
-				\includegraphics[scale=.4]{graph/conv_block}
+				\includegraphics[scale=.3]{graph/conv_block}
 		\end{figure}
 		}
 		\only<3>{
 		\begin{figure}
 			\centering
-				\includegraphics[scale=.4]{graph/conv_overlapsave}
+				\includegraphics[scale=.3]{graph/conv_overlapsave}
 		\end{figure}
 		}
 		\only<4>{
@@ -98,8 +101,10 @@
 	\begin{frame}{blocked convolution}{blocked signal and impulse response 2/2}
 		\textbf{properties}:
 		\begin{itemize}
-			\item	minimum latency: impulse response length
-			\item	long FFT, but more efficient
+			\item	minimum latency:\\ impulse response length
+			\smallskip
+            \item	long FFT, but more efficient
+			\smallskip
 			\item	FFT of impulse response \textit{is only computed once}
 		\end{itemize}
 	\end{frame}
