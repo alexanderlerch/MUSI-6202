@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 10: Discretization 1---Sampling}
@@ -45,8 +44,9 @@
 
 	\section{sampling ambiguity}	
 		\begin{frame}\frametitle{sampling and quantization}\framesubtitle{sampling ambiguity 1/4}
+            %\includeanimation{graph/samplingambi/samplingambi}{1}{7}{1}
 			\begin{center}
-				\animategraphics[scale=.8,step]{1}{graph/samplingambi/samplingambi_}{1}{7}        
+				\animategraphics[scale=.8,step]{1}{graph/samplingambi/samplingambi-}{1}{7}        
 			\end{center}
 			%\begin{figure}
 				%\centering
@@ -59,11 +59,12 @@
 				f_0 &=& [\unit[1, 5, 7]{kHz}]\\
 				f_{\mathrm{S}} &=& \unit[6]{kHz}
 			\end{eqnarray*}
-			\begin{figure}
-				\centering
-					\includegraphics[scale=.7]{graph/samplingambig}
-					\label{fig:samplingambig}
-			\end{figure}
+            \figwithmatlab{Sampling02}
+			%\begin{figure}
+				%\centering
+					%\includegraphics[scale=.7]{graph/samplingambig}
+					%\label{fig:samplingambig}
+			%\end{figure}
 		\end{frame}	
 		
 		\begin{frame}\frametitle{sampling and quantization}\framesubtitle{sampling ambiguity 3/4}
@@ -101,29 +102,24 @@
         
 		\begin{frame}\frametitle{sampling and quantization}\framesubtitle{sampling}
 			\setbeamercovered{invisible}
-            \begin{itemize}
-				\item[]	$x(t) \mapsto X(\jom)$
-					\vspace{-6mm}
-					\uncover<1->
-                    {\begin{figure}
-						\flushright
-							\includegraphics[scale=.4]{Graph/spectrum_sampling_1}
-					\end{figure}
-				}
-                \pause
-				\item[]	$x(t)\cdot \delta_T \mapsto X(\jom)\ast \delta_{\omega_T}$
-					\vspace{-6mm}
-					\uncover<2->
-                    {\begin{figure}
-						\flushright
-							\includegraphics[scale=.4]{Graph/spectrum_sampling_2}
-					\end{figure}
-                    }
-			\end{itemize}		
-            \uncover<3->{
-			\begin{center}
-				\animategraphics[scale=.5,autoplay,loop]{10}{graph/SpectralAliasing/aliasing_}{1}{101}        
-			\end{center}
+            \only<1-2>{
+            \begin{columns}
+            \column{.4\linewidth}
+                \begin{itemize}
+                    \item[]	$x(t) \mapsto X(\jom)$
+                    \pause
+                    \item[]	$x(t)\cdot \delta_T \mapsto X(\jom)\ast \delta_{\omega_T}$
+                \end{itemize}		
+            \column{.6\linewidth}
+                \figwithmatlab{SpecSampling}
+            \end{columns}
+            }
+            \only<3->{
+                    \includeanimation{Aliasing}{01}{48}{10}
+
+			%\begin{center}
+				%\animategraphics[scale=.5,autoplay,loop]{10}{graph/SpectralAliasing/aliasing_}{1}{101}        
+			%\end{center}
             }
 		\end{frame}
 		
@@ -272,15 +268,17 @@
  
 		\begin{frame}{sampling and quantization}{sampling: summary 2/2}
 			\begin{itemize}
-				\item   sampling theorem
+				\item   \textbf{sampling theorem}
                     \begin{quote}
                         A sampled audio signal can be reconstructed without loss of information if the sample rate $f_\mathrm{S}$ is higher than twice the bandwidth f max of the signal.
                     \end{quote}
+                    \smallskip
                     \begin{itemize}
-                        \item   perfect reconstruction!
-                        \item   ensure accordance through filtering, otherwise aliasing (mirror frequencies)
+                        \item<2->   perfect reconstruction!
+                        \item<2->   ensure accordance through filtering, otherwise aliasing (mirror frequencies)
                     \end{itemize}
-                \item   band of interest does not have to be base band ($0\ldots f_\mathrm{S}/2$), but any band ($k\cdot f_\mathrm{S}/2\ldots(k+1)\cdot f_\mathrm{S}/2$) as long as the bandwidth is not wider 
+                \bigskip
+                \item<3->   band of interest does not have to be base band ($0\ldots f_\mathrm{S}/2$), but any band ($k\cdot f_\mathrm{S}/2\ldots(k+1)\cdot f_\mathrm{S}/2$) as long as the bandwidth is not wider 
 			\end{itemize}
 		\end{frame}
 
