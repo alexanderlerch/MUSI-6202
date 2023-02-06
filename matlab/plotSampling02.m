@@ -42,6 +42,7 @@ function plotSampling02()
     stem(ts, xs(1, :), 'k-', 'MarkerFaceColor', getColor('main'), 'MarkerEdgeColor', getColor('darkgray'), 'MarkerSize',5)
     stem(ts, xs(1, :), 'filled', 'MarkerFaceColor', getColor('gt'), 'MarkerEdgeColor', getColor('gt'), 'Color', getColor('darkgray'), 'MarkerSize',2)
     hold off;
+    box on;
  
     % write output file
     printFigure(hFigureHandle, cOutputPath)
