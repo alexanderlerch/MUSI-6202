@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 11: Discretization 2---Quantization}
@@ -11,41 +10,84 @@
 	\input{titlepage}
 
 \section[intro]{introduction}
-	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization introduction 1/2}
+    \begin{frame}\frametitle{sampling and quantization}\framesubtitle{introduction}
+        digital signals can only be represented with a limited number of values
+        \pause
+        
+        $\Rightarrow$
+        \begin{itemize}
+            \item	time discretization:\\ \textbf{sampling}
+            \bigskip
+            \item	amplitude discretization:\\ \textcolor{gtgold}{\textbf{quantization}}
+        \end{itemize}
+    \end{frame}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization introduction}
 		\vspace{-3mm}
         \textbf{quantizer}: \linebreak
 		continuous $\mapsto$ discrete (pre-defined set of allowed values)
         
-        \pause
+        \figwithmatlab{QuantizedAudio}
+    \end{frame}
+\section{overview}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: characteristic curve}
+        \begin{columns}
+            \column{.4\linewidth}
+                quantizer \textbf{characteristic curve}:
+                \begin{itemize}
+                    \item plots output amplitude over input amplitude
+                    \smallskip
+                    \item   given even number of quantization steps, characteristic curve can be either
+                        \begin{itemize}
+                            \item   symmetric, or
+                            \item   include $0$
+                        \end{itemize}
+                \end{itemize}
+            \column{.6\linewidth}
+                \figwithmatlab{QuantizationCharacteristicCurve}
+        \end{columns}
+    \end{frame}
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{basic quantization properties}
+        \begin{block}{quantization fundamentals}
         \begin{itemize}
-            \item   quantization is \textbf{non-linear}
-            \item   quantization is \textbf{irreversible}
+            \item   quantization is \textbf{non-linear}:\\ signal is distorted
+            \smallskip
+            \item   quantization is \textbf{irreversible}:\\ signal cannot be perfectly restored
         \end{itemize}
-		\begin{figure}
-			\centering
-				\includegraphics[scale=.4]{Graph/midtread-rise}
-		\end{figure}
-		\hspace{20mm} mid-rise \hspace{30mm} \only<2>{\textcolor{gtgold}}{mid-tread}
-	\end{frame}
-	
-	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization introduction 2/2}
-		\vspace{-4mm}
-		\begin{figure}
-			\centering
-				\includegraphics[trim={0 0 6.6cm 0},clip]{graph/quant}
-		\end{figure}
-		\vspace{-5mm}
-		\begin{itemize}
-			\item<2->	\textbf{number of quantization steps}: $\mathcal{M} = 16$
-			\item<2->	\textbf{word length (bits)}: \only<2>{?}\only<3->{$w = \log_2(\mathcal{M}) = \unit[4]{bit}$}
-		\end{itemize}
+        \end{block}
 	\end{frame}
 	
 \section[wordlength]{wordlength}
 	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: word length \& number of steps}
+		%\vspace{-4mm}
+        \only<1>{
+		\begin{figure}
+			\centering
+				\includegraphics[scale=.7]{QuantizationCharacteristicCurve2-01}
+		\end{figure}
+        }
+		\question{Given a number of quantization steps $\mathcal{M} = 16$ what is the required word length (bits)}
+        \bigskip
+        $\Rightarrow w = \log_2(16) = \unit[4]{bit}$
+		\only<2->{
+        \begin{columns}
+        \column{.4\linewidth}
+        \begin{eqnarray*}
+            w &=&\log_2(\mathcal{M})\\
+            \mathcal{M} &=& 2^w
+        \end{eqnarray*}
+        \column{.6\linewidth}
+        \begin{figure}
+			\centering
+				\includegraphics[scale=.7]{QuantizationCharacteristicCurve2-02}
+		\end{figure}
+        \end{columns}
+        }
+	\end{frame}
+	
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: word length examples}
 		\begin{table}
 			\centering
-			\begin{tabular}{lcr}
+			\begin{tabular}{llr}
 			\hline
 				$w$ & $\mathcal{M} = 2^w$ \\
 			\hline
@@ -60,6 +102,24 @@
 			\end{tabular}  
 		\end{table}
 	\end{frame}
+	
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{scaling, ranges, and words}
+        \begin{columns}
+        \column{.4\linewidth}
+        values are encoded and interpretation is up to the user:
+        \begin{itemize}
+            \item   word can be translated to integer $\Rightarrow [-8...7]$
+            \item   word can be scaled to range of $[-1...1-1/2^{\mathcal{M}-1}]$
+                \begin{itemize}
+                    \item   standard for floating point systems
+                    \item   -1/1 means full scale
+                    \item   internal representation independent of quantization word length
+                \end{itemize}
+        \end{itemize}
+        \column{.6\linewidth}
+        \figwithmatlab{QuantNumbers}
+        \end{columns}
+	\end{frame}
 
 \section[error]{quantization error}
 	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization error: definition}
@@ -73,15 +133,16 @@
 	\end{frame}		
 	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization error: max.\ amplitude}
 		\question{What is the maximum amplitude of the quantization error}
-		\begin{figure}
-			\centering
-				\includegraphics[scale=.3]{Graph/quant+quanterror}
-				\includegraphics[scale=.55]{graph/quant}
-		\end{figure}
-        \pause
+        \begin{columns}
+        \column{.2\linewidth}
+        \only<3->{
 		\begin{equation*}
 			|q(i)| \leq \frac{\Delta}{2}
 		\end{equation*}
+        }
+        \column{.8\linewidth}
+        \figwithmatlab{QuantizationError}
+        \end{columns}
 	\end{frame}		
 
 	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization error: pdf 1/2}
@@ -109,7 +170,7 @@
             \item on the \textbf{variance of the input} signal in relation to the step size
             \item   on the \textbf{pdf of the input} signal
             \smallskip
-            \item<2->[$\rightarrow$]   will be \textbf{uniform for large values of} $\frac{\sigma_X}{\Delta}$
+            \item<2->[$\rightarrow$]   will be \textbf{uniform (and white) for large values of} $\frac{\sigma_X}{\Delta}$
         \end{itemize}
     	\only<2->{
         \begin{figure}
@@ -118,8 +179,9 @@
         }
 	\end{frame}
 	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization error: power}
+        \vspace{-2mm}
         \question{how to compute the power $W_\mathrm{Q}$ of the quantization error}
-        
+        \vspace{-2mm}
         \begin{footnotesize}
         from PDF:
         \begin{eqnarray*}
@@ -137,13 +199,8 @@
         
 	\end{frame}
 	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization error: spectrum}
-		\vspace{-4mm}
-        quantization error of a full-scale sinusoidal
-        \vspace{-3mm}
-        \begin{figure}
-			\centering
-				\includegraphics[scale=.75]{Graph/quantcorr}
-		\end{figure}
+        quantization error of a full-scale sinusoidal (2,4,8,12 bits)
+        \figwithmatlab{QuantizationErrorSpectrum}
 	\end{frame}		
 \section[audio]{audio examples}
 	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: audio examples}
@@ -241,7 +298,7 @@
 	\end{frame}		
 	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: SNR 3/3}
 		\vspace{-5mm}\toremember{}
-        \vspace{-3mm}
+        %\vspace{-3mm}
         \begin{block}{Signal-to-Noise Ratio}
 			\centering
 			\begin{equation*}
@@ -309,11 +366,13 @@
 	\end{frame}
 
 \section[clipping]{clipping}
-	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: SNR and signal scaling}
-	    \begin{figure}
-			\centering
-				\includegraphics[scale=0.7]{Graph/snr}
-		\end{figure}
+
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: clipping}
+	    \figwithmatlab{Clipping}
+	\end{frame}	
+	
+	\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: clipping and SNR}
+	    \figwithmatlab{Snr}
         
      \begin{itemize}
          \item[] full scale:
@@ -324,15 +383,7 @@
             \end{itemize}
      \end{itemize}
 	\end{frame}
-	
-	%\begin{frame}\frametitle{sampling and quantization}\framesubtitle{quantization: clipping}
-	    %\begin{figure}
-	    	%\centering
-				%\includegraphics[scale=0.5]{Graph/Lerch14-11}
-		%\end{figure}
-	%\end{frame}	
-	%
-
+	
 	\section{summary}	
 		\begin{frame}{sampling and quantization}{quantization: summary }
 			\vspace{-3mm}
