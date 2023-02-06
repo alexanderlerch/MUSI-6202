@@ -279,3 +279,5 @@ TSWLatexianTemp*
 *.svg
 /slides/MUSI6202-slides.pdf
 *.gif
+*.tmp
+*.pk
