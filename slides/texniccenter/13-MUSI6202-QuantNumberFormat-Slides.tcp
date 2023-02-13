@@ -6,7 +6,7 @@ Version=4
 MainFile=..\13-MUSI6202-QuantNumberFormat-Slides.tex
 UseBibTeX=1
 UseMakeIndex=0
-ActiveProfile=LaTeX => PDF
+ActiveProfile=LaTeX => PDF (splitbib)
 ProjectLanguage=en
 ProjectDialect=US
 

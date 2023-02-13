@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 13: Digital Number Formats}
@@ -20,7 +19,7 @@
 					\hline
 						\textbf{w} & \textbf{$\Delta$} & \textbf{Max.\ Amp} & \textbf{theo.\ SNR} \\
 					\hline
-						8 (Int)	&	$\pm1$ & $0\ldots255$ & $\approx$\unit[48]{dB}\\
+						8 (UInt)	&	$\pm1$ & $0\ldots255$ & $\approx$\unit[48]{dB}\\
 						16 (Int)	&	$\pm1$ & $-32768\ldots32767$ & $\approx$\unit[96]{dB}\\
 						20 (Int)	&	$\pm1$ & $-524288\ldots524287$ & $\approx$\unit[120]{dB}\\
 						24 (Int)	&	$\pm1$ & $-16777216\ldots16777215$ & $\approx$\unit[144]{dB}\\
@@ -59,10 +58,7 @@
 
 \section[number representation]{number representation}
 	\begin{frame}{number formats}{number representation 1/2}
-	    \begin{figure}
-			\centering
-				\includegraphics[scale=0.6]{Graph/2complement}
-		\end{figure}
+	    \figwithmatlab{QuantNumbers}
 		\begin{itemize}
 			\item	Least Significant Bit (LSB): $b_0$ (usually on the right)
 			\item	Most Significant Bit (MSB): $b_{w-1}$ (usually on the left)
@@ -83,39 +79,44 @@
 				\end{tabular}
 			\end{footnotesize}
 		\end{table}
+        \vspace{-3mm}
+        \begin{columns}
+        \column{.4\linewidth}
 		\begin{itemize}
 			\item	$w:$ word length
 			\item	$b_i:$ ith Bit
 		\end{itemize}
-        \vspace{-10mm}
-	    \begin{flushright}
-			\includegraphics[scale=0.5]{Graph/2complement}
-		\end{flushright}
+        \column{.6\linewidth}
+	    %\begin{flushright}
+			%\includegraphics[scale=0.5]{Graph/2complement}
+		%\end{flushright}
+        \figwithmatlab{QuantNumbers}
+        \end{columns}
 	\end{frame}
 	
 \section[clipping]{clipping \& wrap-around}
 	\begin{frame}{number formats}{quantization: clipping \& wrap-around}
         \begin{columns}
-        \column{.9\linewidth}
-	    \vspace{-10mm}
-            \begin{figure}
-                \centering
-                    \includegraphics[scale=0.7]{Graph/wraparound}
-            \end{figure}
-        \column{.1\linewidth}
+        \column{.7\linewidth}
+	    \vspace{-5mm}
+            %\begin{figure}
+                %\centering
+                    %\includegraphics[scale=0.7]{Graph/wraparound}
+            %\end{figure}
+            \figwithmatlab{Clipping}
+        \column{.3\linewidth}
             %\vspace{5mm}
             
+            \bigskip
             \includeaudio{sine}
             \bigskip
             \bigskip
-            \bigskip
-            \bigskip
+            \smallskip
              
             \includeaudio{sine_clipped}
             \bigskip
             \bigskip
-            \bigskip
-            \bigskip
+            \smallskip
             
             \includeaudio{sine_wrapped}
         \end{columns}
