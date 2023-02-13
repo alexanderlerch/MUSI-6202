@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 12: Non-linear Quantization}
@@ -12,7 +11,19 @@
 
 \section[intro]{introduction}
 
-\begin{frame}{non-linear quantization}{introduction: linear quantization---SNR \& PDF}
+\begin{frame}{non-linear quantization}{introduction}
+    we have previously looked at quantization steps that are uniformly distributed over amplitude range:
+    \begin{itemize}
+        \item[$\Rightarrow$]   all neighboring steps have the same distance from each other on both input and output scale
+        \bigskip
+        \item<2-> this is sometimes referred to as uniform (as opposed to non-linear) quantization (which is confusing as any quantization represents a \textbf{nonlinear} system)
+    \end{itemize}
+    %\toremember{this is sometimes referred to as uniform (as opposed to non-linear) quantization (which is confusing as any quantization represents a \textbf{nonlinear} system)}
+    \bigskip
+    \textbf{but: what if the quantization steps are not uniformly distributed?}
+\end{frame}	
+
+\begin{frame}{non-linear quantization}{introduction: uniform quantization---SNR \& PDF}
 		\begin{equation*}
 			SNR = 6.02\cdot w + c_{\mathrm{S}}\quad [dB]
 		\end{equation*}
@@ -42,34 +53,25 @@
 	\begin{frame}{non-linear quantization}{introduction}
 		\textbf{idea}: quantize frequent signal values at higher resolution
 		
-		\begin{itemize}
-			\item<2-> \textbf{approach 1 }	
-				\begin{enumerate}
-					\item	flatten PDF (companding)
-					\item	linear quantization
-					\item	extract signal (expanding)
-				\end{enumerate}
-			\only<2>{
-            \begin{figure}
-                \begin{center}
-                    \includegraphics[scale=0.5]{Graph/quant_compexp}
-                \end{center}
-            \end{figure}
-            }
-			\only<3->{
-            \begin{figure}
-                \begin{center}
-                    \includegraphics[scale=0.2]{Graph/quant_compexp}
-                \end{center}
-            \end{figure}
-            }
-            \item<3-> \textbf{approach 2 }	
-				\begin{enumerate}
-					\item	adapt quantization step size to PDF
-				\end{enumerate}
-            \bigskip
-            \item<4->[$\Rightarrow$] both approaches are equivalent in their result
-		\end{itemize}
+        \begin{columns}
+        \column{.4\linewidth}
+            \begin{itemize}
+                \item<2-> \textbf{approach 1 }	
+                    \begin{enumerate}
+                        \item	flatten PDF (companding)
+                        \item	linear quantization
+                        \item	extract signal (expanding)
+                    \end{enumerate}
+                \item<3-> \textbf{approach 2 }	
+                    \begin{enumerate}
+                        \item	adapt quantization step size to PDF
+                    \end{enumerate}
+                \bigskip
+                \item<4->[$\Rightarrow$] both approaches are equivalent in their result
+            \end{itemize}
+        \column{.6\linewidth}
+            \figwithmatlab{mulaw}
+        \end{columns}
 	\end{frame}	
 
 \section[A-law]{A-Law quantization}
@@ -103,11 +105,7 @@
 	\end{frame}	
 
 	\begin{frame}{non-linear quantization}{A-Law quantization 2/3}
-        \vspace{-4mm}
-	    \begin{figure}
-			\centering
-				\includegraphics[scale=0.5]{Graph/a-law}
-		\end{figure}
+        \figwithmatlab{Alaw}
 	\end{frame}
 
 	\begin{frame}{non-linear quantization}{A-Law quantization 3/3}

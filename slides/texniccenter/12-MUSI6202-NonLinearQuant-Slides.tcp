@@ -6,7 +6,7 @@ Version=4
 MainFile=..\12-MUSI6202-NonLinearQuant-Slides.tex
 UseBibTeX=1
 UseMakeIndex=0
-ActiveProfile=LaTeX => PDF
+ActiveProfile=LaTeX => PDF (splitbib)
 ProjectLanguage=en
 ProjectDialect=US
 
