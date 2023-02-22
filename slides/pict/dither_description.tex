@@ -1,0 +1,113 @@
+%\begin{footnotesize}
+    \begin{picture}(85,20)
+        \setcounter{iXOffset}{0}
+        \setcounter{iYOffset}{0}
+        \setcounter{iXBlockSize}{10}
+        \setcounter{iXBlockSizeDiv2}{5}
+        \setcounter{iYBlockSize}{10}
+        \setcounter{iYBlockSizeDiv2}{5}
+        \setcounter{iDistance}{10}
+
+    \addtocounter{iYOffset}{\value{iYBlockSizeDiv2}}
+
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\vector(1,0){\value{iDistance}}}
+
+    \addtocounter{iYOffset}{1}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\text{$x(i)$}}
+    \addtocounter{iYOffset}{-1}
+
+    \addtocounter{iXOffset}{\value{iDistance}}
+    \addtocounter{iXOffset}{2}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\circle{4}} 
+    \addtocounter{iXOffset}{-1}
+    \addtocounter{iYOffset}{-1}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\text{\large{+}}}
+    \addtocounter{iXOffset}{1}
+    \addtocounter{iYOffset}{1}
+        
+
+    %\addtocounter{iXOffset}{2}
+    \addtocounter{iYOffset}{\value{iDistance}}
+    \addtocounter{iYOffset}{2}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\vector(0,-1){\value{iDistance}}}
+    \addtocounter{iYOffset}{-\value{iDistance}}
+    \addtocounter{iYOffset}{-2}
+    \addtocounter{iXOffset}{2}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\vector(1,0){\value{iDistance}}}
+
+    \addtocounter{iYOffset}{\value{iDistance}}
+    \addtocounter{iYOffset}{-1}
+    \addtocounter{iXOffset}{-1}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\text{$d(i)$}}
+    \addtocounter{iXOffset}{1}
+    \addtocounter{iYOffset}{-\value{iDistance}}
+    \addtocounter{iYOffset}{1}
+    \addtocounter{iYOffset}{-\value{iYBlockSizeDiv2}}
+    \addtocounter{iXOffset}{\value{iDistance}}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\framebox(\value{iXBlockSize}, \value{iYBlockSize}) {Q}}
+
+    \addtocounter{iXOffset}{\value{iXBlockSize}}
+    \addtocounter{iYOffset}{\value{iYBlockSizeDiv2}}
+
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\vector(1,0){\value{iDistance}}}
+
+    \addtocounter{iXOffset}{3}
+    \addtocounter{iYOffset}{1}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\text{$x_\mathrm{Q}(i)$}}
+    \addtocounter{iYOffset}{-1}
+    \addtocounter{iXOffset}{-3}
+ 
+    \addtocounter{iXOffset}{\value{iXBlockSize}}
+    \addtocounter{iXOffset}{\value{iXBlockSize}}
+    \setcounter{iYOffset}{0}
+
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\framebox(60, \value{iYBlockSizeDiv2}) {$x(i)$}}
+
+    \addtocounter{iYOffset}{\value{iYBlockSizeDiv2}}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\framebox(40, \value{iYBlockSizeDiv2}) {$x_\mathrm{Q}(i)$}}
+    \addtocounter{iXOffset}{40}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\framebox(20, \value{iYBlockSizeDiv2}) {$d(i)$}}
+
+    \addtocounter{iYOffset}{\value{iYBlockSizeDiv2}}
+    \addtocounter{iYOffset}{1}
+    \addtocounter{iXOffset}{-40}
+    \addtocounter{iXOffset}{16}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\vector(-1,0){16}}
+    \addtocounter{iXOffset}{2}
+    %\addtocounter{iYOffset}{-1}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\text{\tiny{\unit[w]{Bit}}}}
+    \addtocounter{iXOffset}{-2}
+    \addtocounter{iXOffset}{8}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\vector(1,0){16}}
+        
+    \addtocounter{iXOffset}{16}
+    \addtocounter{iXOffset}{7}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\vector(-1,0){7}}
+    \addtocounter{iXOffset}{2}
+    %\addtocounter{iYOffset}{-1}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\text{\tiny{\unit[s]{Bit}}}}
+    \addtocounter{iXOffset}{-2}
+    \addtocounter{iXOffset}{6}
+    \put(\value{iXOffset}, \value{iYOffset})
+        {\vector(1,0){7}}
+        
+    \end{picture}
+%\end{footnotesize}

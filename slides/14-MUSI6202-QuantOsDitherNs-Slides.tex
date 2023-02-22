@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 14: Improving (Re-)Quantization Quality}
@@ -37,14 +36,14 @@
             \item   \textbf{oversampling}: 
             \begin{itemize}
                 \item<2->[$\Rightarrow$]	less steep anti-aliasing filters
-                \item<2->[$\Rightarrow$]	?
+                \item<2->[$\Rightarrow$]	other advantages?
             \end{itemize}
 
             \bigskip
 			\item<3->	remember \textbf{quantization error properties}
 			\begin{enumerate}
 				\item	\textit{white} noise: flat spectrum
-				\item	noise power \textit{sample rate independent}
+				\item	overall noise power: constant (same for high or low sample rates)
                 \bigskip
                 \item<4->[$\Rightarrow$] $|Q(\jom)|^2 \sim \frac{\Delta^2}{12\cdot \omega_\mathrm{S}}$
 			\end{enumerate}
@@ -57,19 +56,16 @@
 	\end{frame}	
     
 	\begin{frame}{oversampling}{visualization}
-		\vspace{-5mm}
-        \only<2>{
+        \vspace{-8mm}
+        \begin{columns}
+        \column{.5\linewidth}
 		\begin{figure}
 			\centering
-				\includegraphics[scale=.9]{Graph/oversampling1}
+				\includegraphics[scale=.32]{Graph/oversampling2}
 		\end{figure}
-		}
-		\only<1>{
-		\begin{figure}
-			\centering
-				\includegraphics[scale=.35]{Graph/oversampling2}
-		\end{figure}
-		}
+        \column{.5\linewidth}
+		\figwithmatlab{Oversampling}
+        \end{columns}
 	\end{frame}	
 	\begin{frame}{oversampling}{SNR gain}
 		\begin{eqnarray*}
@@ -104,7 +100,7 @@
         \begin{columns}
             \column{.5\textwidth}
 		\begin{itemize}
-			\item	previous assumption: \textbf{quantization error is white noise} (rect)
+			\item	previous assumption:\\ \textbf{quantization error is white noise} (rect)
 				\pause
 				\begin{itemize}
 					\item[$\rightarrow$]	\textbf{no correlation} between signal and quantization error
@@ -127,18 +123,13 @@
 		\end{itemize}
         \column{0.5\textwidth}
 			\visible<2->{
-      	\begin{figure}
-				\includegraphics[scale=.45]{Graph/quant+quanterror}
-		\end{figure}
+      	\figwithmatlab{SineQuant}
         }
     \end{columns}
 	\end{frame}	
 	\begin{frame}{dither}{introduction 2/2}
 		\vspace{-5mm}
-        \begin{figure}
-			\centering
-				\includegraphics[scale=0.4]{Graph/3stepquantdither.png}
-		\end{figure}
+        \figwithmatlab{Dither}
 	\end{frame}	
 	\begin{frame}{dither}{process}
 		\begin{figure}
@@ -169,7 +160,7 @@
 	\begin{frame}{dither}{properties}
 		\begin{figure}
 			\centering
-				\includegraphics[scale=0.9]{Graph/quantisierung_mit_dither.png}
+				\input{pict/dither_description}
 		\end{figure}
         \pause
         \begin{itemize}
@@ -189,7 +180,12 @@
             \end{equation*}
         \end{itemize}
 	\end{frame}	
-	\begin{frame}{dither}{rectangular dither}
+	\begin{frame}{dither}{common amplitude distributions}
+        different dither PDFs lead to different outputs
+        
+        examples: rectangular and triangular dither
+	\end{frame}	
+	\begin{frame}{dither}{rectangular dither: expected value and noise modulation}
         \vspace{-3mm}
         dither with rect pdf, $-\nicefrac{\Delta}{2}\ldots \nicefrac{\Delta}{2}$, not quantized
         \begin{footnotesize}
@@ -223,7 +219,7 @@
         \end{eqnarray*}
         \end{footnotesize}
 	\end{frame}	
-	\begin{frame}{dither}{triangular dither}
+	\begin{frame}{dither}{triangular dither: expected value and noise modulation}
         \vspace{-3mm}
         dither with tri pdf, $-{\Delta}\ldots {\Delta}$, not quantized
         \begin{footnotesize}
@@ -257,40 +253,25 @@
         \end{eqnarray*}
         \end{footnotesize}
 	\end{frame}	
-	\begin{frame}{dither}{linearization and noise modulation 1/2}
-	    \begin{figure}
-			\begin{center}
-				\includegraphics[scale=0.5]{Graph/dither_and_noisemodulation}
-			\end{center}
-		\end{figure}
-	\end{frame}	
-	\begin{frame}{dither}{linearization and noise modulation 2/2}
-		\begin{figure}
-			\begin{center}
-					\includegraphics[scale=0.5]{Graph/rauschmodulation}
-			\end{center}
-		\end{figure}	
+	\begin{frame}{dither}{linearization and noise modulation}
+        \vspace{-3mm}
+		\figwithmatlab{DitherNoiseMod}	
 	\end{frame}	
 	\begin{frame}{dither}{noise properties 1/3}
-		\begin{figure}[htbp]
-			\centering
-				\includegraphics[scale=0.8]{Graph/dither_amplitudendichteverteilung.png}
-		\end{figure}
+        \vspace{-3mm}
+        \figwithmatlab{DitherPdf}
 		\pause
+        \vspace{-3mm}
 		\begin{eqnarray*}\label{eq:ditherformen}
-			d_\mathrm{RECT}(n) &=& d(n)\\
-			d_\mathrm{TRI}(n) &=& d_\mathrm{RECT,1}(n)+d_\mathrm{RECT,2}(n)\\
+			d_\mathrm{RECT}(i) &=& d_\mathrm{RECT}(i)\\
+			d_\mathrm{TRI}(i) &=& d_\mathrm{RECT,1}(i)+d_\mathrm{RECT,2}(i)\\
+			d_\mathrm{GAUSS}(i) &=& \sum\limits_{k=0}^{\infty}d_\mathrm{RECT,k}(i)\\
 			\pause
             d_\mathrm{HP}(n) &=& d(n)-d(n-1)
 		\end{eqnarray*}
-        \footnote{note that the gaussian shaped PDF is \textbf{not} related to $d_\mathrm{HP}$}
 	\end{frame}	
 	\begin{frame}{dither}{noise properties 2/3}
-		\vspace{-3mm}
-        \begin{figure}[!hbt]
-			\centering
-				\includegraphics[scale=0.5]{Graph/noiseadv.png}
-		\end{figure}
+		\figwithmatlab{DitherNoise}
 	\end{frame}	
 	\begin{frame}{dither}{noise properties 3/3}
 		
@@ -543,17 +524,15 @@
 	\end{frame}
 	
 	\begin{frame}{noise shaping}{higher order noise shaping}
-		\begin{figure}
-			\centering
-				\includegraphics[scale=0.6]{Graph/noiseshaping}
-		\end{figure}
+		\figwithmatlab{NoiseShaping}
 	\end{frame}
 	
 	\begin{frame}{noise shaping}{arbitrary noise shaping transfer functions}
 		\begin{figure}
 			\centering
-				\includegraphics[scale=0.3]{Graph/ATH}
+				\includegraphics[scale=0.3]{Graph/NoiseShapingATH}
 		\end{figure}
+        plot from \footfullcite{wannamaker_psychoacoustically_1992}
 	\end{frame}
 	
 	\begin{frame}{noise shaping}{dither \& noise shaping 1/3}
