@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 15: Digital Filters I}
@@ -17,7 +16,7 @@
         \end{block}
         \pause
         \bigskip
-        \begin{block}{filter --- narrow}
+        \begin{block}{filter --- narrow description}
             linear time-invariant system for changing the magnitude and phase of specific frequency regions            
         \end{block}
         \pause
@@ -36,61 +35,60 @@
         \end{itemize}
 	\end{frame}
 	\begin{frame}{filters}{introduction 2/2}
-        \vspace{-8mm}
+        \vspace{-9mm}
         \begin{columns}
-            \column{.6\linewidth}
+            \column{.4\linewidth}
                 \begin{itemize}
                     \item   \textbf{audio equalization}
                         \begin{itemize}
-                            \item   parametric EQs
-                            \item   graphic EQs
+                            \item   parametric and graphic EQs
                         \end{itemize}
-                    %\smallskip
+                    \smallskip
                     \item<2->   \textbf{removal} of unwanted components
                         \begin{itemize}
                             \item   remove DC, rumble
                             \item   remove hum
                             \item   remove hiss
                         \end{itemize}
-                    %\smallskip
+                    \smallskip
                     \item<3->   \textbf{pre-emphasis/de-emphasis}
                         \begin{itemize}
                             \item   Vinyl
                             \item   old Dolby noise reduction systems
                         \end{itemize}
-                    %\smallskip
+                    \smallskip
                     \item<4->   \textbf{weighting} function
                         \begin{itemize}
                             \item   dBA, dBC, \ldots
                         \end{itemize}
-                    %\smallskip
+                    \smallskip
                     \item<5->   (parameter) \textbf{smoothing}
                         \begin{itemize}
                             \item   smooth sudden changes
                         \end{itemize}
                 \end{itemize}
                 \vspace{70mm}
-            \column{.4\linewidth}
+            \column{.6\linewidth}
                 \only<1>{
                     \begin{figure}
-                        \includegraphics[scale=.15]{graphic_equalizer}
-                    \end{figure}}
+                        \includegraphics[scale=.15]{graph/graphic_equalizer}
+                    \end{figure}
+                    \addreference{\href{https://en.wikipedia.org/wiki/File:Graphic_equalizer.jpg}{en.wikipedia.org/wiki/File:Graphic\_equalizer.jpg}}
+                    }
                 \only<2>{
                     \begin{figure}
-                        \includegraphics[scale=.25]{hum_removal}
+                        \includegraphics[scale=.25]{graph/hum_removal}
                     \end{figure}}
                 \only<3>{
                     \begin{figure}
-                        \includegraphics[scale=.4]{riaa_emphasis}
-                    \end{figure}}
+                        \includegraphics[scale=.4]{graph/riaa_emphasis}
+                    \end{figure}
+                    \addreference{\href{https://www.learnabout-electronics.org/Amplifiers/images/RIAA-curve.gif}{learnabout-electronics.org/Amplifiers/images/RIAA-curve.gif}}
+                    }
                 \only<4>{
-                    \begin{figure}
-                        \includegraphics[scale=.4]{loudnessweighting}
-                    \end{figure}}
+                    \figwithmatlab{LoudnessWeighting}}
                 \only<5>{
-                    \begin{figure}
-                        \includegraphics[scale=.35]{parameter_smoothing}
-                    \end{figure}}
+                    \figwithmatlab{Smoothing}}
         \end{columns}
 	\end{frame}
  
@@ -127,7 +125,7 @@
                         \item   low/high pass
                     \end{itemize}
                 \smallskip
-                \item<3->   common for non-audio:
+                \item<3->   common for non-audio/non-parametric:
                     \begin{itemize}
                         \item   band pass/band stop
                     \end{itemize}
@@ -143,48 +141,52 @@
                 \vspace{-3mm}
                 \only<2-3>{
                     \begin{figure}%
-                        \includegraphics[width=.8\columnwidth]{generalfilters_overview}%
+                        \includegraphics[width=.6\columnwidth]{graph/generalfilters_overview}%
                     \end{figure}
                 }
                 \only<4>{
                     \begin{figure}%
-                        \includegraphics[width=.5\columnwidth]{filter_shelving}%
+                        \includegraphics[width=.4\columnwidth]{graph/filter_shelving}%
                     \end{figure}
                 }
                 \only<5>{
                     \begin{figure}%
-                        \includegraphics[width=\columnwidth]{filter_peak}%
+                        \includegraphics[width=\columnwidth]{graph/filter_peak}%
                     \end{figure}
                 }
                 \only<6>{
                     \begin{figure}%
-                        \includegraphics[width=.5\columnwidth]{filter_notch}%
+                        \includegraphics[width=.5\columnwidth]{graph/filter_notch}%
                     \end{figure}
                 }
             \end{columns}
+            \only<2-5>{\phantom{\footfullcite{zolzer_digital_2008}}}
     \end{frame}
-	\begin{frame}{filters}{common transfer function shapes}
+	\begin{frame}{filters}{filters in series}
 			\begin{figure}
-				\centerline{\includegraphics[scale=.5]{graph/filter}}
+				\centerline{\includegraphics[width=\linewidth]{graph/zolzer_filterchain}}
 			\end{figure}
+            \phantom{\footfullcite{zolzer_digital_2008}}
 	\end{frame}
-    \begin{frame}{filters}{filter banks}
+    \begin{frame}{filters}{filter banks --- parallel connections}
         \vspace{-3mm}
         \only<1>{
         \begin{figure}%
-            \includegraphics[width=.6\columnwidth]{filterbank}%
+            \includegraphics[width=.5\columnwidth]{graph/filterbank}%
         \end{figure}
         }
         \vspace{-2mm}
         \only<2>{
         \begin{figure}%
-            \includegraphics[width=.9\columnwidth]{filterbank2}%
+            \includegraphics[width=.75\columnwidth]{graph/filterbank2}%
         \end{figure}
         }
+            \phantom{\footfullcite{zolzer_digital_2008}}
     \end{frame}
     
 \section{parameters}
         \begin{frame}{filters}{filter parameters --- lowpass/highpass}
+            \vspace{-5mm}
             \begin{columns}
             \column{.5\linewidth}
                 \begin{itemize}
@@ -207,8 +209,9 @@
                 \end{itemize}
             \column{.5\columnwidth}
                 \begin{figure}%
-                    \includegraphics[width=1.1\columnwidth]{filter_parameters_lowpass}%
+                    \includegraphics[width=.9\columnwidth]{graph/filter_parameters_lowpass}%
                 \end{figure}
+                \addreference{\href{https://en.wikipedia.org/wiki/File:Butterworth_response.svg}{en.wikipedia.org/wiki/File:Butterworth\_response.svg}}
             \end{columns}
         \end{frame}
         \begin{frame}{filters}{filter parameters --- bandpass/bandstop}
@@ -233,8 +236,9 @@
                 \end{itemize}
             \column{.5\columnwidth}
                 \begin{figure}%
-                    \includegraphics[width=1.1\columnwidth]{filter_parameters_bandpass}%
+                    \includegraphics[width=.9\columnwidth]{graph/filter_parameters_bandpass}%
                 \end{figure}
+                \addreference{\href{https://en.wikipedia.org/wiki/File:Bandwidth_2.svg}{en.wikipedia.org/wiki/File:Bandwidth\_2.svg}}
             \end{columns}
         \end{frame}
         \begin{frame}{filters}{filter parameters --- peak}
@@ -260,8 +264,9 @@
                 \end{itemize}
             \column{.5\columnwidth}
                 \begin{figure}%
-                    \includegraphics[width=1.1\columnwidth]{filter_parameters_peak}%
+                    \includegraphics[width=.9\columnwidth]{graph/filter_parameters_peak}%
                 \end{figure}
+                \addreference{\href{http://www.sengpielaudio.com/FilterBandwidth09B.gif}{sengpielaudio.com/FilterBandwidth09B.gif}}
             \end{columns}
         \end{frame}
         \begin{frame}{filters}{filter parameters --- overview}
@@ -280,16 +285,17 @@
         
 \section{examples}	
 	\begin{frame}{filters}{digital filter description}
+		\begin{equation*}
+			H(\mathrm{j}\omega) = \mathfrak{F}\{h(t)\}
+		\end{equation*}
+
+
 		filter is defined by its
 		\begin{itemize}
 			\item	complex transfer function $H(\mathrm{j}\omega)$, or its
 			\item	impulse response $h(t)$, or its
-			\item	\textit{list of pole and zero positions in the Z-plane}
+			\item<2->	\textit{list of pole and zero positions in the Z-plane}
 		\end{itemize}
-		\pause
-		\begin{equation*}
-			H(\mathrm{j}\omega) = \mathfrak{F}\{h(t)\}
-		\end{equation*}
 	\end{frame}
 
 	
@@ -357,9 +363,9 @@
 	
 	\begin{frame}{filters}{example 1: transfer function 2/2}
 		\begin{figure}
-			\centerline{\includegraphics[scale=.5]{graph/fx_01}}
-		    \label{fig:fx_01}
+			\centerline{\includegraphics[scale=.8]{SimpleFilter-LP_FIR}}
 		\end{figure}
+        \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
 	\end{frame}	
 	
 	\begin{frame}{filters}{example 2}
@@ -412,8 +418,9 @@
 	
 	\begin{frame}{filters}{example 2: transfer function}
 		\begin{figure}
-			\centerline{\includegraphics[scale=.5]{graph/fx_02}}
+			\centerline{\includegraphics[scale=.8]{SimpleFilter-HP_FIR}}
 		\end{figure}
+        \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
 	\end{frame}	
 	
 	\begin{frame}{filters}{example 3}
@@ -468,13 +475,15 @@
 	
 	\begin{frame}{filters}{example 3: transfer function}
 		\begin{figure}
-			\centerline{\includegraphics[scale=.5]{graph/fx_03}}
-		    \label{fig:fx_03}
+			\centerline{\includegraphics[scale=.8]{SimpleFilter-CB_FIR}}
 		\end{figure}
+        \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
 	\end{frame}	
 	
 	\begin{frame}{filters}{example 4}
         \setbeamercovered{invisible}
+        \begin{columns}
+        \column{.6\linewidth}
         \begin{figure}
 			\begin{center}
             \begin{picture}(50,70)
@@ -550,19 +559,28 @@
 			\end{center}
         \end{figure}
         
-    	\vspace{-20mm}
-        \pause
+        \column{.4\linewidth}
+        \only<2>{
     	\begin{equation*}
     		y(i) = \frac{1}{\mathcal{J}}\sum_{j=0}^{\mathcal{J}-1} x(i-j)
     	\end{equation*}
+        }
+        \end{columns}
 	\end{frame}
 	\begin{frame}{filters}{example 4: transfer function}
+        \vspace{-10mm}
+        \begin{columns}
+        \column{.7\linewidth}
 		\begin{figure}
-			\centerline{\includegraphics[scale=.5]{graph/fx_04}}
+			\centerline{\includegraphics[scale=.8]{SimpleFilter-MA_FIR}}
 		\end{figure}
+        \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
+        \column{.3\linewidth}
     	\begin{equation*}
     		H(j\omega) = e^{-\mathrm{j}\mathcal{J}\frac{\omega}{2}}\frac{\sin\left(\mathcal{J}\cdot\frac{\omega}{2} \right)}{\mathcal{J}\cdot\sin\left(\frac{\omega}{2} \right)}
     	\end{equation*}
+        \end{columns}
+
 	\end{frame}	
 	\begin{frame}{filters}{example 4: recursive implementation}
 		\begin{eqnarray*}
@@ -634,8 +652,9 @@
 	\end{frame}
 	\begin{frame}{filters}{example 5: transfer function 2/2}
 		\begin{figure}
-			\centerline{\includegraphics[scale=.5]{graph/fx_05}}
+			\centerline{\includegraphics[scale=.8]{SimpleFilter-LP_IIR}}
 		\end{figure}
+        \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
 	\end{frame}
 	\begin{frame}{filters}{example 6}
         \begin{figure}[!hbt]
@@ -680,13 +699,18 @@
     	\end{equation*}
 	\end{frame}
 	\begin{frame}{filters}{example 6: transfer function}
+        \vspace{-10mm}
+        \begin{columns}
+        \column{.7\linewidth}
 		\begin{figure}
-			\centerline{\includegraphics[scale=.5]{graph/fx_06}}
-		    \label{fig:fx_06}
+			\centerline{\includegraphics[scale=.8]{SimpleFilter-HP_IIR}}
 		\end{figure}
+        \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
+        \column{.3\linewidth}
     	\begin{equation*}
     		H(j\omega) = \frac{b_0}{1-a_N\cdot e^{-j\omega N}}
     	\end{equation*}
+        \end{columns}
 	\end{frame}
 	\begin{frame}{filters}{biquad: structure}
         \vspace{-3mm}
