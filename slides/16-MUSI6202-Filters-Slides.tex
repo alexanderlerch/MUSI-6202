@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 16: z-transform}
@@ -40,7 +39,7 @@
         \vspace{-3mm}
         \only<1>{
         \begin{figure}
-            \includegraphics[scale=.9]{zplane}
+            \includegraphics[scale=.9]{graph/zplane}
         \end{figure}
         }
         \only<2->{
@@ -55,7 +54,7 @@
                 \end{itemize}
             \column{.5\linewidth}
                 \begin{figure}
-                \includegraphics[width=.8\linewidth]{zplane}
+                \includegraphics[width=.8\linewidth]{graph/zplane}
                 \end{figure}
         \end{columns}
         }
@@ -63,7 +62,7 @@
 	\begin{frame}{z-transform}{trivial examples}
         \vspace{-3mm}
         \begin{figure}
-            \includegraphics[scale=.8]{zplaneExamples}
+            \includegraphics[scale=.8]{graph/zplaneExamples}
         \end{figure}
         
         \question{what is the magnitude for $X(z) = 1/(z-0.5)$}
