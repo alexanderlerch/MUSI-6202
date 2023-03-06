@@ -14,8 +14,13 @@
         the z-transform is
         \begin{itemize}
             \item   a generalization of DFT,
+            \smallskip
             \item   widely used in DSP as analysis tool,
-            \item   a useful tools to describe systems,
+            \smallskip
+            \item   a useful tool to characterize systems (also recursive systems!),
+            \smallskip
+            \item   a useful tool to check for system stability and causality,
+            \smallskip
             \item   the discrete-time counterpart of the Laplace transform.
         \end{itemize}
 	\end{frame}
@@ -26,6 +31,7 @@
         \end{equation*}
         \begin{itemize}
             \item<2->   $X(z)$: complex function of a complex number
+            \bigskip
             \item<3->   compare Fourier transform $X(\jom)$: complex function of real-valued $\omega$
         \end{itemize}
         \only<3->{
@@ -36,14 +42,7 @@
         }
 	\end{frame}
 	\begin{frame}{z-transform}{zplane}
-        \vspace{-3mm}
-        \only<1>{
-        \begin{figure}
-            \includegraphics[scale=.9]{graph/zplane}
-        \end{figure}
-        }
-        \only<2->{
-        \vspace{-3mm}
+        \vspace{-5mm}
         \begin{columns}
             \column{.5\linewidth}
                 \begin{itemize}
@@ -53,21 +52,15 @@
                     \item<3-> observation: $X(\jom)$ is periodic with $2\pi$
                 \end{itemize}
             \column{.5\linewidth}
-                \begin{figure}
-                \includegraphics[width=.8\linewidth]{graph/zplane}
-                \end{figure}
+                \figwithmatlab{ZplaneIntro}
         \end{columns}
-        }
 	\end{frame}
 	\begin{frame}{z-transform}{trivial examples}
-        \vspace{-3mm}
-        \begin{figure}
-            \includegraphics[scale=.8]{graph/zplaneExamples}
-        \end{figure}
+        \figwithmatlab{ZplaneExample}
         
         \question{what is the magnitude for $X(z) = 1/(z-0.5)$}
         
-        same as $1/z$ but shifted.
+        same as $1/z$ but shifted on the x-axis.
         
 	\end{frame}
 	\begin{frame}{z-transform}{system description}
@@ -215,9 +208,13 @@
 			\begin{itemize}
 				\item	numerator $\rightarrow 0$: zero
 				\only<1>{\item	denominator  $\rightarrow 0$: pole}
-				\only<2,3,4>{\item	\textcolor{gtgold}{denominator  $\rightarrow 0$: pole}}
+				\only<2->{\item	\textcolor{gtgold}{denominator  $\rightarrow 0$: pole}}
+                \only<5->{
+                    \bigskip
+                    \item   zeros and poles are a simplified way of visualizing filter properties in the zplane
+                    }
 			\end{itemize}
-			\uncover<3,4>{
+			\visible<3,4>{
 				\begin{eqnarray*}
 					1 + a_1\cdot z^{-1} + a_2\cdot z^{-2} &=& 0\nonumber\\
 	%							z^2 + a_1\cdot z + a_2 &=& 0\nonumber
@@ -225,46 +222,13 @@
 					\Longrightarrow z_{\infty1,2} &=& \frac{a_1}{2} \pm \frac{1}{2}\sqrt{a_1^2-4a_2}\nonumber
 				\end{eqnarray*}
 			}
-			%\uncover<4>{
-				%stability:
-					%\begin{equation}\nonumber
-						%|z_{\infty1,2}| < 1
-					%\end{equation}
-				%
-			%}
-			%Beispielrechnung Instabilität
 		\end{frame}
 		\begin{frame}{biquad}{zplane example}
-            \vspace{-3mm}
-				\begin{figure}[!hbt]
-					\begin{center}
-						\includegraphics[scale=.6]{graph/PoleZero}
-					\end{center}
-				\end{figure}
-		\end{frame}
-		\begin{frame}{biquad}{ z-transform}
-            \vspace{-3mm}
-				\begin{figure}[!hbt]
-					\begin{center}
-						\includegraphics[scale=.26]{graph/PoleZero3d}
-					\end{center}
-				\end{figure}
+            \figwithmatlab{BiquadZplane}
  		\end{frame}
 		\begin{frame}{biquad}{ animation}
-            %\vspace{-5mm}
-            %\hspace*{-20mm}
-            %\animategraphics[scale=.4,autoplay,loop]{10}{graph/BiquadPoleZero/BqPZ_}{1}{100}       
-            \hspace*{-25mm}\includemedia[
-                        addresource=video/BqPZ.mp4,
-                        width=1.25\linewidth,
-                        height=0.5\linewidth,
-                        activate=onclick,
-                        flashvars={
-                            source=video/BqPZ.mp4  
-                            &autoPlay=true
-                        }]
-                        {}
-                        {VPlayer.swf}
+            \vspace{-5mm}
+            \includeanimation{BiquadZplane}{01}{400}{10}
  		\end{frame}
 
 		%\begin{frame}{filters}{z-transform}
@@ -281,7 +245,7 @@
             %\end{equation*}
  		%\end{frame}
         
-    \section{convergence}
+    \section{characteristics}
 		%\begin{frame}{z-transform}{convergence introduction}
             %\begin{equation*}
                 %X(z) = \sum\limits_{i=-\infty}^\infty x(i)z^{-i}
@@ -364,19 +328,23 @@
             \begin{itemize}
                 \item   \textbf{stability}:\\ poles within unit circle
                 \pause
+                \smallskip
                 \item   \textbf{zero points and poles}\\ are either real or complex conjugate
                 \pause
+                \smallskip
                 \item   \textbf{minimal phase systems}:\\ no zero points outside of unit circle
                 \pause
+                \smallskip
                 \item   \textbf{all pass system}:\\ poles and zeros symmetric wrt unit circle
                 \pause
+                \smallskip
                 \item   \textbf{linear phase}:\\ zero points within and outside unit circle symmetric wrt unit circle
             \end{itemize}
  		\end{frame}
        
     \section{filter design}
 		\begin{frame}{filters}{filter design}
-            \vspace{-5mm}
+            \vspace{-3mm}
             \begin{itemize}
                 \item   \textbf{impulse invariance}: sample impulse response
                     \begin{itemize}
@@ -413,7 +381,7 @@
  		\end{frame}
     \section{quantized coefficients}
 		\begin{frame}{filters}{effects of word length}
-            \vspace{-5mm}
+            \vspace{-3mm}
             \begin{itemize}
                 \item   quantization of filter coefficients can lead to problems
                 \item   effects depend on filter type and structure:
@@ -423,33 +391,33 @@
                         \item   quantization noise $\rightarrow$ SNR
                     \end{itemize}
             \end{itemize}
-			\vspace{-3mm}
+			\vspace{-5mm}
             \only<2>{
-				\begin{figure}[!hbt]
-					\begin{center}
+				\begin{figure}
+					\begin{flushright}
 						\includegraphics[scale=.35]{graph/QuantPolePlotDirect_1}
-					\end{center}
+					\end{flushright}
 				\end{figure}
 			}
 			\only<3>{
-				\begin{figure}[!hbt]
-					\begin{center}
+				\begin{figure}
+					\begin{flushright}
 						\includegraphics[scale=.35]{graph/QuantPolePlotDirect_2}
-					\end{center}
+					\end{flushright}
 				\end{figure}
 			}
 			\only<4>{
-				\begin{figure}[!hbt]
-					\begin{center}
+				\begin{figure}
+					\begin{flushright}
 						\includegraphics[scale=.35]{graph/QuantPolePlotDirect_3}
-					\end{center}
+					\end{flushright}
 				\end{figure}
 			}
 			\only<5>{
-				\begin{figure}[!hbt]
-					\begin{center}
+				\begin{figure}
+					\begin{flushright}
 						\includegraphics[scale=.35]{graph/QuantPolePlotDirect_4}
-					\end{center}
+					\end{flushright}
 				\end{figure}
 			}
             \vspace{50mm}
@@ -468,6 +436,7 @@
                         stability & guaranteed & possibly unstable
                     \end{tabular}
             \end{table}
+            \bigskip
             \begin{itemize}
                 \item   every LTI system is \textbf{completely described} either by
                     \begin{itemize}
