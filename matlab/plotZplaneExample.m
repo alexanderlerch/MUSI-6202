@@ -2,7 +2,7 @@ function plotZplaneExample ()
 
 
     % generate new figure
-    hFigureHandle = generateFigure(11, 8);
+    hFigureHandle = generateFigure(14,6.5);
     
     % set output path relative to script location and to script name
     [cPath, cName] = fileparts(mfilename('fullpath'));

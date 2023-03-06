@@ -1,7 +1,7 @@
 function plotBiquadZplane ()
 
     % generate new figure
-    hFigureHandle = generateFigure(13,7);
+    hFigureHandle = generateFigure(14,6.5);
     
     % set output path relative to script location and to script name
     [cPath, cName] = fileparts(mfilename('fullpath'));
