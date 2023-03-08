@@ -302,39 +302,7 @@
 
 	        \begin{figure}
 				\begin{center}
-	            \begin{picture}(50,30)
-	
-	                %boxes
-	                \put(25,5){\framebox(7,6){\footnotesize{$z^{-1}$}}}
-	
-	                %lines horizontal
-	                \put(5,20){\vector(1,0){22.5}}
-	                \put(29.5,20){\vector(1,0){11.5}}
-	                \put(43,20){\vector(1,0){10}}
-	                
-	                \put(15,8){\vector(1,0){10}}
-	                \put(32,8){\line(1,0){10}}
-	
-	                %lines vertical
-	                \put(15,20){\line(0,-1){12}}
-	                \put(42,8){\vector(0,1){4}}
-	                \put(42,14){\vector(0,1){5}}
-	                
-	                %circles
-	                \put(27,19){$\otimes$}
-	                \put(40.5,19){$\oplus$} % 42-20
-	                \put(40.5,12){$\otimes$}
-	                
-	                \put(15,20){\circle*{1}}
-	
-	                %text
-	                \put(26,24){\footnotesize{\shortstack[c]{$\nicefrac{1}{2}$}}}
-	                \put(46,10){\footnotesize{\shortstack[c]{$\nicefrac{1}{2}$}}}
-	
-	                \put(4,22){\footnotesize{\shortstack[c]{x(i)}}}
-	                \put(52,22){\footnotesize{\shortstack[c]{y(i)}}}
-	
-	            \end{picture}
+                \input{pict/filter_LP_FIR}
 				\end{center}
 	        \end{figure}
         
@@ -370,39 +338,7 @@
         \setbeamercovered{invisible}
         \begin{figure}
 			\begin{center}
-            \begin{picture}(50,30)
-
-                %boxes
-                \put(25,5){\framebox(7,6){\footnotesize{$z^{-1}$}}}
-
-                %lines horizontal
-                \put(5,20){\vector(1,0){22.5}}
-                \put(29.5,20){\vector(1,0){11.5}}
-                \put(43,20){\vector(1,0){10}}
-                
-                \put(15,8){\vector(1,0){10}}
-                \put(32,8){\line(1,0){10}}
-
-                %lines vertical
-                \put(15,20){\line(0,-1){12}}
-                \put(42,8){\vector(0,1){4}}
-                \put(42,14){\vector(0,1){5}}
-                
-                %circles
-                \put(27,19){$\otimes$}
-                \put(40.5,19){$\oplus$} % 42-20
-                \put(40.5,12){$\otimes$}
-                
-                \put(15,20){\circle*{1}}
-
-                %text
-                \put(26,24){\footnotesize{\shortstack[c]{$\nicefrac{1}{2}$}}}
-                \put(46,10){\footnotesize{\shortstack[c]{$-\nicefrac{1}{2}$}}}
-
-                \put(4,22){\footnotesize{\shortstack[c]{x(i)}}}
-                \put(52,22){\footnotesize{\shortstack[c]{y(i)}}}
-
-            \end{picture}
+                \input{pict/filter_HP_FIR}
 			\end{center}
         \end{figure}
         \pause
@@ -425,39 +361,7 @@
         \setbeamercovered{invisible}
        \begin{figure}[!hbt]
 			\begin{center}
-            \begin{picture}(50,30)
-
-                %boxes
-                \put(25,5){\framebox(7,6){\footnotesize{$z^{-N}$}}}
-
-                %lines horizontal
-                \put(5,20){\vector(1,0){22.5}}
-                \put(29.5,20){\vector(1,0){11.5}}
-                \put(43,20){\vector(1,0){10}}
-                
-                \put(15,8){\vector(1,0){10}}
-                \put(32,8){\line(1,0){10}}
-
-                %lines vertical
-                \put(15,20){\line(0,-1){12}}
-                \put(42,8){\vector(0,1){4}}
-                \put(42,14){\vector(0,1){5}}
-                
-                %circles
-                \put(27,19){$\otimes$}
-                \put(40.5,19){$\oplus$} % 42-20
-                \put(40.5,12){$\otimes$}
-                
-                \put(15,20){\circle*{1}}
-
-                %text
-                \put(26,24){\footnotesize{\shortstack[c]{$\nicefrac{1}{2}$}}}
-                \put(46,10){\footnotesize{\shortstack[c]{$-\nicefrac{1}{2}$}}}
-
-                \put(4,22){\footnotesize{\shortstack[c]{x(i)}}}
-                \put(52,22){\footnotesize{\shortstack[c]{y(i)}}}
-
-            \end{picture}
+                \input{pict/filter_CB_FIR}
 			\end{center}
         \end{figure}
 		\pause      
@@ -484,76 +388,7 @@
         \column{.6\linewidth}
         \begin{figure}
 			\begin{center}
-            \begin{picture}(50,70)
-
-                %boxes
-                \put(25,50){\framebox(7,6){\footnotesize{$z^{-1}$}}}
-                \put(25,38){\framebox(7,6){\footnotesize{$z^{-2}$}}}
-                \put(28,28){\shortstack[c]{$\vdots$}}
-                \put(21,14){\framebox(14,6){\footnotesize{$z^{-(\mathcal{J}-1)}$}}}
-
-                %lines horizontal
-                \put(5,65){\vector(1,0){22.5}}
-                \put(29.5,65){\vector(1,0){11.5}}
-                \put(43,65){\vector(1,0){10}}
-                
-                \put(15,53){\vector(1,0){10}}
-                \put(32,53){\vector(1,0){4}}
-                \put(38,53){\vector(1,0){3}}
-                
-                \put(15,41){\vector(1,0){10}}
-                \put(32,41){\vector(1,0){4}}
-                \put(38,41){\vector(1,0){3}}
-                
-                \put(15,29){\vector(1,0){10}}
-                \put(32,29){\vector(1,0){4}}
-                \put(38,29){\vector(1,0){3}}
-                
-                \put(15,17){\vector(1,0){6}}
-                \put(35,17){\line(1,0){7}}
-
-                %lines vertical
-                \put(15,65){\line(0,-1){48}}
-                \put(42,54){\vector(0,1){10}}
-                %\put(42,60){\vector(0,1){4}}
-                
-                \put(42,42){\vector(0,1){10}}
-                %\put(42,48){\vector(0,1){4}}
-                
-                \put(42,30){\vector(0,1){10}}
-                %\put(42,36){\vector(0,1){4}}
-                
-                \put(42,17){\vector(0,1){5}}
-                \put(42,24){\vector(0,1){4}}
-                
-                %circles
-                \put(27,64){$\otimes$}
-                \put(40.5,64){$\oplus$} % 42-20
-                \put(40.5,52){$\oplus$} % 42-20
-                \put(40.5,40){$\oplus$} % 42-20
-                \put(40.5,28){$\oplus$} % 42-20
-                
-                \put(35.5,52){$\otimes$}
-                \put(35.5,40){$\otimes$}
-                \put(35.5,28){$\otimes$}
-                \put(40.5,22){$\otimes$}
-                
-                \put(15,65){\circle*{1}}
-                \put(15,53){\circle*{1}}
-                \put(15,41){\circle*{1}}
-                \put(15,29){\circle*{1}}
-
-                %text
-                \put(26,69){\footnotesize{\shortstack[c]{$\nicefrac{1}{\mathcal{J}}$}}}
-                \put(35,57){\footnotesize{\shortstack[c]{$\nicefrac{1}{\mathcal{J}}$}}}
-                \put(35,45){\footnotesize{\shortstack[c]{$\nicefrac{1}{\mathcal{J}}$}}}
-                \put(35,33){\footnotesize{\shortstack[c]{$\nicefrac{1}{\mathcal{J}}$}}}
-                \put(44,21){\footnotesize{\shortstack[c]{$\nicefrac{1}{\mathcal{J}}$}}}
-
-                \put(4,67){\footnotesize{\shortstack[c]{x(i)}}}
-                \put(52,67){\footnotesize{\shortstack[c]{y(i)}}}
-
-            \end{picture}
+                \input{pict/filter_MA_FIR}
 			\end{center}
         \end{figure}
         
@@ -595,38 +430,7 @@
         \setbeamercovered{invisible}
 	        \begin{figure}[!hbt]
 				\begin{center}
-	            \begin{picture}(50,30)
-	
-	                %boxes
-	                \put(25,5){\framebox(7,6){\footnotesize{$z^{-1}$}}}
-	
-	                %lines horizontal
-	                \put(0,20){\vector(1,0){6}}
-	                \put(8,20){\vector(1,0){47}}
-	                
-	                \put(15,8){\line(1,0){10}}
-	                \put(42,8){\vector(-1,0){10}}
-	
-	                %lines vertical
-	                \put(42,20){\line(0,-1){12}}
-	                \put(15,8){\vector(0,1){4}}
-	                \put(15,14){\vector(0,1){5}}
-	                
-	                %circles
-	                \put(5.5,19){$\otimes$}
-	                \put(13.5,19){$\oplus$} % 15-20
-	                \put(13.5,12){$\otimes$}
-	                
-	                \put(42,20){\circle*{1}}
-	
-	                %text
-	                \put(4,22){\footnotesize{\shortstack[c]{$(1-\alpha)$}}}
-	                \put(11,10){\footnotesize{\shortstack[c]{$\alpha$}}}
-	
-	                \put(-2,22){\footnotesize{\shortstack[c]{x(i)}}}
-	                \put(52,22){\footnotesize{\shortstack[c]{y(i)}}}
-	
-	            \end{picture}
+                \input{pict/filter_LP_IIR}
 				\end{center}
 	        \end{figure}
             \pause
@@ -657,39 +461,7 @@
 	\begin{frame}{filters}{example 6}
         \begin{figure}[!hbt]
 			\begin{center}
-            \begin{picture}(50,30)
-
-                %boxes
-                \put(25,5){\framebox(7,6){\footnotesize{$z^{-N}$}}}
-
-                %lines horizontal
-                \put(0,20){\vector(1,0){14}}
-                \put(16,20){\vector(1,0){32}}
-                \put(50,20){\vector(1,0){5}}
-                
-                \put(15,8){\line(1,0){10}}
-                \put(42,8){\vector(-1,0){10}}
-
-                %lines vertical
-                \put(42,20){\line(0,-1){12}}
-                \put(15,8){\vector(0,1){4}}
-                \put(15,14){\vector(0,1){5}}
-                
-                %circles
-                \put(47.5,19){$\otimes$}
-                \put(13.5,19){$\oplus$} % 15-20
-                \put(13.5,12){$\otimes$}
-                
-                \put(42,20){\circle*{1}}
-
-                %text
-                \put(43,22){\footnotesize{\shortstack[c]{$b_0$}}}
-                \put(8,10){\footnotesize{\shortstack[c]{$-a_N$}}}
-
-                \put(-2,22){\footnotesize{\shortstack[c]{x(i)}}}
-                \put(52,22){\footnotesize{\shortstack[c]{y(i)}}}
-
-            \end{picture}
+                \input{pict/filter_CB_IIR}
 			\end{center}
         \end{figure}
     	\begin{equation*}
@@ -701,7 +473,7 @@
         \begin{columns}
         \column{.7\linewidth}
 		\begin{figure}
-			\centerline{\includegraphics[scale=.8]{SimpleFilter-HP_IIR}}
+			\centerline{\includegraphics[scale=.8]{SimpleFilter-CB_IIR}}
 		\end{figure}
         \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
         \column{.3\linewidth}

@@ -14,7 +14,8 @@ function plotSimpleFilter()
                         'MA_FIR',
                         'CB_FIR',
                         'LP_IIR',
-                        'HP_IIR'];
+                        'HP_IIR',
+                        'CB_IIR'];
 
     for n=1:size(acFilterTypes,1)
         
@@ -74,6 +75,11 @@ function [t, h, f, H] = getData(cType)
             alpha = .8;
             b = 1-alpha;
             a = [1 alpha];
+            iIrLength = 25;
+        case 'CB_IIR'
+            alpha = .8;
+            b = 1-alpha;
+            a = [1 0 0 0 0 alpha];
             iIrLength = 25;
     end
 

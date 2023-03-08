@@ -231,7 +231,272 @@
             \vspace{-5mm}
             \includeanimation{BiquadZplane}{01}{400}{10}
  		\end{frame}
-
+    
+    \section{examples}
+    
+	\begin{frame}{filters}{example 1 revisited}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+	        \begin{figure}
+				\begin{center}
+                \input{pict/filter_LP_FIR}
+				\end{center}
+	        \end{figure}
+        
+            \begin{equation*}
+        		y(i) = 0.5\cdot x(i) + 0.5\cdot x(i-1)
+        	\end{equation*}
+        \column{.6\linewidth}
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilter-LP_FIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
+        \end{columns}
+	\end{frame}	
+	
+	
+	\begin{frame}{filters}{example 1 revisited: zplane}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+            \begin{eqnarray*}
+                H(z) &=& 0.5  + 0.5\cdot z^{-1}\\
+               \bigskip
+                \pause
+            \Rightarrow&&\\
+            H(-1) &=& 0\\
+            H(0) &=& \infty
+            \end{eqnarray*}
+        \column{.6\linewidth}
+            \only<2->{
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilterZplane-LP_FIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilterZplane.m}{plotSimpleFilterZplane.m}}
+            }
+        \end{columns}
+	\end{frame}	
+    
+	\begin{frame}{filters}{example 2 revisited}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+	        \begin{figure}
+				\begin{center}
+                \input{pict/filter_HP_FIR}
+				\end{center}
+	        \end{figure}
+        
+            \begin{equation*}
+        		y(i) = 0.5\cdot x(i) - 0.5\cdot x(i-1)
+        	\end{equation*}
+        \column{.6\linewidth}
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilter-HP_FIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
+        \end{columns}
+	\end{frame}	
+	
+	
+	\begin{frame}{filters}{example 2 revisited: zplane}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+            \begin{eqnarray*}
+                H(z) &=& 0.5  - 0.5\cdot z^{-1}\\
+               \bigskip
+                \pause
+            \Rightarrow&&\\
+            H(1) &=& 0\\
+            H(0) &=& \infty
+            \end{eqnarray*}
+        \column{.6\linewidth}
+            \only<2->{
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilterZplane-HP_FIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilterZplane.m}{plotSimpleFilterZplane.m}}
+            }
+        \end{columns}
+	\end{frame}	
+    
+	\begin{frame}{filters}{example 3 revisited}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+	        \begin{figure}
+				\begin{center}
+                \input{pict/filter_CB_FIR}
+				\end{center}
+	        \end{figure}
+        
+            \begin{equation*}
+        		y(i) = 0.5\cdot x(i) - 0.5\cdot x(i-N)
+        	\end{equation*}
+        \column{.6\linewidth}
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilter-CB_FIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
+        \end{columns}
+	\end{frame}	
+	
+	
+	\begin{frame}{filters}{example 3 revisited: zplane}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+            \begin{eqnarray*}
+                H(z) &=& 0.5  - 0.5\cdot z^{-N}\\
+               \bigskip
+                \pause
+            \Rightarrow&&\\
+            H(0, \omega = \frac{\pi}{5}, \omega = \frac{2\pi}{5}) &=& 0\\
+            H(0) &=& \infty
+            \end{eqnarray*}
+        \column{.6\linewidth}
+            \only<2->{
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilterZplane-CB_FIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilterZplane.m}{plotSimpleFilterZplane.m}}
+            }
+        \end{columns}
+	\end{frame}	
+    
+	\begin{frame}{filters}{example 4 revisited}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+	        \begin{figure}
+				\begin{center}
+                \input{pict/filter_MA_FIR}
+				\end{center}
+	        \end{figure}
+        
+            \begin{equation*}
+        		y(i) = \frac{1}{\mathcal{J}}\sum\limits_{j=0}^{\mathcal{J}-1}{x(i-j)}
+        	\end{equation*}
+        \column{.6\linewidth}
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilter-MA_FIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
+        \end{columns}
+	\end{frame}	
+	
+	
+	\begin{frame}{filters}{example 4 revisited: zplane}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+            \begin{eqnarray*}
+                H(z) &=& \frac{1}{\mathcal{J}}\sum\limits_{j=0}^{\mathcal{J}-1}{z^{-j}}\\
+               \bigskip
+                \pause
+            \Rightarrow&&\\
+            H(z) &=& 0\text{ for }\omega = \frac{\pi}{5}, \omega = \frac{2\pi}{5}, |z|=1\\
+            H(0) &=& \infty
+            \end{eqnarray*}
+        \column{.6\linewidth}
+            \only<2->{
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilterZplane-MA_FIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilterZplane.m}{plotSimpleFilterZplane.m}}
+            }
+        \end{columns}
+	\end{frame}	
+	
+    
+	\begin{frame}{filters}{example 5 revisited}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+	        \begin{figure}
+				\begin{center}
+                \input{pict/filter_LP_IIR}
+				\end{center}
+	        \end{figure}
+        
+            \begin{equation*}
+        		y(i) = 0.5\cdot x(i) - 0.5\cdot x(i-N)
+        	\end{equation*}
+        \column{.6\linewidth}
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilter-LP_IIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
+        \end{columns}
+	\end{frame}	
+	
+	
+	\begin{frame}{filters}{example 5 revisited: zplane}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+            \begin{eqnarray*}
+                H(z) &=& \frac{1-\alpha}{1-\alpha x^{-1}}\\
+               \bigskip
+                \pause
+            \Rightarrow&&\\
+            H(0) &=& 0\\
+            H(\alpha) &=& \infty
+            \end{eqnarray*}
+        \column{.6\linewidth}
+            \only<2->{
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilterZplane-LP_IIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilterZplane.m}{plotSimpleFilterZplane.m}}
+            }
+        \end{columns}
+	\end{frame}	     
+	\begin{frame}{filters}{example 6 revisited}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+	        \begin{figure}
+				\begin{center}
+                \input{pict/filter_CB_IIR}
+				\end{center}
+	        \end{figure}
+        
+            \begin{equation*}
+        		y(i) = 0.5\cdot x(i) - 0.5\cdot x(i-N)
+        	\end{equation*}
+        \column{.6\linewidth}
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilter-CB_IIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilter.m}{plotSimpleFilter.m}}
+        \end{columns}
+	\end{frame}	
+	
+	
+	\begin{frame}{filters}{example 6 revisited: zplane}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+            \begin{eqnarray*}
+                H(z) &=& \frac{b_0}{1-a_N x^{-N}}\\
+               \bigskip
+                \pause
+            \Rightarrow&&\\
+            H(0) &=& 0\\
+            H(z) &=& \infty\text{ for }\omega = \pi-\frac{\pi}{N}, \omega = \pi-\frac{2\pi}{N}, \omega = \pi, |z| < 1
+            \end{eqnarray*}
+        \column{.6\linewidth}
+            \only<2->{
+            \begin{figure}
+                \centerline{\includegraphics[scale=.8]{SimpleFilterZplane-CB_IIR}}
+            \end{figure}
+            \addreference{matlab source: \href{https://github.com/alexanderlerch/MUSI-6202/blob/main/matlab/plotSimpleFilterZplane.m}{plotSimpleFilterZplane.m}}
+            }
+        \end{columns}
+	\end{frame}	    
 		%\begin{frame}{filters}{z-transform}
             %\begin{equation*}
                 %X(z) = \sum\limits_{i=-\infty}^\infty x(i)z^{-i}
