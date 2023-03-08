@@ -10,8 +10,8 @@ function plotSimpleFilterZplane()
     cXLabel = '$t$';
 
     acFilterTypes = [   'LP_FIR',
-%                         'HP_FIR',
-%                         'MA_FIR',
+                        'HP_FIR',
+                        'MA_FIR',
                         'CB_FIR',
                         'LP_IIR',
                         'HP_IIR',
