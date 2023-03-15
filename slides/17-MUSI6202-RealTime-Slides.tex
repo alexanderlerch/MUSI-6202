@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 17: real-time and blocking}
@@ -38,6 +37,20 @@
         
 	\end{frame}
 
+	\begin{frame}{real-time systems}{environment}
+		\begin{itemize}
+			\item	digital audio playback/recording: \textbf{constant stream} of audio samples to/from your sound device
+				\begin{itemize}
+					\item	distance of samples is defined by (constant!) sample rate
+					\item \textbf{hard timing} --- no room for pauses
+				\end{itemize}
+			\item	if sound device (e.g., DAC) does not receive a sample in time, \textbf{audio will glitch}
+			\bigskip
+			\item<2-> typical operating systems work with \textbf{blocks of samples}
+			\item<2-> typically, audio API \textbf{(quasi-)periodically} requests a block of samples	
+		\end{itemize}
+	\end{frame}
+	
 	\begin{frame}{real-time systems}{properties}
 		\begin{itemize}
 			\item	\textbf{performance}:
@@ -68,7 +81,75 @@ this stimulus
 		\end{itemize}
 	\end{frame}
 
+	\begin{frame}{real-time systems}{examples}
+		\question{which of the following effects/processors are capable of real-time processing}
+        \only<2>{
+		\begin{itemize}
+			\item	level normalization (normalize highest amplitude to max)
+			\item	biquad EQ
+			\item	reverb
+			\item	pitch shifting
+			\item	time stretching
+		\end{itemize}
+        }
+        \only<3>{
+		\begin{itemize}
+			\item[--]	level normalization (normalize highest amplitude to max)
+			\item[+]	biquad EQ
+			\item[+]	reverb
+			\item[+]	pitch shifting
+			\item[--]	time stretching
+		\end{itemize}
+        }
+	\end{frame}
+
+	\begin{frame}{real-time systems}{clock}
+        \begin{itemize}
+            \item   \textbf{synchronization}
+                \begin{itemize}
+                    \item different components of a real-time systems have to be synchronized to work together
+                    \item<2->[$\Rightarrow$] \textbf{master clock}
+                    \smallskip
+                    \item<3-> otherwise: multiple clocks have slight deviations and run out of sync ($\rightarrow$ buffer overflow/underflow $\rightarrow$ clicks)
+                \end{itemize}
+            
+            \bigskip
+            \item<4->   \textbf{master clock}
+                \begin{itemize}
+                    \item   on a computer: usually the sound card
+                    \item   timers etc. that are not based on the sound card clock will \textbf{never} work
+                \end{itemize}
+           \end{itemize}
+	\end{frame}
+    
+    
     \section{blocking}
+   \begin{frame}{real-time systems}{blocking}
+        \vspace{-3mm}
+        \begin{itemize}
+            \item \textbf{operating system/sound device}
+                \begin{itemize}
+                    \item   block size settings depend on \textit{latency and interactivity requirements}
+                    \item   modern driver models and systems can achieve \textit{block sizes down to a few samples} at typical audio sample rates (that is not necessarily true for mobile devices)
+                    \item   for some drivers the block size can vary
+                    \item   \textit{typical range}: 32 -- 4096 samples, higher on Android
+                    \item   despite the block size setting, there \textit{might be additional buffering} taking place in one of the layers between hardware and audio software
+                \end{itemize}
+            \smallskip
+            \item<2->   \textbf{plugin host}
+                \begin{itemize}
+                    \item   often: simply the system block size for efficiency reasons
+                    \item   but: block sizes \textit{may} vary (cf. automation)
+                \end{itemize}
+            \smallskip
+            \item<3->   \textbf{plugin}
+                \begin{itemize}
+                    \item   needs to process/buffer \textit{any} input/output block size
+                    \item   is likely to use a different block size and overlapping blocks internally (beware of workload peaks!)
+                \end{itemize}
+        \end{itemize}
+    \end{frame}
+
 	\begin{frame}{real-time systems}{block based processing}
 		processing of \textit{blocks of samples} vs.\ individual samples
 		
@@ -85,23 +166,52 @@ this stimulus
 			\item	efficiency (SIMD, memory allocation)
 		\end{itemize}
 	\end{frame}
-    \begin{frame}{real-time systems}{block sizes}
+    %\begin{frame}{real-time systems}{block sizes}
+        %\begin{itemize}
+            %\item   typical block sizes can range from 1\ldots thousands of samples
+            %\item   often powers of 2
+            %\bigskip
+            %\item<2->   in many DAWs and some drivers the \textbf{block size varies}
+        %\end{itemize}
+    %\end{frame}
+ 		
+
+	\begin{frame}{real-time systems}{blocking}
+        \vspace{-3mm}
         \begin{itemize}
-            \item   typical block sizes can range from 1\ldots thousands of samples
-            \item   often powers of 2
+            \item   \textbf{time-stamps}
+                \begin{itemize}
+                    \item   blocking can be considered similar to down-sampling
+                    \item[$\Rightarrow$]   \textit{what time stamps to assign to each block?}
+                        \begin{itemize}
+                            \item   begin of each block
+                            \item   center of each block
+                        \end{itemize}
+                \end{itemize}
             \bigskip
-            \item<2->   in many DAWs and some drivers the \textbf{block size varies}
-        \end{itemize}
+            \item<2->   \textbf{initialization}
+                \begin{itemize}
+                    \item   real-time systems are designed to work for infinite input stream
+                    \item[$\Rightarrow$]   \textit{how to initialize internal buffers?}
+                        \begin{itemize}
+                            \item   usually zeros, but other initializations may make sense in specific scenarios
+                        \end{itemize}
+                \end{itemize}
+            \bigskip
+            \item<3->   \textbf{performance} issues due to blocking
+                \begin{itemize}
+                    \item   plugin gets stream of samples split into small blocks (e.g., 32 samples)
+                    \item   internally, STFT with large hopsize (e.g., 2048 samples) is used 
+                    \item[$\Rightarrow$]   \textit{what is the potential performance problem here?}
+                        \begin{itemize}
+                            \item<4->   each hop requires data from 64 input blocks
+                            \item<4->[$\Rightarrow$]   no processing can be done for 63 blocks
+                            \item<4->[$\Rightarrow$]   processing of huge FFT has to be done during the 64th block (32 samples)
+                        \end{itemize}
+                \end{itemize}
+       \end{itemize}
     \end{frame}
-    \begin{frame}{real-time systems}{time stretching and pitch shifting}
-        \question{can pitch shifting theoretically be implemented as real-time system}
-        \bigskip
-        Yup.
-        \bigskip
-        \question{can time stretching theoretically be implemented as real-time system}
-        \bigskip
-        Nope. Explain.
-    \end{frame}
+    
     \begin{frame}{real-time systems}{inplace processing}
         \question{what is ``inplace processing''}
         
@@ -116,41 +226,6 @@ this stimulus
         \end{itemize}
     \end{frame}
 
-	\begin{frame}{real-time systems}{blocking}
-        \vspace{-3mm}
-        \begin{itemize}
-            \item   \textbf{time-stamps}
-                \begin{itemize}
-                    \item   blocking can be considered similar to down-sampling
-                    \item[$\Rightarrow$]   \textit{what time stamps to assign to each block?}
-                        \begin{itemize}
-                            \item   begin of each block
-                            \item   center of each block
-                        \end{itemize}
-                \end{itemize}
-            \smallskip
-            \item<2->   \textbf{initialization}
-                \begin{itemize}
-                    \item   real-time systems are designed to work for infinite input stream
-                    \item[$\Rightarrow$]   \textit{how to initialize internal buffers?}
-                        \begin{itemize}
-                            \item   usually zeros, but other initializations may make sense in specific scenarios
-                        \end{itemize}
-                \end{itemize}
-            \smallskip
-            \item<3->   \textbf{performance} issues due to blocking
-                \begin{itemize}
-                    \item   plugin gets stream of samples split into small blocks (e.g., 32 samples)
-                    \item   internally, STFT with large hopsize (e.g., 2048 samples) is used 
-                    \item[$\Rightarrow$]   \textit{what is the potential performance problem here?}
-                        \begin{itemize}
-                            \item<4->   each hop requires data from 64 input blocks
-                            \item<4->[$\Rightarrow$]   no processing can be done for 63 blocks
-                            \item<4->[$\Rightarrow$]   processing of huge FFT has to be done during the 64th block (32 samples)
-                        \end{itemize}
-                \end{itemize}
-       \end{itemize}
-    \end{frame}
 \section{summary}
 		\begin{frame}{summary}{real-time systems}
             real-time systems have the following properties:
@@ -158,7 +233,7 @@ this stimulus
             \begin{itemize}
                 \item   hard \textbf{performance} requirements
                     \begin{itemize}
-                        \item   processing of input block has to be faster then time span of this block \textbf{for all blocks, not only on average}
+                        \item   processing of input block has to be faster then time span of this block \textbf{for each block, not only on average}
                     \end{itemize}
                 \smallskip
                 \item   \textbf{causality}
