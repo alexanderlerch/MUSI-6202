@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 18: Sample Rate Conversion (SRC)}
@@ -16,10 +15,9 @@
         \begin{block}{sample rate conversion}
             WP:''changing the sampling rate of a discrete signal to obtain a new discrete representation of the underlying continuous signal.''
         \end{block}
+        \bigskip
         \only<1>{
-            \begin{figure}
-                \includegraphics[scale=0.35]{Graph/src_interpolation}
-            \end{figure}
+            \figwithmatlab{SRC}
         }
         \only<2>{
             \bigskip
@@ -36,13 +34,13 @@
         \begin{itemize}
             \item   \textbf{terminology}
                 \begin{itemize}
-                    \item   \textit{synchronous}
+                    \item   \textit{synchronous} resampling
                         \begin{itemize}
                             \item   clock rates are coupled
                             \item   resampling factor stays constant
                         \end{itemize}
                     \pause
-                    \item   \textit{asynchronous}
+                    \item   \textit{asynchronous} resampling
                         \begin{itemize}
                             \item   clock rates are independent
                             \item   resampling factor may change
@@ -59,6 +57,7 @@
 
         \section{inserting \& removing zeros}
 	\begin{frame}{sample rate conversion}{upsampling by inserting zeros}
+        \vspace{-3mm}
         \begin{itemize}
             \item   task: \textbf{upsample by integer factor} $L$
             \pause 
@@ -69,16 +68,9 @@
         \end{itemize}
         \only<3>{
 		\begin{figure}
-            \includegraphics[scale=0.6]{Graph/upsampling}
-		\end{figure}
-        }
-        \only<4>{
-        \vspace{-2mm}
-		\begin{figure}
             \includegraphics[scale=0.29]{Graph/upsampling_zeros}
 		\end{figure}
         }
-        \vspace{50mm}
     \end{frame}
 	\begin{frame}{sample rate conversion}{downsampling by removing samples}
         \vspace{-3mm}
@@ -92,16 +84,9 @@
         \end{itemize}
         \only<3>{
 		\begin{figure}
-            \includegraphics[scale=0.6]{Graph/downsampling}
-		\end{figure}
-        }
-        \only<4>{
-        \vspace{-2mm}
-		\begin{figure}
             \includegraphics[scale=0.29]{Graph/downsampling_remove}
 		\end{figure}
         }
-        \vspace{50mm}
     \end{frame}
 	\begin{frame}{sample rate conversion}{resampling by rational factor}
         \begin{itemize}
@@ -113,7 +98,7 @@
                 \item   insert zeros
                 \item   apply anti-imaging filter
                 \pause
-                \item   apply anti-aliasing filter
+                \item   apply anti-aliasing filter (filters can be combined)
                 \item   remove samples
             \end{enumerate}
         \end{itemize}
@@ -152,6 +137,8 @@
             \item   practical implementation: \textbf{windowed sinc}
         \end{itemize}
     \end{frame}
+
+\section{other interpolation}
 	\begin{frame}{sample rate conversion}{polynomial interpolation}
         \begin{itemize}
             \item   \textbf{interpolation methods }
@@ -159,15 +146,14 @@
                     \item   can be interpreted as filters with time-variant filter coefficients
                     \item   not based on traditional filter desing methods
                 \end{itemize}
-            \pause
-            \item   polynomial interpolation
+            \bigskip
+            \item<2->   polynomial interpolation
                 \begin{eqnarray*}
                     f(t) &=& \sum\limits_{k=0}^\mathcal{O}x_k p_k(t)\\
                     p_k(t) &=& \prod\limits_{j=0}^\mathcal{O}\frac{t-t_j}{t_k-t_j}
                 \end{eqnarray*}
         \end{itemize}
     \end{frame}
-        \section{interpolation}
 	\begin{frame}{sample rate conversion}{polynomial interpolation example}
         \vspace{-5mm}
         \begin{footnotesize}
@@ -187,11 +173,7 @@
         \end{footnotesize}
     \end{frame}
 	\begin{frame}{sample rate conversion}{polynomial interpolation example}
-        \begin{figure}
-            \begin{center}
-                \includegraphics[scale=0.8]{graph/PolynomInterpol}
-            \end{center}
-        \end{figure}
+        \figwithmatlab{PolyInterp}
     \end{frame}
 	\begin{frame}{sample rate conversion}{special case: linear interpolation}
         \begin{itemize}
