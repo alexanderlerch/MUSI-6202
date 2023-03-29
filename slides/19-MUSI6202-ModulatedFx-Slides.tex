@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 19: Modulated Effects}
@@ -14,8 +13,13 @@
         \begin{frame}{modulated effects}{introduction}
 			
 			\begin{itemize}
-                \item   modulated effects belong to the probably oldest class of audio effects
-                \item   often used for guitars
+                \item   \textbf{modulated effects }
+                    \begin{itemize}
+                        \item   apply time-variant (periodic) modification to the signal
+                        \item   belong to the probably oldest class of audio effects
+                        \item   dominantly used for guitars
+                    \end{itemize}
+                \bigskip
 				\item<2->	\textbf{examples}
 					\begin{itemize}
 						\item	delay-line modulation:
@@ -131,30 +135,42 @@
 			\end{figure}
 		\end{frame}
 
-		\begin{frame}{modulated effects}{introduction: ring buffer}
-            \vspace{-7mm}\begin{columns}
-            \column{.75\linewidth}
+		\begin{frame}{modulated effects}{ring buffer: introduction}
+            \begin{columns}
+            \column{.7\linewidth}
 			\begin{itemize}
-				\item	\textbf{idea}
+				\item	instead of moving all buffer content each sample
 					\begin{itemize}
+                        \item   pretend buffer has circular shape (end index plus 1 equals start index)
 						\item	do not move buffer contents
-						\item	instead, increment write and read positions
+						\item	increment write and read positions
 					\end{itemize}
-				\pause
+                \bigskip
+                \item<2->[$\Rightarrow$] ring buffer is \textbf{periodic} 
+                    \begin{itemize}
+                        \item   can be accessed at any index (also larger than buffer length)
+                        \item   can not overrun (but data can be overwritten)
+                    \end{itemize}
+            \end{itemize}
+            \column{.3\linewidth}
+                \begin{figure}
+                    \includegraphics[width=\columnwidth]{graph/Ringbuffer}
+                \end{figure}
+                \addreference{from \href{https://github.com/lamarrr/RingBuffer}{github.com/lamarrr/RingBuffer}}
+            \end{columns}
+		\end{frame}
+
+		\begin{frame}{modulated effects}{ring buffer: implementation}
+            \begin{itemize}
 				\item	\textbf{implementation}
 					\begin{itemize}
-						\item	buffer length $L$: $L\geq M$
-						\item	store current write index $n_\mathrm{w}$ and read index $n_\mathrm{r}$
+						\item	allocated buffer length $L$ bigger than (maximum) delay $M$: 
+                            \[L\geq M\]
+						\item	remember current indices: write index $n_\mathrm{w}$ and read index $n_\mathrm{r}$
 					\end{itemize}
-				\pause
-				\item[$\Rightarrow$]	for a simple delay: $mod(n_\mathrm{w} - n_\mathrm{r},L) = M$
+				
 			\end{itemize}
-            \column{.25\linewidth}
-                \begin{figure}
-                    \includegraphics[width=\columnwidth]{Ringbuffer}
-                \end{figure}
-            \end{columns}
-			\pause
+            \bigskip
 		   \begin{figure}
 				\begin{center}
 				\begin{picture}(120,45)
@@ -249,7 +265,20 @@
 			\end{figure}
 		\end{frame}
 
+		\begin{frame}{modulated effects}{ring buffer: discussion}
+            \begin{itemize}
+                \item   additional variables needed: read index, write index
+                \item   access buffer with $\mathrm{mod}$ function 
+                \item   for a simple constant delay: $\mathrm{mod}(n_\mathrm{w} - n_\mathrm{r},L) = M$
+                \item   even negative indices can be allowed
+                \item   direction of index movement does not matter
+                \item   borderline case $M=L$ (read index equals write index)\\ $\Rightarrow$ state has to be defined: is the buffer all empty or all full
+            \end{itemize}
+		\end{frame}
+
 		\begin{frame}{modulated effects}{introduction: modulated delay line}
+            delay is modulated by \textit{Low Frequency Oscillator (LFO)}
+            \bigskip
 			\begin{figure}
 				\begin{center}
 				\begin{picture}(30,10)
@@ -301,7 +330,7 @@
 					\begin{itemize}
 						\item	interpolate
 							\begin{itemize}
-								\item	linear interpolation
+								\item	\only<3>{\textcolor{gtgold}}{linear} interpolation
 								\item	all pass interpolation
 								\item	cubic, sinc, etc.\ interpolation
 							\end{itemize}
@@ -310,10 +339,15 @@
 		\end{frame}
 
 		\begin{frame}{modulated effects}{introduction: fractional delay line 2/4}
+            \vspace{-3mm}
+            %\begin{columns}
+            %\column{.9\linewidth}
 			\begin{figure}
-				\centerline{\includegraphics[scale=.6]{graph/frac_delay_line}}
+				\centerline{\includegraphics[scale=.5]{graph/frac_delay_line}}
 				\label{fig:frac_delay_line}
 			\end{figure}
+           \vspace{-2mm}
+            \phantom{\footfullcite{dattorro_effect_1997}}
 		\end{frame}
 
 		\begin{frame}{modulated effects}{introduction: fractional delay line 3/4}
@@ -335,6 +369,8 @@
 		\end{frame}
 
 		\begin{frame}{modulated effects}{linear interpolation: audio examples}
+            compare to sample rate conversion, however, here the playback sample rate stays the same
+            \bigskip
 			\begin{itemize}
 				\item   \textbf{original}: \includeaudio{sv}
 				\smallskip
@@ -342,6 +378,10 @@
 				\smallskip
 				\item   \textbf{6\% slow-down}: \includeaudio{sv@94}
 			\end{itemize}
+            \bigskip
+            \bigskip
+            \pause
+            note: all the following audio examples are not intended to make sense from an audio engineering perspective, only as a technology demo
 		\end{frame}
 
     \section{vibrato \& more}
@@ -576,6 +616,7 @@
 		\end{frame}
 
 		\begin{frame}{modulated effects}{chorus: implementation variant}
+            \vspace{-5mm}
 						\begin{figure}[!hbt]
 							\begin{center}
 							\begin{picture}(50,80)
@@ -747,9 +788,11 @@
 
     \section{phaser \& wah-wah}
 		\begin{frame}{modulated effects}{modulated effects: phaser}
+            \vspace{-3mm}
 			\begin{itemize}
 				\item	sounds similar to delay line effects
-				\item	but: different implementation
+				\smallskip
+                \item	but: different implementation
 				\pause
 					\begin{itemize}
 						\item	notch filters
@@ -862,12 +905,16 @@
 						\end{picture}
 						\end{center}
 					\end{figure}
+                    
+                    \smallskip
 						\pause
 						\item[]	%audio example (all pass)\\
 			$f_{mod} = \unit[1]{Hz}, N = 5, M = {2}{ms}, d = 0.5, e = 0.5, fb = 0.5$
-			\includeaudio{svPhaser}
+			%\includeaudio{svPhaser}
 			\end{itemize}
 			\end{itemize}
+				\vspace{-7mm}
+				\flushright{\includeaudio{svPhaser}}
 		\end{frame}
 
 		\begin{frame}{modulated effects}{modulated effects: wah-wah}
