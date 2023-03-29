@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 20: Reverb}
@@ -30,9 +29,10 @@
 
 \section{room acoustics}
 \begin{frame}{artificial reverberation}{room impulse response}
-	\begin{figure}
-		\centerline{\includegraphics[scale=.4]{graph/IR}}
+	\vspace{-3mm}\begin{figure}
+		\centerline{\includegraphics[scale=.28]{graph/IR}}
 	\end{figure}
+    \phantom{\footfullcite{zolzer_digital_2008}}
 \end{frame}
 
 \begin{frame}{artificial reverberation}{room impulse response: properties}
@@ -171,11 +171,14 @@
 \begin{frame}{artificial reverberation}{reverberation: Schroeder 1/2}
 		\begin{figure}
 			\centerline{\includegraphics[scale=.5]{graph/schroeder}}
-		\end{figure} 
-		
+		\end{figure}     
+        \phantom{\footfullcite{schroeder_colorless_1961}}
+		%\vspace{-3mm}
 		\pause
 		\textbf{questions}:
-		\begin{itemize}
+        \smallskip
+		
+        \begin{itemize}
 			\item	how to change the reverberation time?
 			\item	how to change the density?
 		\end{itemize}
@@ -200,6 +203,7 @@
 
 \section{other}
 \begin{frame}{artificial reverberation}{reverberation: Moorer}
+    \vspace{-5mm}
     \begin{columns}
     \column{.5\linewidth}
 	\begin{itemize}
@@ -217,6 +221,7 @@
         \item   original \includeaudio{sv}
         \item   wet \includeaudio{svRevMoorer}
     \end{itemize}
+        \phantom{\footfullcite{moorer_about_1979}}
 \end{frame}
 
 \begin{frame}{artificial reverberation}{other reverberation approaches: Gardner}
@@ -239,6 +244,7 @@
     \begin{figure}
 		\centerline{\includegraphics[scale=.37]{graph/dattorro}}
 	\end{figure} 
+    \phantom{\footfullcite{dattorro_effect_1997a}}    
 \end{frame}
 
 \begin{frame}{artificial reverberation}{reverberation: Dattorro 2/2}
