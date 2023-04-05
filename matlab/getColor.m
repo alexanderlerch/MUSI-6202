@@ -23,6 +23,8 @@ function c = getColor(string, bIsEdge)
             c = [0.5, 0.75, 1];
         case 'white'
             c = ones(1,3);
+        case 'red'
+            c = [1, 0, 0];
     end
     if bIsEdge
         c = c * edgeScaleFactor;

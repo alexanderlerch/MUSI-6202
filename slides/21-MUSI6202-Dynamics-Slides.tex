@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 21: Dynamics Processing}
@@ -165,9 +164,7 @@
 	\begin{equation*}\label{eq:rms}
 		v_{\mathrm{RMS}}(n) = \sqrt{\frac{1}{\mathcal{K}}\sum\limits_{i=i_{\mathrm{s}}(n)}^{i_{\mathrm{e}}(n)}{x(i)^2}}
 	\end{equation*}
-	\begin{figure}
-		\includegraphics[scale=.7]{rms}
-	\end{figure}
+	\figwithmatlab{Rms}
 \end{frame}
 \begin{frame}{dynamics processing}{level detection: root mean square 2/2}
 			%\begin{itemize}
@@ -224,7 +221,7 @@
 		\addtocounter{iYOffset}{-\value{iYBlockSizeDiv2}}
 
 		\addtocounter{iXOffset}{\value{iDistance}}
-        \put(\value{iXOffset},\value{iYOffset}){\framebox(\value{iXBlockSize}, \value{iYBlockSize}){\footnotesize{\shortstack[c]{$H(z)$}}}}
+        \put(\value{iXOffset},\value{iYOffset}){\framebox(\value{iXBlockSize}, \value{iYBlockSize}){\only<2->{\textcolor{gtgold}}{\footnotesize{\shortstack[c]{$H(z)$}}}}}
 
 		\addtocounter{iXOffset}{\value{iXBlockSize}}
 		\addtocounter{iYOffset}{\value{iYBlockSizeDiv2}}
@@ -249,6 +246,9 @@
 	    
 		\pause
         \vspace{-10mm}
+		\uncover<2->{
+        \begin{columns}
+        \column{.3\linewidth}
 	    $H(z)$:
 	    \begin{itemize}
 	    	\item	A, B, C weighting
@@ -256,12 +256,11 @@
 	    	\item	\ldots
 	    \end{itemize}
 	    
-		\uncover<2->{
-        \begin{figure}
-			\centering
-			\includegraphics[scale=.7]{loudnessweighting}
-			\label{fig:loudnessweighting}
-		\end{figure}
+        \column{.7\linewidth}
+        \only<2->{
+        \figwithmatlab{LoudnessWeighting}
+        }
+        \end{columns}
         }
 \end{frame}
 \begin{frame}{dynamics processing}{level detection: peak detection (PPM) 1/2}
@@ -376,11 +375,7 @@
 		\end{itemize}
 \end{frame}
 \begin{frame}{dynamics processing}{level detection: peak detection (PPM) 2/2}
-		\begin{figure}
-			\centering
-				\includegraphics[scale=.7]{ppm}
-			\label{fig:ppm_level}
-		\end{figure}
+		\figwithmatlab{TimePeakEnvelope}
 \end{frame}	
 
 \section{response curve}
@@ -397,7 +392,7 @@
 				\includegraphics[scale=.7]{graph/dynamicsresponsecurve_1}
 		\end{figure}
 
-		param $LT=\unit[-9]{dB}$ \includeaudio{svdynamicsresponsecurve_1}
+		param $LT=\unit[-9]{dB}$ w/o gain smoothing \includeaudio{svdynamicsresponsecurve_1}
 	}
 \end{frame}
 \begin{frame}{dynamics processing}{response curve: compressor}
@@ -413,7 +408,7 @@
 				\includegraphics[scale=.7]{graph/dynamicsresponsecurve_2}
 		\end{figure}
 
-		param $CT=\unit[-9]{dB}$\includeaudio{svdynamicsresponsecurve_2}
+		param $CT=\unit[-9]{dB}$ w/o gain smoothing \includeaudio{svdynamicsresponsecurve_2}
 	}
 \end{frame}
 \begin{frame}{dynamics processing}{response curve: expander}
@@ -429,7 +424,7 @@
 				\includegraphics[scale=.7]{graph/dynamicsresponsecurve_3}
 		\end{figure}
 
-		param $ET=\unit[-6]{dB}$\includeaudio{svdynamicsresponsecurve_3}
+		param $ET=\unit[-6]{dB}$ w/o gain smoothing \includeaudio{svdynamicsresponsecurve_3}
 	}
 \end{frame}
 \begin{frame}{dynamics processing}{response curve: noise gate}
@@ -445,7 +440,7 @@
 				\includegraphics[scale=.7]{graph/dynamicsresponsecurve_4}
 		\end{figure}
 
-		param $NT=\unit[-12]{dB}$\includeaudio{svdynamicsresponsecurve_4}
+		param $NT=\unit[-12]{dB}$ w/o gain smoothing\includeaudio{svdynamicsresponsecurve_4}
 	}
 \end{frame}
 
@@ -622,10 +617,7 @@
 			\end{itemize}
 	\end{itemize}
     \visible<3->{
-    \begin{figure}[!htbp]
-        \centering
-            \includegraphics[scale=.6]{graph/hiddenclipping}
-    \end{figure}
+    \figwithmatlab{HiddenClipping}
     }
 \end{frame}
 
@@ -662,6 +654,7 @@
 						\item	high compression ratios	
 					\end{itemize}
 			\end{itemize}
+            \only<4->{\addreference{\href{https://en.wikipedia.org/wiki/File:Compression_knee.svg}{https://en.wikipedia.org/wiki/File:Compression\_knee.svg}}}
 	\end{itemize}
 \end{frame}
 
@@ -699,6 +692,7 @@
 \section{params \& usage}
 \begin{frame}{dynamics processing}{parameter ranges}
 	\vspace{-3mm}
+    \begin{footnotesize}
     \begin{itemize}
 		\item	\textbf{threshold}\\
 		\uncover<2->{$-120 \ldots 0$ dB}
@@ -724,22 +718,25 @@
 		\item	\textbf{look-ahead}\\
 		\uncover<2->{$0 \ldots 500$ \unit{ms}}
 	\end{itemize}
+    \end{footnotesize}
 \end{frame}
 
-\begin{frame}{dynamics processing}{dynamic range target}
+\begin{frame}{dynamics processing}{dynamic range target (opinionated)}
     \begin{figure}
-        \rotatebox[origin=c]{270}{\includegraphics[scale=.5]{dynamicrange}}
+        \rotatebox[origin=c]{270}{\includegraphics[scale=.5]{graph/dynamicrange}}
     \end{figure}
+    \addreference{somewhere on the internet}
 \end{frame}
 
 \section{summary}
 \begin{frame}{dynamics processing}{summary}
 	dynamics processing systems are
+    \smallskip
 	\begin{itemize}
 		\item	\textbf{time variant}:\\ gain changes over time
-		\pause
+		\bigskip
 		\item	\textbf{signal adaptive}:\\ gain depends on (input) signal
-		\pause
+		\bigskip
 		\item	sometimes \textbf{non-linear}:\\ at very short attack times (limiting)
 	\end{itemize}
 \end{frame}
