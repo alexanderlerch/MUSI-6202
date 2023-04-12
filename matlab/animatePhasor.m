@@ -14,7 +14,7 @@ function animatePhasor()
     
     fFrequency = 0.5;
     fRadius = 1;
-    for (k=1:2*iNumSeconds*fs)
+    for k=1:2*iNumSeconds*fs
         fCurrPhase = 2*pi*fFrequency*(k-1)/fs;
         z = fRadius*exp(i*fCurrPhase);
         dummyscale = compass(1,0);
@@ -35,7 +35,7 @@ function animatePhasor()
     end
     fFrequency = .5;
     fRadius = .5;
-    for (k=1:iNumSeconds*fs)
+    for k=1:iNumSeconds*fs
         fCurrPhase = 2*pi*fFrequency*(k-1)/fs;
         z = fRadius*exp(i*fCurrPhase);
         dummyscale = compass(1,0);

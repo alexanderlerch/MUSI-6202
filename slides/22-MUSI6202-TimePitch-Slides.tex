@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 22: Time-stretching and Pitch-shifting}
@@ -86,8 +85,8 @@
         \begin{itemize}
             \item   \textbf{traditional}: resampling
                 \begin{itemize}
-                    \item   change inter-sample 'distance' by interpolation
-                    \item   keep playback sample rate constant
+                    \item   change inter-sample 'distance' by \textbf{interpolation}
+                    \item   keep \textbf{playback sample rate constant}
                     \pause
                     \bigskip
                     \item   audio example
@@ -109,7 +108,7 @@
  
 \begin{frame}\frametitle{time stretching \& pitch shifting}\framesubtitle{stretching: frequency domain}
 		\begin{figure}
-			\centerline{\includegraphics[scale=.7]{fx4_timestretchintro}}
+			\centerline{\includegraphics[scale=.7]{graph/fx4_timestretchintro}}
 		\end{figure}
 \end{frame}
    
@@ -138,7 +137,7 @@
                 \column{.6\linewidth}
                     \begin{figure}
                         \centering
-                        \includegraphics[scale=.3]{OLA}
+                        \includegraphics[scale=.3]{graph/OLA}
                     \end{figure}\vspace{-5mm}
 
                 \column{.4\linewidth}
@@ -159,7 +158,7 @@
             \end{itemize}
             \only<1>{
             \begin{figure}
-                \centerline{\includegraphics[scale=.6]{fx4_olapsola}}
+                \centerline{\includegraphics[scale=.6]{graph/fx4_olapsola}}
                 \label{fig:fx4_olapsola}
             \end{figure}
             }          
@@ -168,7 +167,7 @@
                 \column{.6\linewidth}
                     \begin{figure}
                         \centering
-                        \includegraphics[scale=.3]{PSOLA.pdf}
+                        \includegraphics[scale=.3]{graph/PSOLA.pdf}
                     \end{figure}\vspace{-5mm}
                 \column{.4\linewidth}
                     \vspace{10mm}
@@ -181,7 +180,7 @@
     \end{frame}
 \begin{frame}{PSOLA}{transient copying}
 				\begin{figure}
-					\centerline{\includegraphics[scale=.3]{transcpy}}
+					\centerline{\includegraphics[scale=.3]{graph/transcpy}}
 				\end{figure}
 \end{frame}
 
@@ -298,7 +297,7 @@
                 {
                      \begin{figure}
                         \centering
-                        \includegraphics[scale=.25]{phaseextrapol.pdf}
+                        \includegraphics[scale=.25]{graph/phaseextrapol.pdf}
                      \end{figure}
                 }
                 \only<5->
@@ -316,9 +315,11 @@
             \begin{columns}
             \column{.5\linewidth}
             \vspace{-10mm}
-            \begin{center}
-                \animategraphics[autoplay,loop]{10}{animatePhasor/Phasor-}{00}{80}        
-            \end{center}
+            \includeanimation
+                {Phasor}
+                {00}
+                {160}
+                {10}
             \column{.5\linewidth}
            \begin{itemize}
                 \item   phasor representation:
@@ -443,17 +444,23 @@
                     \item   \textbf{overlapping spectral components}
                         \begin{itemize}
                             \item   sinusoidal components often overlap (spectral leakage, several instruments playing the same pitch, ...)
+                            \smallskip
                                 \begin{itemize}
                                     \item[$\Rightarrow$] incorrect phase estimate
-                                    \bigskip
-                                    \item<2-> spectrum should be as sparse as possible, increase STFT length
+                                    \smallskip
+                                    \item<2-> increase STFT length to make spectrum as sparse as possible
                                 \end{itemize}
                         \end{itemize}
+                    \bigskip
                     \item<3->   \textbf{inaccurate phase unwrapping} 
                         \begin{itemize}
                             \item   unwrapping algorithm is based on assumption of similarity between predicted and measured phase
-                            \bigskip
-                            \item<2-> decrease hop size
+                            \smallskip
+                                \begin{itemize}
+                                    \item[$\Rightarrow$] incorrect phase estimate
+                                    \smallskip
+                                    \item<2-> decrease hop size to make time steps as close as possible
+                                \end{itemize}
                         \end{itemize}
                 \end{itemize}
         \end{frame}
@@ -464,7 +471,7 @@
 
     \begin{frame}\frametitle{time stretching}\framesubtitle{phase vocoder window compensation}
         \begin{figure}
-            \centerline{\includegraphics[scale=.7]{pvocIntro}}
+            \centerline{\includegraphics[scale=.7]{graph/pvocIntro}}
         \end{figure}
     \end{frame}
 
@@ -490,18 +497,22 @@
     \end{frame}
 
     \begin{frame}{time stretching}{phase vocoder artifacts: phasing --- spectral leakage 1/3}
-        \vspace{-3mm}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
             \begin{figure}
                 \centering
-                \includegraphics[scale=.3]{SpectralLeakage}
+                \includegraphics[scale=.3]{graph/SpectralLeakage}
             \end{figure}
+        \column{.6\linewidth}
             \begin{figure}
-                \centerline{\includegraphics[scale=.5]{PeakSmearingFreq}}
+                \centerline{\includegraphics[scale=.5]{graph/PeakSmearingFreq}}
             \end{figure}
+        \end{columns}
     \end{frame}
 	\begin{frame}{time stretching}{phase vocoder artifacts: phasing --- spectral leakage 2/3}
 			\begin{figure}
-				\centerline{\includegraphics[scale=.4]{instfreq}}
+				\centerline{\includegraphics[scale=.4]{graph/instfreq}}
 			\end{figure}
     \end{frame}
 	\begin{frame}{time stretching}{phase vocoder artifacts: phasing --- spectral leakage 3/3}
@@ -516,25 +527,27 @@
                         \end{itemize}
     \end{frame}
 	\begin{frame}{time stretching}{phase vocoder artifacts: phasing --- unsynced harmonics}
-        \vspace{-3mm}
-                        \begin{figure}
-                            \centering
-                                \includegraphics[width=5.3cm,height=2.4cm]{gibbs}
-                        \end{figure}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.4\linewidth}
+            \begin{figure}
+                \centering
+                    \includegraphics[width=5.3cm,height=2.4cm]{graph/gibbs}
+            \end{figure}
+        \column{.6\linewidth}
 		\only<1>{
-		\begin{figure}
-			\centerline{\includegraphics[scale=.5]{phasing}}
-		\end{figure}}
-        \pause
-                \begin{itemize}
-                    \item[$\Rightarrow$] use \textit{harmonic analysis} for grouping and phase sync
-                \end{itemize}
-                        \begin{itemize}
-                            \item   original  \includeaudio{cathy}
-                            \item   pv $s = \nicefrac{4}{3}$ \includeaudio{cathypvout}
-                            \item   synced phase \includeaudio{cathyProout}
-                        \end{itemize}
-        \vspace{50mm}
+            \begin{figure}
+                \centerline{\includegraphics[scale=.5]{graph/phasing}}
+            \end{figure}}
+            \begin{itemize}
+                \item<2->[$\Rightarrow$] use \textit{harmonic analysis} for grouping and phase sync
+            \end{itemize}
+                    \begin{itemize}
+                        \item   original  \includeaudio{cathy}
+                        \item   pv $s = \nicefrac{4}{3}$ \includeaudio{cathypvout}
+                        \item   synced phase \includeaudio{cathyProout}
+                    \end{itemize}
+        \end{columns}
     \end{frame}
 	\begin{frame}{time stretching}{phase vocoder artifacts: interchannel phasing}
         \begin{itemize}
@@ -560,7 +573,7 @@
             \vspace{-3mm}
                 \begin{figure}
                %     \centering
-                    \includegraphics[scale=.35]{TransientSmear}
+                    \includegraphics[scale=.35]{graph/TransientSmear}
                 \end{figure}
 
             \column{.3\textwidth}%\vspace{-10mm}
