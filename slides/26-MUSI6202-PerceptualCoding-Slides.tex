@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 26: Perceptual Coding}
@@ -32,6 +31,15 @@
                     \item   (ATRAC)
                 \end{itemize}
         \end{itemize}
+	\end{frame}
+	\begin{frame}{perceptual coding}{brainstorming}
+        \question{how do we detect and remove perceptually irrelevant information}
+        
+        \begin{enumerate}
+            \item   build a perceptual (psycho-acoustic) model and utilize insights on physiological and cognitive properties of average human's sound reception
+            \bigskip
+            \item   quantize identified irrelevant components more aggressively than important components
+        \end{enumerate}
 	\end{frame}
 	\begin{frame}{perceptual coding}{overview}
         \vspace{-5mm}
@@ -126,7 +134,7 @@
 	\begin{frame}{source coding}{psycho-acoustic model 4: masking threshold 1/2}
         \begin{itemize}
             \item   humans are not able to perceive every possible detail in an audio signal
-                \begin{enumerate}[(i)]
+                \begin{enumerate}[i]
                     \item<1->   frequency resolution (see above)
                     \item<1->   sensitivity for specific frequency regions
                         \only<1>{
@@ -170,7 +178,8 @@
 	\end{frame}
 	
 	\begin{frame}{source coding}{psycho-acoustic model: visualization}
-		\vspace{-3mm}	\begin{figure}
+		\vspace{-4mm}	
+        \begin{figure}
 				\centering
 					\includegraphics[scale=0.4]{Graph/Lerch16-8}
 					\includegraphics[scale=0.2]{Graph/psychomodeloutput}
@@ -179,10 +188,12 @@
 	
 	\begin{frame}{source coding}{psycho-acoustic model: additionally extracted information}
         \begin{itemize}
-            \item   control of (see below)
+            \item   in addition to Signal-to-Mask ratio, psycho-acoustic model may output other control outputs, e.g., for
                 \begin{itemize}
-                    \item \textbf{window length switching}
                     \item   \textbf{bit reservoir} 
+                    \smallskip
+                    \item \textbf{window length switching}
+                    \smallskip
                     \item   \textbf{joint stereo parameters}
                 \end{itemize}
         \end{itemize}
@@ -237,29 +248,56 @@
 	\end{frame}
 	
 	\begin{frame}{perceptual coding}{bit allocation}
-        \vspace{-1mm}
+        \begin{itemize}
+            \item   \textbf{goal}
+            \begin{itemize}
+                \item   intelligently distribute available bits over bands 
+            \end{itemize}
+            \bigskip
+            \item<2->   \textbf{optimization problem}:
+                \begin{itemize}
+                    \item   psycho-acoustic model indicates how many bits are \textbf{required} (SMR)
+                    \smallskip
+                    \item   user settings indicate how many bits are \textbf{available} per block
+                    \smallskip
+                    \item   actual number of encoded bits is unclear (\textbf{entropy coding}!)
+                \end{itemize}
+            \bigskip
+            \item<3->   advanced encoders might iterate over trial encodings
+        \end{itemize}
+	\end{frame}
+	
+	\begin{frame}{perceptual coding}{bit reservoir}
+        \vspace{-3mm}
 		\begin{itemize}
-			\item	\textbf{bit allocation}
+			\item	constant bitrate per frame puts tight constraints on encoder as some blocks are easier to encode than others
+            \bigskip
+            \item<2->[$\Rightarrow$] \textbf{bit reservoir}
+                \begin{itemize}
+                    \item utilize 'unused' bits in easy to encode frames for extra bits for difficult to encode frames
+                \end{itemize}
+		\end{itemize}
+        \vspace{-5mm}
+        \begin{columns}
+        \column{.65\linewidth}
+		\begin{itemize}
+            \item implementation
 				\begin{itemize}
-                    \item   how many bits are \textbf{required} (SMR)?
-                        \begin{itemize}
-                            \item   exact output rate is unknown (Entropy coding!)
-                        \end{itemize}
-					\item	how many bits are \textbf{available} per block?
-					\item	are there bits available in the \textbf{bit reservoir} ($\approx 6000 bits$, bit rate dependent)
+					\item	allocate extra bits for bit reservoir ($\approx 6000 bits$, bit rate dependent)
                         \begin{itemize}
                             \item   actual rate must never exceed channel capacity
                             \item   some frames might need more bits to properly encode
-                            \item   allow deviation from constant bitrate 
+                            \item   allow deviation from constant bitrate at the cost of latency
                             \item   has to be allocated from previous frames 
-                            \item   causes additional decoder delay
+                            \item   causes additional decoder delay/latency
                         \end{itemize}
+				\end{itemize}
+		\end{itemize}
+        \column{.35\linewidth}
                         \begin{figure}
                             \includegraphics[scale=.2]{graph/bit_reservoir}
                         \end{figure}
-					\item	intelligently distribute available bits over bands 
-				\end{itemize}
-		\end{itemize}
+        \end{columns}
 	\end{frame}
 	
 	\begin{frame}{perceptual coding}{quantization \& entropy coding}
@@ -281,6 +319,21 @@
 	\end{frame}
 
 \section[artifacts]{artifacts \& tweaks}	
+	\begin{frame}{perceptual coding}{artifacts: transient smearing and pre-echo}
+		\begin{itemize}
+			\item	\textbf{transient smearing}\\
+					transients are smoothed out
+			\smallskip
+            \item	\textbf{musical noise} (ringing, birdies)\\
+					switch high frequency bands on and off
+			\smallskip
+            \item	\textbf{stereo imaging}\\
+					changing localization and spatial impression
+			\smallskip
+            \item	\textbf{roughness}\\
+					time-variant granular quantization noise
+		\end{itemize}
+	\end{frame}
 	\begin{frame}{perceptual coding}{artifacts: transient smearing and pre-echo}
 			\begin{figure}
 				\centering
@@ -421,7 +474,7 @@
         \end{figure}
 	\end{frame}
 	
-	\begin{frame}{perceptual coding}{artifacts}
+	\begin{frame}{perceptual coding}{artifacts reminder}
 		\begin{itemize}
 			\item	\textbf{transient smearing}\\
 					transients are smoothed out

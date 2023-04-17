@@ -6,7 +6,7 @@ Version=4
 MainFile=..\26-MUSI6202-PerceptualCoding-Slides.tex
 UseBibTeX=1
 UseMakeIndex=0
-ActiveProfile=LaTeX => PDF
+ActiveProfile=LaTeX ⇨ PDF
 ProjectLanguage=en
 ProjectDialect=US
 
