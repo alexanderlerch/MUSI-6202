@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 24: Redundancy Coding}
@@ -12,23 +11,44 @@
 
 \section[overview \& summary]{introduction}
 
-	\begin{frame}{redundancy coding}{overview 1/2}
+	\begin{frame}{redundancy coding}{introduction}	
+        \begin{itemize}
+            \item   \textbf{goals}
+                \begin{itemize}
+                    \item minimize bitrate
+                    \item ensure that content can be reconstructed without error/loss
+                \end{itemize} 
+            \bigskip
+            \item<2->   \textbf{objective}
+                \begin{itemize}
+                    \item   aim for a symbol pdf is as non-uniform as possible
+                    \item[$\Rightarrow$] minimize variance of signal to encode
+                \end{itemize}
+            \bigskip
+            \item<3->   from a user perspective like zipping a file
+        \end{itemize}
+	\end{frame}
+
+	\begin{frame}{redundancy coding}{standard system flow chart}
 		\begin{figure}
 			\centering
 				\includegraphics[scale=0.4]{Graph/redundancycoding}
 		\end{figure}
 	\end{frame}
 
-	\begin{frame}{redundancy coding}{overview 2/2}	
+
+	\begin{frame}{redundancy coding}{overview}	
 		\begin{itemize}
 			\item	\textbf{properties}
 				\begin{itemize}
-					\item	perfect signal reconstruction
-					\item	bitrate reduction depends on input signal
+					\item	\textit{lossless}: perfect signal reconstruction
+					\smallskip
+                    \item	bitrate (reduction) \textit{depends on input signal}
 						\begin{itemize}
-							\item	typical gain (stereo, 48k): factor 2
+							\item	typical ballpark gain (stereo, 48k): factor 2
 						\end{itemize}
-					\item	no constant bitrate $\rightarrow$ streaming only with large buffers
+					\smallskip
+                    \item	\textit{no constant bitrate} $\rightarrow$ streaming only practical with large buffers and constraints on content
 				\end{itemize}
 			\pause
             \bigskip
