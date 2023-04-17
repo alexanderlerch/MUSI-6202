@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 23: Source Coding}
@@ -77,19 +76,27 @@
 		note: words to be transmitted are referred to as \textit{symbols}
 		\pause
 		\begin{block}{\textbf{information content}}
-			\centering
-			The less frequent a symbol, the higher its\\ \textit{information content}, \textit{self-information}, \textit{surprisal}.
+			\begin{columns}
+            \column{.6\linewidth}
+			The less frequent a symbol, the higher its \textit{information content}, \textit{self-information}, \textit{surprisal}.
+            \column{.3\linewidth}
 			\begin{equation*}
 				I_n = \log_2\left(\frac{1}{p_n} \right)
 			\end{equation*}
+            \end{columns}
 		\end{block}
 		\pause
+        \bigskip
 		\begin{block}{\textbf{entropy}}
-			\centering
+			\begin{columns}
+            \column{.6\linewidth}
 			The entropy is the \textit{Expected Value} of the information content. It is the \textit{theoretic minimum of bits} required for transmission.
+            \column{.3\linewidth}
 			\begin{equation*}
 				H = \sum\limits_{n=0}^{N-1}{p_n\cdot I_n}
 			\end{equation*}
+            \end{columns}
+			
 		\end{block}
 	\end{frame}
 
@@ -99,10 +106,10 @@
 			\item	\textbf{dice}: $p_n = \frac{1}{6}$
 			\begin{eqnarray*}
 				I_n &=& \log_2\left(\frac{1}{p_n}\right)  = 2.58\; bit\\
-				H &=& 2.58\; bit % \unit[2.58]{bit}
+				H &=& 6 \cdot \frac{1}{6} \cdot 2.58\; bit % \unit[2.58]{bit}
 			\end{eqnarray*}
 			\pause
-			\item	\textbf{imperfect dice}: $p_0 = \frac{1}{2},\; p_{1\ldots 5} = \frac{1}{10}$
+			\item	\textbf{imperfect dice}: $p_1 = \frac{1}{2},\; p_{2\ldots 6} = \frac{1}{10}$
 			\pause
 			\begin{eqnarray*}
 				I_1 &=  \log_2\left(2\right)  &= 1\; bit \\
@@ -188,6 +195,7 @@
 	\end{frame}
 	
 	\begin{frame}{source coding}{huffman coding: tree construction 1/2}
+        \vspace{-4mm}
 			\begin{table}
 				\begin{center}
 				\begin{footnotesize}
@@ -227,6 +235,9 @@
 			\end{table}
 	\end{frame}
 	\begin{frame}{source coding}{huffman coding: tree construction 2/2}
+    \vspace{-5mm}
+    \begin{columns}
+    \column{.7\linewidth}
 	\begin{center}
 	\begin{picture}(70, 50)
 		\only<1-2>{
@@ -354,8 +365,10 @@
 			\put(41, 20){\textcolor{gtgold}{\text{\textbf{1}}}}
 		}
 	\end{picture}	
+	\end{center}
+    \column{.3\linewidth}
 		\only<13->{
-			\vspace{-18mm}
+			%\vspace{-15mm}
 			\begin{table}
 				\begin{center}
 					\begin{footnotesize}
@@ -371,12 +384,13 @@
 					\end{footnotesize}
 				\end{center}
 			\end{table}
-			%\vspace{2mm}
-			\begin{itemize}
-				\item[note]	no code is prefix of another code!
-			\end{itemize}
 		}
-	\end{center}
+	\end{columns}
+        \only<14->{
+			\begin{itemize}
+				\item[note:]	no code is prefix of another code!
+			\end{itemize}
+            }
 	\end{frame}
 	
 	\begin{frame}{source coding}{huffman coding for audio signals}
@@ -384,10 +398,7 @@
 			\item	Symbole: $2^w$
 			\pause
 			\item	PDF indicates probability per symbol
-				\begin{figure}
-					\centering
-						\includegraphics[scale=1.]{graph/Lerch14-9}
-				\end{figure}
+				\figwithmatlab{Rfd}
 		\end{itemize}
 	\end{frame}
 	
@@ -557,6 +568,7 @@
         \end{itemize}
 	\end{frame}
 	\begin{frame}{source coding}{fundamentals: linear prediction --- prediction coefficients}
+        \vspace{-3mm}
 		\begin{itemize}
 			\item	prediction gain depends on
 				\begin{itemize}
@@ -564,6 +576,7 @@
 					\item	signal
 				\end{itemize}
 			\pause
+            \bigskip
 			\item	optimal coefficients can be derived by finding minimum of prediction error
 				\begin{equation*}
 					\frac{\partial \sigma_e^2}{\partial b_j} = 0
@@ -604,44 +617,46 @@
         order: 20
         \begin{columns}
             \column{.7\textwidth}
-%			\begin{figure}
-%				\centering
-					\includegraphics[scale=0.6]{linearprediction}
-%			\end{figure}
+            \figwithmatlab{LinPred}
+%%			\begin{figure}
+%%				\centering
+					%\includegraphics[scale=0.6]{graph/linearprediction}
+%%			\end{figure}
 			\column{.3\textwidth}
-                \vspace{-50mm}
+                \vspace{6mm}
                 
                 \includeaudio{jamo_snippet}
                 
-                \vspace{10mm}
+                \vspace{8mm}
 
                 \includeaudio{jamo_snippet_Pred}
                 
-                \vspace{10mm}
+                \vspace{8mm}
 
                 \includeaudio{jamo_snippet_PredError}
 			\end{columns}
 	\end{frame}
 
+\section{joint channels}
 	\begin{frame}{source coding}{fundamentals: joint channels}
         \vspace{-3mm}
         \begin{columns}
             \column{.8\textwidth}
-				\includegraphics[scale=0.6]{ms}
+				\figwithmatlab{MS}
 			\column{.3\textwidth}
-                \vspace{-47mm}
+                %\vspace{6mm}
                 
                 \includeaudio{jamo_snippet}
                 
-                \vspace{13mm}
+                \vspace{19mm}
                 
                 \includeaudio{jamo_snippet_M}
                 $M = \frac{L+R}{2}$
                 
-                \vspace{10mm}
+                \vspace{4mm}
                 
                 \includeaudio{jamo_snippet_S}
-                $S = \frac{L-R}{2}$
+                $S = \frac{R-L}{2}$
 			\end{columns}
 			\vspace{-5mm}
             \begin{eqnarray*}
