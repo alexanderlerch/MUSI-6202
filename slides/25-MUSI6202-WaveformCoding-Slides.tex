@@ -1,6 +1,5 @@
 % move all configuration stuff into one file so we can focus on the content
-\input{../shared/common}
-\input{../shared/definitions}
+\input{include}
 
 
 \subtitle{Part 25: Waveform Coding}
@@ -24,12 +23,14 @@
                 \begin{itemize}
                     \item   PCM (analogue to digital)
                     \pause
+                    \smallskip
                     \item   non-linear quantization 
                     \pause
                         \begin{itemize}
                             \item   Question: how is the principle of non-linear quantization related to Entropy coding?
                         \end{itemize}
                     \pause
+                    \smallskip
                     \item   \color<5->{gtgold}{\textbf{DPCM \& ADPCM}}
                 \end{itemize}
         \end{itemize}
@@ -101,12 +102,14 @@
 	            \end{picture}
 			\end{center}
 	    \end{figure}
-        \vspace{-12mm}
+        \vspace{-11mm}
         \begin{itemize}
             \item   predictor is updated from \textbf{reconstructed signal}
                 \begin{itemize}
-                    \item   no transmission of predictor coefficients necessary
-                    \item   \textit{reconstruction error} 
+                    \item   \textbf{no transmission of predictor coefficients} necessary
+                    \smallskip
+                    \item   reconstruction error:
+                        \vspace{-3mm}
                         \begin{footnotesize}\begin{eqnarray*}
                             r(i) &=& x(i) - y(i)\\
                             &=& x(i) - (\hat{x}(i) + e_\mathrm{Q}(i))\\
